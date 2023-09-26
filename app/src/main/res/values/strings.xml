@@ -10,4 +10,11 @@
     <string name="title_back">Back</string>
     <string name="title_notifications">Notifications</string>
     <string name="title_newprofile">New Profile</string>
+    <string name="login">Login</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="register">Register</string>
+    <string name="click_to_register">Click to register</string>
+    <string name="click_to_login">Click to login</string>
+    <string name="logout">Logout</string>
 </resources>
