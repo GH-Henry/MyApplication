@@ -15,6 +15,7 @@ import com.example.myapplication.databinding.ActivityMainBinding;
 public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
+    private int DeleteMe;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
