@@ -5,6 +5,7 @@ import android.util.Log;
 import com.example.myapplication.enums.EColor;
 import com.example.myapplication.enums.EItemType;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 @SuppressWarnings("unused")

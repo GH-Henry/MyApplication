@@ -5,6 +5,8 @@ import android.media.Image;
 import com.example.myapplication.enums.EColor;
 import com.example.myapplication.enums.EItemType;
 
+import java.io.Serializable;
+
 public class Item {
     public Image image;
     public EItemType type;
