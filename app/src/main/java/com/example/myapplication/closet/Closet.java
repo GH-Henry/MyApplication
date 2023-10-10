@@ -1,9 +1,11 @@
-package com.example.myapplication.structures;
+package com.example.myapplication.closet;
 
 import android.util.Log;
 
 import com.example.myapplication.enums.EColor;
 import com.example.myapplication.enums.EItemType;
+import com.example.myapplication.structures.Item;
+import com.example.myapplication.structures.Profile;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -24,6 +26,10 @@ public class Closet {
 
     public Item[] getItems() {
         return this.items.toArray(new Item[] {});
+    }
+
+    public int getItemCount() {
+        return this.items.size();
     }
 
     public boolean addItem(Item new_item) {
@@ -53,5 +59,9 @@ public class Closet {
         // else, return null
         Log.d("UNFINISHED_FUNCTION", "Use of unfinished function removeItem(EItemType, EColor) in Closet class");
         return null;
+    }
+
+    public Item getItemAt(int index) {
+        return this.items.get(index);
     }
 }

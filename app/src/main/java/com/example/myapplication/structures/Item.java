@@ -8,7 +8,7 @@ import com.example.myapplication.enums.EItemType;
 import java.io.Serializable;
 
 public class Item {
-    public Image image;
+    public int drawable_id;
     public EItemType type;
     public EColor color;
 
@@ -17,6 +17,6 @@ public class Item {
         this.color = color;
 
         // Search for the image of the item type of the particular color
-        this.image = null;
+        this.drawable_id = 0;
     }
 }

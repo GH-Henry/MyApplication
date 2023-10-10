@@ -2,16 +2,22 @@ package com.example.myapplication.enums;
 
 @SuppressWarnings("unused")
 public enum EColor {
-    PINK,
-    RED,
-    ORANGE,
-    BEIGE,
-    YELLOW,
-    GREEN,
-    LIGHT_BLUE,
-    DARK_BLUE,
-    PURPLE,
-    BROWN,
-    GREY,
-    BLACK
+    PINK("Pink"),
+    RED("Red"),
+    ORANGE("Orange"),
+    BEIGE("Beige"),
+    YELLOW("Yellow"),
+    GREEN("Green"),
+    LIGHT_BLUE("Light Blue"),
+    DARK_BLUE("Dark Blue"),
+    PURPLE("Purple"),
+    BROWN("Brown"),
+    GREY("Grey"),
+    BLACK("Black");
+
+    public final String text;
+
+    private EColor(String text) {
+        this.text = text;
+    }
 }
