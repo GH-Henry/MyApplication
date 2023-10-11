@@ -41,9 +41,10 @@
                 android:id="@+id/type_text"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
+                android:layout_marginStart="8dp"
                 android:layout_marginEnd="16dp"
                 android:textSize="20sp"
+                android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/color_label"
                 app:layout_constraintTop_toTopOf="@+id/type_label" />
@@ -52,10 +53,9 @@
                 android:id="@+id/type_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
                 android:text="@string/activity_closet_type_label_text"
                 android:textSize="20sp"
-                app:layout_constraintEnd_toStartOf="@+id/type_text"
+                app:layout_constraintEnd_toEndOf="@+id/color_label"
                 app:layout_constraintTop_toTopOf="@+id/type_image" />
 
             <TextView
@@ -73,9 +73,9 @@
                 android:id="@+id/color_text"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:textSize="20sp"
+                android:textStyle="bold"
                 app:layout_constraintEnd_toStartOf="@+id/color_preview"
                 app:layout_constraintStart_toStartOf="@+id/color_label"
                 app:layout_constraintTop_toBottomOf="@+id/color_label" />
@@ -90,6 +90,7 @@
                 app:layout_constraintBottom_toBottomOf="@+id/type_image"
                 app:layout_constraintDimensionRatio='w,1:1'
                 app:layout_constraintEnd_toStartOf="@+id/check_box"
+                app:layout_constraintHorizontal_bias="0.55"
                 app:layout_constraintStart_toEndOf="@+id/color_label"
                 app:layout_constraintTop_toBottomOf="@+id/type_text"
                 app:layout_constraintVertical_bias="1.0" />
