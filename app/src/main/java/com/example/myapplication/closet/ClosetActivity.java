@@ -22,13 +22,15 @@ public class ClosetActivity extends AppCompatActivity {
         setContentView(R.layout.activity_closet);
         recyclerView = findViewById(R.id.items_list);
 
-        Log.d("User", "Success");
-
-        // Test Code
+        // TODO: Remove for deployment
         Closet closet = new Closet(null);
         closet.addItem(new Item(EItemType.T_SHIRT, EColor.BLACK));
         closet.addItem(new Item(EItemType.BLOUSE, EColor.WHITE));
         closet.addItem(new Item(EItemType.COAT, EColor.BROWN));
+        closet.addItem(new Item(EItemType.DRESS, EColor.BEIGE));
+        closet.addItem(new Item(EItemType.HEELS, EColor.GREEN));
+        closet.addItem(new Item(EItemType.LONG_SLEEVE_SHIRT, EColor.GREY));
+        closet.addItem(new Item(EItemType.LOAFERS, EColor.DARK_BLUE));
 
         ClosetItemAdapter adapter = new ClosetItemAdapter(closet);
         recyclerView.setAdapter(adapter);

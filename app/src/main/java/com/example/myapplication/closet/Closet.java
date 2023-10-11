@@ -33,13 +33,11 @@ public class Closet implements Serializable {
     }
 
     public boolean addItem(Item new_item) {
-        // TODO
         // Check if item is already in closet
-        // if so, return false
-
+        if (this.items.contains(new_item))
+            return false;
         // else, add item to the closet
-
-        Log.d("UNFINISHED_FUNCTION", "Use of unfinished function addItem(Item) in Closet class");
+        this.items.add(new_item);
         return true;
     }
 

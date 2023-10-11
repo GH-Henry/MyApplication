@@ -18,6 +18,6 @@ public class Item implements Serializable {
         this.color = color;
 
         // Search for the image of the item type of the particular color
-        this.drawable_id = R.drawable.custom_edittext;
+        this.drawable_id = R.drawable.ic_launcher_background;
     }
 }
