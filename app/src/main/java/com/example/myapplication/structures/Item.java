@@ -2,6 +2,7 @@ package com.example.myapplication.structures;
 
 import android.media.Image;
 
+import com.example.myapplication.R;
 import com.example.myapplication.enums.EColor;
 import com.example.myapplication.enums.EItemType;
 
@@ -17,6 +18,6 @@ public class Item implements Serializable {
         this.color = color;
 
         // Search for the image of the item type of the particular color
-        this.drawable_id = 0;
+        this.drawable_id = R.drawable.custom_edittext;
     }
 }

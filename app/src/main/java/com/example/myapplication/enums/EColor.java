@@ -12,6 +12,7 @@ public enum EColor {
     DARK_BLUE("Dark Blue"),
     PURPLE("Purple"),
     BROWN("Brown"),
+    WHITE("White"),
     GREY("Grey"),
     BLACK("Black");
 
