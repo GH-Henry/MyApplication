@@ -7,8 +7,8 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.annotation.CheckResult;
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mystylist.R;
@@ -22,6 +22,7 @@ public class ClosetItemAdapter extends RecyclerView.Adapter<ClosetItemAdapter.Vi
         private final ImageView type_image;
         private final TextView type_text;
         private final TextView color_text;
+        private final CardView color_preview;
         private final CheckBox check_box;
 
         public ViewHolder(View view) {
@@ -29,6 +30,7 @@ public class ClosetItemAdapter extends RecyclerView.Adapter<ClosetItemAdapter.Vi
             type_image = view.findViewById(R.id.type_image);
             type_text = view.findViewById(R.id.type_text);
             color_text = view.findViewById(R.id.color_text);
+            color_preview = view.findViewById(R.id.color_preview);
             check_box = view.findViewById(R.id.check_box);
         }
 
@@ -41,6 +43,7 @@ public class ClosetItemAdapter extends RecyclerView.Adapter<ClosetItemAdapter.Vi
         public TextView getColorText() {
             return color_text;
         }
+        public CardView getColorPreview() {return color_preview;}
         public CheckBox getCheckBox() { return check_box; }
 
     }
@@ -61,13 +64,15 @@ public class ClosetItemAdapter extends RecyclerView.Adapter<ClosetItemAdapter.Vi
         ImageView type_image = holder.getTypeImage();
         TextView type_text = holder.getTypeText();
         TextView color_text = holder.getColorText();
+        CardView color_preview = holder.getColorPreview();
         CheckBox check_box = holder.getCheckBox();
 
         Item item = closet.getItemAt(position);
 
         type_image.setImageResource(item.drawable_id);
         type_text.setText(item.type.text);
-        color_text.setText(item.color.text);
+        color_text.setText(item.color.asText);
+        color_preview.setCardBackgroundColor(item.color.asInt);
     }
 
     @Override
