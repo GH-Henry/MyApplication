@@ -1,4 +1,4 @@
-package com.example.myapplication;
+package com.example.mystylist;
 
 import android.content.Intent;
 import android.os.Bundle;

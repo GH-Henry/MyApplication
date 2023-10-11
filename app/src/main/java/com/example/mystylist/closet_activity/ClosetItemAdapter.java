@@ -1,4 +1,4 @@
-package com.example.myapplication.closet_activity;
+package com.example.mystylist.closet_activity;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,9 +9,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.myapplication.R;
-import com.example.myapplication.structures.Closet;
-import com.example.myapplication.structures.Item;
+import com.example.mystylist.R;
+import com.example.mystylist.structures.Closet;
+import com.example.mystylist.structures.Item;
 
 public class ClosetItemAdapter extends RecyclerView.Adapter<ClosetItemAdapter.ViewHolder>{
     private Closet closet;

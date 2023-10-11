@@ -1,4 +1,4 @@
-package com.example.myapplication;
+package com.example.mystylist;
 public class HelperClass {
     String name, email, username, password;
     public String getName() {

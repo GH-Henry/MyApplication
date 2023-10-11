@@ -1,4 +1,4 @@
-package com.example.myapplication.closet_activity;
+package com.example.mystylist.closet_activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -6,11 +6,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 
-import com.example.myapplication.R;
-import com.example.myapplication.enums.EColor;
-import com.example.myapplication.enums.EItemType;
-import com.example.myapplication.structures.Closet;
-import com.example.myapplication.structures.Item;
+import com.example.mystylist.R;
+import com.example.mystylist.enums.EColor;
+import com.example.mystylist.enums.EItemType;
+import com.example.mystylist.structures.Closet;
+import com.example.mystylist.structures.Item;
 
 public class ClosetActivity extends AppCompatActivity {
 

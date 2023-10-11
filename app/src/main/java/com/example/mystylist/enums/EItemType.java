@@ -1,4 +1,4 @@
-package com.example.myapplication.enums;
+package com.example.mystylist.enums;
 
 @SuppressWarnings("unused")
 public enum EItemType {

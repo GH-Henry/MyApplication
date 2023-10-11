@@ -1,10 +1,8 @@
-package com.example.myapplication.structures;
+package com.example.mystylist.structures;
 
-import android.media.Image;
-
-import com.example.myapplication.R;
-import com.example.myapplication.enums.EColor;
-import com.example.myapplication.enums.EItemType;
+import com.example.mystylist.R;
+import com.example.mystylist.enums.EColor;
+import com.example.mystylist.enums.EItemType;
 
 import java.io.Serializable;
 

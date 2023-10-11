@@ -1,4 +1,4 @@
-package com.example.myapplication.structures;
+package com.example.mystylist.structures;
 
 public class Profile {
 

@@ -1,11 +1,9 @@
-package com.example.myapplication.structures;
+package com.example.mystylist.structures;
 
 import android.util.Log;
 
-import com.example.myapplication.enums.EColor;
-import com.example.myapplication.enums.EItemType;
-import com.example.myapplication.structures.Item;
-import com.example.myapplication.structures.Profile;
+import com.example.mystylist.enums.EColor;
+import com.example.mystylist.enums.EItemType;
 
 import java.io.Serializable;
 import java.util.ArrayList;

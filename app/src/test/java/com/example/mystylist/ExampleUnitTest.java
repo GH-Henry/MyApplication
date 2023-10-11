@@ -1,4 +1,4 @@
-package com.example.myapplication;
+package com.example.mystylist;
 
 import org.junit.Test;
 

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">My Application</string>
+    <string name="app_name">My Stylist</string>
     <string name="title_home">Home</string>
     <string name="title_closet">Closet</string>
     <string name="title_profiles">Profile</string>
