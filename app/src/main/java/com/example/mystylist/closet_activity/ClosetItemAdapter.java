@@ -3,9 +3,11 @@ package com.example.mystylist.closet_activity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.CheckResult;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -20,25 +22,26 @@ public class ClosetItemAdapter extends RecyclerView.Adapter<ClosetItemAdapter.Vi
         private final ImageView type_image;
         private final TextView type_text;
         private final TextView color_text;
+        private final CheckBox check_box;
 
         public ViewHolder(View view) {
             super(view);
             type_image = view.findViewById(R.id.type_image);
             type_text = view.findViewById(R.id.type_text);
             color_text = view.findViewById(R.id.color_text);
+            check_box = view.findViewById(R.id.check_box);
         }
 
         public ImageView getTypeImage(){
             return type_image;
         }
-
         public TextView getTypeText() {
             return type_text;
         }
-
         public TextView getColorText() {
             return color_text;
         }
+        public CheckBox getCheckBox() { return check_box; }
 
     }
 
@@ -58,6 +61,7 @@ public class ClosetItemAdapter extends RecyclerView.Adapter<ClosetItemAdapter.Vi
         ImageView type_image = holder.getTypeImage();
         TextView type_text = holder.getTypeText();
         TextView color_text = holder.getColorText();
+        CheckBox check_box = holder.getCheckBox();
 
         Item item = closet.getItemAt(position);
 
