@@ -1,4 +1,4 @@
-package com.example.myapplication.closet;
+package com.example.myapplication.structures;
 
 import android.util.Log;
 

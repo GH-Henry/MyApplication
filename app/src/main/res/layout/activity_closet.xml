@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".closet.ClosetActivity">
+    tools:context=".closet_activity.ClosetActivity">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/items_list"

@@ -1,4 +1,4 @@
-package com.example.myapplication.closet;
+package com.example.myapplication.closet_activity;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myapplication.R;
+import com.example.myapplication.structures.Closet;
 import com.example.myapplication.structures.Item;
 
 public class ClosetItemAdapter extends RecyclerView.Adapter<ClosetItemAdapter.ViewHolder>{

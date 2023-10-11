@@ -1,15 +1,15 @@
-package com.example.myapplication.closet;
+package com.example.myapplication.closet_activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
-import android.util.Log;
 
 import com.example.myapplication.R;
 import com.example.myapplication.enums.EColor;
 import com.example.myapplication.enums.EItemType;
+import com.example.myapplication.structures.Closet;
 import com.example.myapplication.structures.Item;
 
 public class ClosetActivity extends AppCompatActivity {

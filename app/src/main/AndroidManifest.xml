@@ -13,7 +13,7 @@
         android:theme="@style/Theme.MyApplication"
         tools:targetApi="31">
         <activity
-            android:name=".closet.ClosetActivity"
+            android:name=".closet_activity.ClosetActivity"
             android:exported="true"
             android:label="@string/title_activity_closet" >
         </activity>
