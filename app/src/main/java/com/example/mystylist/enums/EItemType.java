@@ -32,9 +32,9 @@ public enum EItemType {
     HIGH_HEELS("High Heels"),
     SANDALS("Sandals");
 
-    public final String text;
+    public final String asStr;
 
-    EItemType(String text) {
-        this.text = text;
+    EItemType(String asStr) {
+        this.asStr = asStr;
     }
 }

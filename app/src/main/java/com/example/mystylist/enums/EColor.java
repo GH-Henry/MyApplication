@@ -2,25 +2,25 @@ package com.example.mystylist.enums;
 
 @SuppressWarnings("unused")
 public enum EColor {
-    PINK("Pink", 0xff000000),
-    RED("Red", 0xff000000),
-    ORANGE("Orange", 0xff000000),
-    BEIGE("Beige", 0xff000000),
-    YELLOW("Yellow", 0xff000000),
-    GREEN("Green", 0xff000000),
-    LIGHT_BLUE("Light Blue", 0xff000000),
-    DARK_BLUE("Dark Blue", 0xff000000),
-    PURPLE("Purple", 0xff000000),
-    BROWN("Brown", 0xff000000),
-    WHITE("White", 0xff000000),
-    GREY("Grey", 0xff000000),
-    BLACK("Black", 0xff000000);
+    PINK("Pink", 0xfff9e6e6),
+    RED("Red", 0xffcf202a),
+    ORANGE("Orange", 0xffff9900),
+    BEIGE("Beige", 0xffc9ad93),
+    YELLOW("Yellow", 0xffffd700),
+    GREEN("Green", 0xff4e9b47),
+    LIGHT_BLUE("Light Blue", 0xff8fd0ca),
+    DARK_BLUE("Dark Blue", 0xff0f4c81),
+    PURPLE("Purple", 0xff6f295b),
+    BROWN("Brown", 0xff5d4a44),
+    WHITE("White", 0xfff8f9fa),
+    GREY("Grey", 0xff787470),
+    BLACK("Black", 0xff333333);
 
-    public final String asText;
+    public final String asStr;
     public final int asInt;
 
     private EColor(String asText, int asInt) {
-        this.asText = asText;
+        this.asStr = asText;
         this.asInt = asInt;
     }
 }

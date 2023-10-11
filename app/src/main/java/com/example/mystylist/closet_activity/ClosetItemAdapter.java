@@ -70,8 +70,8 @@ public class ClosetItemAdapter extends RecyclerView.Adapter<ClosetItemAdapter.Vi
         Item item = closet.getItemAt(position);
 
         type_image.setImageResource(item.drawable_id);
-        type_text.setText(item.type.text);
-        color_text.setText(item.color.asText);
+        type_text.setText(item.type.asStr);
+        color_text.setText(item.color.asStr);
         color_preview.setCardBackgroundColor(item.color.asInt);
     }
 
