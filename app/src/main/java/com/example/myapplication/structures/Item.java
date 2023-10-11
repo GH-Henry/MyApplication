@@ -7,7 +7,7 @@ import com.example.myapplication.enums.EItemType;
 
 import java.io.Serializable;
 
-public class Item {
+public class Item implements Serializable {
     public int drawable_id;
     public EItemType type;
     public EColor color;

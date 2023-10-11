@@ -11,7 +11,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 @SuppressWarnings("unused")
-public class Closet {
+public class Closet implements Serializable {
     private final Profile parent;
     private ArrayList<Item> items;
 
