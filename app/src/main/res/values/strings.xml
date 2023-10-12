@@ -154,4 +154,5 @@
     <string name="activity_closet_color_label_text">Color:</string>
     <string name="activity_closet_type_label_text">Type:</string>
     <string name="activity_closet_type_image_content_description">Image of clothing type</string>
+    <string name="add_item_button">Add item button</string>
 </resources>
