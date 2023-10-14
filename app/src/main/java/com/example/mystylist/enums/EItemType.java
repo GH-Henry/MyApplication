@@ -1,5 +1,7 @@
 package com.example.mystylist.enums;
 
+import androidx.annotation.NonNull;
+
 @SuppressWarnings("unused")
 public enum EItemType {
     T_SHIRT("T-shirt"),
@@ -36,5 +38,11 @@ public enum EItemType {
 
     EItemType(String asStr) {
         this.asStr = asStr;
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return asStr;
     }
 }

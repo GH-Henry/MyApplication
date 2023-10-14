@@ -1,11 +1,14 @@
 package com.example.mystylist.closet_activity;
 
+import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -30,6 +33,7 @@ public class ClosetItemAdapter extends RecyclerView.Adapter<ClosetItemAdapter.Vi
             this.view_type = view_type;
         }
     }
+
     public static class AddViewHolder extends ViewHolder {
         public static final int VIEW_TYPE = 0;
         private final ImageButton plus_button;
@@ -37,12 +41,19 @@ public class ClosetItemAdapter extends RecyclerView.Adapter<ClosetItemAdapter.Vi
         public AddViewHolder(View view) {
             super(view, VIEW_TYPE);
             plus_button = view.findViewById(R.id.plus_button);
+            plus_button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ((ClosetActivity) v.getContext()).showAddItemPopup();
+                }
+            });
         }
 
         public ImageButton getPlusButton() {
             return plus_button;
         }
     }
+
     public static class ItemViewHolder extends ViewHolder {
         public static final int VIEW_TYPE = 1;
         private final ImageView type_image;
@@ -90,9 +101,9 @@ public class ClosetItemAdapter extends RecyclerView.Adapter<ClosetItemAdapter.Vi
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         ViewHolder view_holder;
         if (viewType == AddViewHolder.VIEW_TYPE)
-            view_holder = new AddViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.row_add_closet, parent, false));
+            view_holder = new AddViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_row_add_closet, parent, false));
         else if (viewType == ItemViewHolder.VIEW_TYPE)
-            view_holder = new ItemViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.row_item_closet, parent, false));
+            view_holder = new ItemViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_row_item_closet, parent, false));
         else
             view_holder = null;
 

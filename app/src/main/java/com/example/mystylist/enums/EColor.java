@@ -1,5 +1,7 @@
 package com.example.mystylist.enums;
 
+import androidx.annotation.NonNull;
+
 @SuppressWarnings("unused")
 public enum EColor {
     PINK("Pink", 0xfff9e6e6),
@@ -22,5 +24,11 @@ public enum EColor {
     private EColor(String asText, int asInt) {
         this.asStr = asText;
         this.asInt = asInt;
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return asStr;
     }
 }

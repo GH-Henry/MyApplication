@@ -38,6 +38,15 @@
                 tools:ignore="ImageContrastCheck" />
 
             <TextView
+                android:id="@+id/type_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/activity_closet_type_label_text"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="@+id/color_label"
+                app:layout_constraintTop_toTopOf="@+id/type_image" />
+
+            <TextView
                 android:id="@+id/type_text"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -48,15 +57,6 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/color_label"
                 app:layout_constraintTop_toTopOf="@+id/type_label" />
-
-            <TextView
-                android:id="@+id/type_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/activity_closet_type_label_text"
-                android:textSize="20sp"
-                app:layout_constraintEnd_toEndOf="@+id/color_label"
-                app:layout_constraintTop_toTopOf="@+id/type_image" />
 
             <TextView
                 android:id="@+id/color_label"
@@ -84,7 +84,6 @@
                 android:id="@+id/color_preview"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:layout_marginTop="8dp"
                 app:cardBackgroundColor="#ffffff"
                 app:cardElevation="2dp"
                 app:layout_constraintBottom_toBottomOf="@+id/type_image"
@@ -92,8 +91,7 @@
                 app:layout_constraintEnd_toStartOf="@+id/check_box"
                 app:layout_constraintHorizontal_bias="0.55"
                 app:layout_constraintStart_toEndOf="@+id/color_label"
-                app:layout_constraintTop_toBottomOf="@+id/type_text"
-                app:layout_constraintVertical_bias="1.0" />
+                app:layout_constraintTop_toTopOf="@+id/color_label" />
 
             <CheckBox
                 android:id="@+id/check_box"
