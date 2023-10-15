@@ -30,12 +30,25 @@ public class Closet implements Serializable {
         return this.items.size();
     }
 
+    public boolean inCloset(Item item) {
+        return this.items.contains(item);
+    }
+
     public boolean addItem(Item new_item) {
         // Check if item is already in closet
         if (this.items.contains(new_item))
             return false;
         // else, add item to the closet
         this.items.add(new_item);
+        return true;
+    }
+
+    public boolean addItem(int index, Item new_item) {
+        // Check if item is already in closet
+        if (this.items.contains(new_item))
+            return false;
+        // else, add item to the closet
+        this.items.add(index, new_item);
         return true;
     }
 

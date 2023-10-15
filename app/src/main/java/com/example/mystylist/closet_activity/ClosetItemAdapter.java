@@ -141,6 +141,8 @@ public class ClosetItemAdapter extends RecyclerView.Adapter<ClosetItemAdapter.Vi
 
     @Override
     public int getItemCount() {
-        return closet.getItemCount();
+        return 1 + closet.getItemCount();
     }
+
+
 }

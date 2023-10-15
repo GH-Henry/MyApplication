@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,24 +24,26 @@ import com.example.mystylist.structures.Item;
 public class ClosetActivity extends AppCompatActivity {
 
     RecyclerView recyclerView;
+    public static Closet current_closet;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_closet);
         recyclerView = findViewById(R.id.items_list);
+        recyclerView.setHasFixedSize(false);
 
         // TODO: Remove for deployment
-        Closet closet = new Closet(null);
-        closet.addItem(new Item(EItemType.T_SHIRT, EColor.BLACK));
-        closet.addItem(new Item(EItemType.BLOUSE, EColor.WHITE));
-        closet.addItem(new Item(EItemType.COAT, EColor.BROWN));
-        closet.addItem(new Item(EItemType.DRESS, EColor.BEIGE));
-        closet.addItem(new Item(EItemType.HEELS, EColor.GREEN));
-        closet.addItem(new Item(EItemType.LONG_SLEEVE_SHIRT, EColor.GREY));
-        closet.addItem(new Item(EItemType.LOAFERS, EColor.DARK_BLUE));
+        current_closet = new Closet(null);
+        current_closet.addItem(new Item(EItemType.T_SHIRT, EColor.BLACK));
+        current_closet.addItem(new Item(EItemType.BLOUSE, EColor.WHITE));
+        current_closet.addItem(new Item(EItemType.COAT, EColor.BROWN));
+        current_closet.addItem(new Item(EItemType.DRESS, EColor.BEIGE));
+        current_closet.addItem(new Item(EItemType.HEELS, EColor.GREEN));
+        current_closet.addItem(new Item(EItemType.LONG_SLEEVE_SHIRT, EColor.GREY));
+        current_closet.addItem(new Item(EItemType.LOAFERS, EColor.DARK_BLUE));
 
-        ClosetItemAdapter adapter = new ClosetItemAdapter(closet);
+        ClosetItemAdapter adapter = new ClosetItemAdapter(current_closet);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
@@ -57,12 +60,36 @@ public class ClosetActivity extends AppCompatActivity {
         type_spinner.setAdapter(item_adapter);
 
         Spinner color_spinner = popupView.findViewById(R.id.color_spinner);
-        ArrayAdapter<EColor> color_adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, EColor.values());
+        ArrayAdapter<EColor> color_adapter = new ArrayAdapter<>(this, R.layout.spinner_row_clothing_color, EColor.values());
         color_spinner.setAdapter(color_adapter);
 
         Button button_cancel = popupView.findViewById(R.id.button_cancel);
+        button_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popupWindow.dismiss();
+            }
+        });
 
         Button button_accept = popupView.findViewById(R.id.button_accept);
+        button_accept.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EItemType item_type = EItemType.values()[type_spinner.getSelectedItemPosition()];
+                EColor color = EColor.values()[color_spinner.getSelectedItemPosition()];
+                Item item = new Item(item_type, color);
+
+                if (current_closet.addItem(0, item)) {
+                    // Update recycler
+                    recyclerView.getAdapter().notifyItemInserted(1);
+                    // Close popup
+                    popupWindow.dismiss();
+                }
+                else {
+                    // TODO: Warn user invalid inputs
+                }
+            }
+        });
 
         popupWindow.showAtLocation(recyclerView, Gravity.CENTER, 0, 0);
     }
