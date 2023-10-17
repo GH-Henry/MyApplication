@@ -11,7 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-public class EditProfileActivity extends AppCompatActivity {
+public class EditAccountActivity extends AppCompatActivity {
     EditText editName, editEmail, editUsername, editPassword;
     Button saveButton;
     String nameUser, emailUser, usernameUser, passwordUser;
@@ -19,7 +19,7 @@ public class EditProfileActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_edit_profile);
+        setContentView(R.layout.activity_edit_account);
         reference = FirebaseDatabase.getInstance().getReference("users");
         editName = findViewById(R.id.editName);
         editEmail = findViewById(R.id.editEmail);
@@ -31,9 +31,9 @@ public class EditProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (isNameChanged() || isPasswordChanged() || isEmailChanged()){
-                    Toast.makeText(EditProfileActivity.this, "Saved", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(EditAccountActivity.this, "Saved", Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(EditProfileActivity.this, "No Changes Found", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(EditAccountActivity.this, "No Changes Found", Toast.LENGTH_SHORT).show();
                 }
             }
         });

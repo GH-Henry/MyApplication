@@ -15,35 +15,42 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-public class ProfileActivity extends AppCompatActivity {
-    TextView profileName;
-    Button editProfileButton, outfitsButton, closetButton, favoritesButton;
+public class AccountActivity extends AppCompatActivity {
+    TextView AccountName;
+    Button editAccountButton, outfitsButton, closetButton, favoritesButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_profile);
-
-        profileName = findViewById(R.id.profileName);
-        editProfileButton = findViewById(R.id.editButton);
+        setContentView(R.layout.activity_account);
+        AccountName = findViewById(R.id.AccountName);
+        editAccountButton = findViewById(R.id.editButton);
         outfitsButton = findViewById(R.id.outfitsButton);
         closetButton = findViewById(R.id.closetButton);
         favoritesButton = findViewById(R.id.favoritesButton);
-
         showAllUserData();
-        editProfileButton.setOnClickListener(new View.OnClickListener() {
+        AccountName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Intent intent = new Intent(AccountActivity.this, SelectProfileActivity.class);
+                startActivity(intent);
+            }
+        });
+        editAccountButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(AccountActivity.this, EditAccountActivity.class);
                 passUserData();
+                startActivity(intent);
             }
         });
     }
     public void showAllUserData(){
         Intent intent = getIntent();
         String nameUser = intent.getStringExtra("name");
-        profileName.setText(nameUser);
+        AccountName.setText(nameUser);
     }
     public void passUserData(){
-        String userUsername = profileName.getText().toString().trim();
+        String userUsername = AccountName.getText().toString().trim();
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("users");
         Query checkUserDatabase = reference.orderByChild("username").equalTo(userUsername);
         checkUserDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -54,7 +61,7 @@ public class ProfileActivity extends AppCompatActivity {
                     String emailFromDB = snapshot.child(userUsername).child("email").getValue(String.class);
                     String usernameFromDB = snapshot.child(userUsername).child("username").getValue(String.class);
                     String passwordFromDB = snapshot.child(userUsername).child("password").getValue(String.class);
-                    Intent intent = new Intent(ProfileActivity.this, EditProfileActivity.class);
+                    Intent intent = new Intent(AccountActivity.this, EditAccountActivity.class);
                     intent.putExtra("name", nameFromDB);
                     intent.putExtra("email", emailFromDB);
                     intent.putExtra("username", usernameFromDB);

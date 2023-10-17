@@ -5,37 +5,21 @@ xmlns:app="http://schemas.android.com/apk/res-auto"
 xmlns:tools="http://schemas.android.com/tools"
 android:layout_width="match_parent"
 android:layout_height="match_parent"
-tools:context=".ProfileActivity">
-<ImageView
-    android:layout_width="100dp"
-    android:layout_height="100dp"
-    android:id="@+id/profileImg"
+tools:context=".AccountActivity">
+
+<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:id="@+id/AccountName"
     android:layout_marginTop="30dp"
+    android:text="Profile Name"
+    android:textColor="@color/black"
+    android:textSize="50sp"
+    android:textStyle="bold"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent"/>
-<TextView
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:id="@+id/profileName"
-    android:layout_marginTop="10dp"
-    android:text="Name"
-    android:textColor="@color/black"
-    android:textSize="20sp"
-    android:textStyle="bold"
-    app:layout_constraintEnd_toEndOf="@id/profileImg"
-    app:layout_constraintStart_toStartOf="@id/profileImg"
-    app:layout_constraintTop_toBottomOf="@id/profileImg"/>
-<TextView
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:id="@+id/titleUsername"
-    android:text="username"
-    android:textColor="@color/white"
-    android:textSize="18sp"
-    app:layout_constraintEnd_toEndOf="@id/profileName"
-    app:layout_constraintStart_toStartOf="@id/profileName"
-    app:layout_constraintTop_toBottomOf="@id/profileName"/>
+
 <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -45,10 +29,10 @@ tools:context=".ProfileActivity">
     android:background="@drawable/white_background"
     android:layout_marginStart="24dp"
     android:layout_marginEnd="24dp"
-    android:layout_marginTop="30dp"
+    android:layout_marginTop="50dp"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@id/titleUsername">
+    app:layout_constraintTop_toBottomOf="@id/AccountName">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -59,7 +43,7 @@ tools:context=".ProfileActivity">
         android:text="Outfits"
         android:id="@+id/outfitsButton"
         android:textSize="18sp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="15dp"
         android:backgroundTint="@color/black"
         app:cornerRadius = "20dp"/>
 
@@ -77,10 +61,11 @@ tools:context=".ProfileActivity">
     <Button
         android:layout_width="match_parent"
         android:layout_height="100dp"
-        android:text="Favorties"
+        android:text="Favorites"
         android:id="@+id/favoritesButton"
         android:textSize="18sp"
         android:layout_marginTop="30dp"
+        android:layout_marginBottom="15dp"
         android:backgroundTint="@color/black"
         app:cornerRadius = "20dp"/>
 </LinearLayout>
@@ -89,7 +74,7 @@ tools:context=".ProfileActivity">
     android:layout_height="60dp"
     android:id="@+id/editButton"
     android:gravity="center"
-    android:text="Edit Profile"
+    android:text="Edit Account"
     android:textSize="18sp"
     android:backgroundTint="@color/white"
     android:textColor="@color/black"

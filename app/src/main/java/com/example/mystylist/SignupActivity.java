@@ -33,20 +33,21 @@ public class SignupActivity extends AppCompatActivity {
             public void onClick(View view) {
                 if (!validateUsername() | !validatePassword()
                 | !validateName() | !validateEmail()) {
-                } else {
-                database = FirebaseDatabase.getInstance();
-                reference = database.getReference("users");
-                String name = signupName.getText().toString();
-                String email = signupEmail.getText().toString();
-                String username = signupUsername.getText().toString();
-                String password = signupPassword.getText().toString();
-                HelperClass helperClass = new HelperClass(name, email, username, password);
-                reference.child(username).setValue(helperClass);
-                Toast.makeText(SignupActivity.this, "You have signup successfully!", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(SignupActivity.this, LoginActivity.class);
-                startActivity(intent);
-            }
-        };
+                }
+                else {
+                    database = FirebaseDatabase.getInstance();
+                    reference = database.getReference("users");
+                    String name = signupName.getText().toString();
+                    String email = signupEmail.getText().toString();
+                    String username = signupUsername.getText().toString();
+                    String password = signupPassword.getText().toString();
+                    HelperClass helperClass = new HelperClass(name, email, username, password);
+                    reference.child(username).setValue(helperClass);
+                    Toast.makeText(SignupActivity.this, "You have signup successfully!", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(SignupActivity.this, LoginActivity.class);
+                    startActivity(intent);
+                    }
+                };
         });
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override

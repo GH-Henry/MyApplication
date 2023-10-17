@@ -2,14 +2,14 @@
     <string name="app_name">My Stylist</string>
     <string name="title_home">Home</string>
     <string name="title_closet">Closet</string>
-    <string name="title_profiles">Profile</string>
+    <string name="title_Accounts">Account</string>
     <string name="title_delete">Delete</string>
     <string name="title_search">Search</string>
     <string name="title_discard">Discard</string>
     <string name="title_save">Save</string>
     <string name="title_back">Back</string>
     <string name="title_notifications">Notifications</string>
-    <string name="title_newprofile">New Profile</string>
+    <string name="title_newAccount">New Account</string>
     <string name="login">Login</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
@@ -155,4 +155,8 @@
     <string name="activity_closet_type_label_text">Type:</string>
     <string name="activity_closet_type_image_content_description">Image of clothing type</string>
     <string name="add_item_button">Add item button</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

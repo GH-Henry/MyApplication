@@ -17,9 +17,11 @@
             android:exported="true"
             android:label="@string/title_activity_closet" >
         </activity>
-        <activity android:name=".EditProfileActivity" />
-        <activity android:name=".ProfileActivity" />
+        <activity android:name=".EditAccountActivity" />
+        <activity android:name=".AccountActivity" />
         <activity android:name=".SignupActivity" />
+        <activity android:name=".AddProfileActivity" />
+        <activity android:name=".SelectProfileActivity" />
         <activity
             android:name=".LoginActivity"
             android:exported="true"
