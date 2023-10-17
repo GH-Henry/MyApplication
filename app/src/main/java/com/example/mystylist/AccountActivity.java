@@ -9,6 +9,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.mystylist.closet_activity.ClosetActivity;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -40,6 +41,14 @@ public class AccountActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(AccountActivity.this, EditAccountActivity.class);
                 passUserData();
+                startActivity(intent);
+            }
+        });
+        closetButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Added for presentation
+                Intent intent = new Intent(AccountActivity.this, ClosetActivity.class);
                 startActivity(intent);
             }
         });
