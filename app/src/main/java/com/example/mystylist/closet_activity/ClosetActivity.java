@@ -5,6 +5,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -12,9 +13,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.PopupWindow;
 import android.widget.Spinner;
 
+import com.example.mystylist.AccountActivity;
 import com.example.mystylist.R;
 import com.example.mystylist.enums.EColor;
 import com.example.mystylist.enums.EItemType;
@@ -23,6 +26,7 @@ import com.example.mystylist.structures.Item;
 
 public class ClosetActivity extends AppCompatActivity {
 
+    ImageButton back_button;
     RecyclerView recyclerView;
     public static Closet current_closet;
 
@@ -30,7 +34,19 @@ public class ClosetActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_closet);
+        back_button = findViewById(R.id.back_button);
         recyclerView = findViewById(R.id.items_list);
+
+        back_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Added for presentation
+                Intent intent = new Intent(ClosetActivity.this, AccountActivity.class);
+                startActivity(intent);
+            }
+        });
+
+
         recyclerView.setHasFixedSize(false);
 
         // TODO: Remove for deployment
