@@ -46,21 +46,22 @@
                 android:orientation="horizontal">
 
                 <Button
-                    android:layout_width="wrap_content"
+                    android:layout_width="140dp"
                     android:layout_height="80dp"
                     android:text="Cancel"
                     android:id="@+id/cancel_add_Account_button"
                     android:textSize="18sp"
-                    android:layout_weight="1"
+                    android:layout_weight=".5"
                     android:backgroundTint="@color/white"
                     android:textColor="@color/black"
                     app:cornerRadius = "20dp"/>
                 <Button
-                    android:layout_width="wrap_content"
+                    android:layout_width="140dp"
                     android:layout_height="80dp"
                     android:text="Add Profile"
                     android:id="@+id/accept_add_Account_button"
                     android:textSize="18sp"
+                    android:layout_weight=".5"
                     android:backgroundTint="@color/white"
                     android:textColor="@color/black"
                     android:layout_margin="0dp"

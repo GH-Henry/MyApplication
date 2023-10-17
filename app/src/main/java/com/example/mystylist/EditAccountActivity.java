@@ -13,7 +13,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 public class EditAccountActivity extends AppCompatActivity {
     EditText editName, editEmail, editUsername, editPassword;
-    Button saveButton;
+    Button saveButton, backButton;
     String nameUser, emailUser, usernameUser, passwordUser;
     DatabaseReference reference;
     @Override
@@ -26,6 +26,7 @@ public class EditAccountActivity extends AppCompatActivity {
         editUsername = findViewById(R.id.editUsername);
         editPassword = findViewById(R.id.editPassword);
         saveButton = findViewById(R.id.saveButton);
+        backButton = findViewById(R.id.backButton);
         showData();
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -35,6 +36,12 @@ public class EditAccountActivity extends AppCompatActivity {
                 } else {
                     Toast.makeText(EditAccountActivity.this, "No Changes Found", Toast.LENGTH_SHORT).show();
                 }
+            }
+        });
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
             }
         });
     }
