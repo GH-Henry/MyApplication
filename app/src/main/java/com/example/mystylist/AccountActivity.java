@@ -39,7 +39,9 @@ public class AccountActivity extends AppCompatActivity {
         editAccountButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Intent intent = new Intent(AccountActivity.this, EditAccountActivity.class);
                 passUserData();
+                startActivity(intent);
             }
         });
         closetButton.setOnClickListener(new View.OnClickListener() {
