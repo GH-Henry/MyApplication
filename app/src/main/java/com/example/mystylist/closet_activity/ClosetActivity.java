@@ -1,11 +1,14 @@
 package com.example.mystylist.closet_activity;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -23,17 +26,21 @@ import com.example.mystylist.enums.EColor;
 import com.example.mystylist.enums.EItemType;
 import com.example.mystylist.structures.Closet;
 import com.example.mystylist.structures.Item;
+import com.google.android.material.snackbar.Snackbar;
 
 public class ClosetActivity extends AppCompatActivity {
 
+    ConstraintLayout layout;
     ImageButton back_button;
     RecyclerView recyclerView;
+    ClosetItemAdapter adapter;
     public static Closet current_closet;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_closet);
+        layout = findViewById(R.id.constraintLayout);
         back_button = findViewById(R.id.back_button);
         recyclerView = findViewById(R.id.items_list);
 
@@ -59,9 +66,12 @@ public class ClosetActivity extends AppCompatActivity {
         current_closet.addItem(new Item(EItemType.LONG_SLEEVE_SHIRT, EColor.GREY));
         current_closet.addItem(new Item(EItemType.LOAFERS, EColor.DARK_BLUE));
 
-        ClosetItemAdapter adapter = new ClosetItemAdapter(current_closet);
+        adapter = new ClosetItemAdapter(current_closet);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        // Must be done at end
+        enableSwipeToDelete();
     }
 
     public void showAddItemPopup() {
@@ -95,10 +105,7 @@ public class ClosetActivity extends AppCompatActivity {
                 EColor color = EColor.values()[color_spinner.getSelectedItemPosition()];
                 Item item = new Item(item_type, color);
 
-                if (current_closet.addItem(0, item)) {
-                    // Update recycler
-                    recyclerView.getAdapter().notifyItemInserted(1);
-                    // Close popup
+                if (adapter.addItemAt(1, item) != null) {
                     popupWindow.dismiss();
                 }
                 else {
@@ -108,5 +115,34 @@ public class ClosetActivity extends AppCompatActivity {
         });
 
         popupWindow.showAtLocation(recyclerView, Gravity.CENTER, 0, 0);
+    }
+
+    private void enableSwipeToDelete() {
+        SwipeToDeleteCallback callback = new SwipeToDeleteCallback(this, 0.7f) {
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                final int position = viewHolder.getAdapterPosition();
+                final Item item = adapter.getItemAtPosition(position);
+                if (item == null)
+                    return;  // Position not a closet item
+
+                adapter.removeItemAt(position);
+
+                Snackbar snackbar = Snackbar.make(layout, "Item was removed from the closet.", Snackbar.LENGTH_LONG);
+                snackbar.setAction("UNDO", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        adapter.addItemAt(position, item);
+                        // recyclerView.scrollToPosition(position);
+                    }
+                });
+
+                snackbar.setActionTextColor(Color.YELLOW);
+                snackbar.show();
+            }
+        };
+
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
+        itemTouchHelper.attachToRecyclerView(recyclerView);
     }
 }

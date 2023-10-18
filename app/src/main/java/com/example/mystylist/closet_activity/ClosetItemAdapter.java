@@ -130,8 +130,7 @@ public class ClosetItemAdapter extends RecyclerView.Adapter<ClosetItemAdapter.Vi
         CardView color_preview = holder.getColorPreview();
         CheckBox check_box = holder.getCheckBox();
 
-        int index = position - 1;  // Accounts for position 0 being addItem
-        Item item = closet.getItemAt(index);
+        Item item = closet.getItemAt(positionToIndex(position));
 
         type_image.setImageResource(item.drawable_id);
         type_text.setText(item.type.asStr);
@@ -144,5 +143,34 @@ public class ClosetItemAdapter extends RecyclerView.Adapter<ClosetItemAdapter.Vi
         return 1 + closet.getItemCount();
     }
 
+    public Item getItemAtPosition(int position) {
+        int index = positionToIndex(position);
+        if (index >= 0 && index < closet.getItemCount())
+            return closet.getItemAt(position - 1);
+        else
+            return null;
+    }
+
+    public Item addItemAt(int position, Item item) {
+        if (closet.addItem(positionToIndex(position), item) == null)
+            return null;
+        notifyItemInserted(position);
+        return item;
+    }
+
+    public Item removeItemAt(int position) {
+        int index = positionToIndex(position);
+        if (index < 0 || index >= closet.getItemCount())
+            return null;
+
+        Item removed = closet.removeItemAt(index);
+        this.notifyItemRemoved(position);
+
+        return removed;
+    }
+
+    private int positionToIndex(int position) {
+        return position - 1;
+    }
 
 }

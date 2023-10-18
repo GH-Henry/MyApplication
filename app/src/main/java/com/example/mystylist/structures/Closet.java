@@ -34,22 +34,22 @@ public class Closet implements Serializable {
         return this.items.contains(item);
     }
 
-    public boolean addItem(Item new_item) {
+    public Item addItem(Item new_item) {
         // Check if item is already in closet
         if (this.items.contains(new_item))
-            return false;
+            return null;
         // else, add item to the closet
         this.items.add(new_item);
-        return true;
+        return new_item;
     }
 
-    public boolean addItem(int index, Item new_item) {
+    public Item addItem(int index, Item new_item) {
         // Check if item is already in closet
         if (this.items.contains(new_item))
-            return false;
+            return null;
         // else, add item to the closet
         this.items.add(index, new_item);
-        return true;
+        return new_item;
     }
 
     public Item removeItem(Item item) {
@@ -59,6 +59,9 @@ public class Closet implements Serializable {
         // else, return null
         Log.d("UNFINISHED_FUNCTION", "Use of unfinished function removeItem(Item) in Closet class");
         return null;
+    }
+    public Item removeItemAt(int index) {
+        return items.remove(index);
     }
 
     public Item removeItem(EItemType type, EColor color) {
