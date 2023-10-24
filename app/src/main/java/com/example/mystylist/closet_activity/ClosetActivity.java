@@ -109,7 +109,8 @@ public class ClosetActivity extends AppCompatActivity {
                     popupWindow.dismiss();
                 }
                 else {
-                    // TODO: Warn user invalid inputs
+                    Snackbar snackbar = Snackbar.make(popupView, "Item already exists in closet.", Snackbar.LENGTH_LONG);
+                    snackbar.show();
                 }
             }
         });
