@@ -1,12 +1,14 @@
 package com.example.mystylist.closet_activity;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -32,6 +34,7 @@ public class ClosetActivity extends AppCompatActivity {
 
     ConstraintLayout layout;
     ImageButton back_button;
+    Button clear_all_button;
     RecyclerView recyclerView;
     ClosetItemAdapter adapter;
     public static Closet current_closet;
@@ -42,6 +45,7 @@ public class ClosetActivity extends AppCompatActivity {
         setContentView(R.layout.activity_closet);
         layout = findViewById(R.id.constraintLayout);
         back_button = findViewById(R.id.back_button);
+        clear_all_button = findViewById(R.id.clear_all_button);
         recyclerView = findViewById(R.id.items_list);
 
         back_button.setOnClickListener(new View.OnClickListener() {
@@ -53,6 +57,12 @@ public class ClosetActivity extends AppCompatActivity {
             }
         });
 
+        clear_all_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showClearAllConfirmationPopup();
+            }
+        });
 
         recyclerView.setHasFixedSize(false);
 
@@ -118,6 +128,36 @@ public class ClosetActivity extends AppCompatActivity {
         popupWindow.showAtLocation(recyclerView, Gravity.CENTER, 0, 0);
     }
 
+    public void showClearAllConfirmationPopup() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setCancelable(true);
+        builder.setTitle("Clear All Items in Closet?");
+        builder.setMessage("Would you like to clear all items in your closet?");
+        builder.setPositiveButton("Clear Closet", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Save items in case undo
+                Item[] items = current_closet.getItems();
+                current_closet.clearItems();
+                adapter.notifyItemRangeRemoved(1, items.length);
+
+                // Undo
+                showSnackbar("Closet has been cleared.", "UNDO", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        for (Item i : items)
+                            current_closet.addItem(i);
+                        adapter.notifyItemRangeInserted(1, items.length);
+                    }
+                });
+            }
+        });
+        builder.setNegativeButton("Cancel", null);
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
     private void enableSwipeToDelete() {
         SwipeToDeleteCallback callback = new SwipeToDeleteCallback(this, 0.7f) {
             @Override
@@ -127,21 +167,26 @@ public class ClosetActivity extends AppCompatActivity {
                 if (item == null)
                     return;  // Position not a closet item
 
-                Snackbar snackbar = Snackbar.make(layout, "Item was removed from the closet.", Snackbar.LENGTH_LONG);
-                snackbar.setAction("UNDO", new View.OnClickListener() {
+                showSnackbar("Item was removed from the closet.", "UNDO", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         adapter.addItemAt(position, item);
-                        // recyclerView.scrollToPosition(position);
                     }
                 });
-
-                snackbar.setActionTextColor(Color.YELLOW);
-                snackbar.show();
             }
         };
 
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
         itemTouchHelper.attachToRecyclerView(recyclerView);
+    }
+
+    private void showSnackbar(String text, String actionText, View.OnClickListener listener) {
+        showSnackbar(text, actionText, listener, Snackbar.LENGTH_LONG);
+    }
+    private void showSnackbar(String text, String actionText, View.OnClickListener action, int duration) {
+        Snackbar snackbar = Snackbar.make(layout, text, duration);
+        snackbar.setAction(actionText, action);
+        snackbar.setActionTextColor(Color.YELLOW);
+        snackbar.show();
     }
 }

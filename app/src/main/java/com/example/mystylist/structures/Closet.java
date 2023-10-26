@@ -73,6 +73,10 @@ public class Closet implements Serializable {
         return null;
     }
 
+    public void clearItems() {
+        this.items.clear();
+    }
+
     public Item getItemAt(int index) {
         return this.items.get(index);
     }
