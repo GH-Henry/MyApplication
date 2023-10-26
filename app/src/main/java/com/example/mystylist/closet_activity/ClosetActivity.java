@@ -123,11 +123,9 @@ public class ClosetActivity extends AppCompatActivity {
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
                 final int position = viewHolder.getAdapterPosition();
-                final Item item = adapter.getItemAtPosition(position);
+                final Item item = adapter.removeItemAt(position);
                 if (item == null)
                     return;  // Position not a closet item
-
-                adapter.removeItemAt(position);
 
                 Snackbar snackbar = Snackbar.make(layout, "Item was removed from the closet.", Snackbar.LENGTH_LONG);
                 snackbar.setAction("UNDO", new View.OnClickListener() {

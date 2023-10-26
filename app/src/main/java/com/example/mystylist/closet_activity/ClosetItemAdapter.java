@@ -1,14 +1,12 @@
 package com.example.mystylist.closet_activity;
 
-import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -143,7 +141,7 @@ public class ClosetItemAdapter extends RecyclerView.Adapter<ClosetItemAdapter.Vi
         return 1 + closet.getItemCount();
     }
 
-    public Item getItemAtPosition(int position) {
+    public Item getItemAt(int position) {
         int index = positionToIndex(position);
         if (index >= 0 && index < closet.getItemCount())
             return closet.getItemAt(position - 1);
@@ -165,7 +163,6 @@ public class ClosetItemAdapter extends RecyclerView.Adapter<ClosetItemAdapter.Vi
 
         Item removed = closet.removeItemAt(index);
         this.notifyItemRemoved(position);
-
         return removed;
     }
 
@@ -174,3 +171,4 @@ public class ClosetItemAdapter extends RecyclerView.Adapter<ClosetItemAdapter.Vi
     }
 
 }
+
