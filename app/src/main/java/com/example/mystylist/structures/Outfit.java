@@ -23,4 +23,8 @@ public class Outfit {
     public ETag[] getTags() {
         return ETag.flagsToTags(tagFlags);
     }
+
+    public boolean flagsSatisfyFilter(long filterMask) {
+        return (tagFlags & filterMask) == filterMask;
+    }
 }
