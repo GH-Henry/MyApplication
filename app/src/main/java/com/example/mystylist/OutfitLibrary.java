@@ -19,7 +19,7 @@ public class OutfitLibrary {
             // Create outfits
             LinkedList<Outfit> tempOutfits = new LinkedList<>();
 
-            // TODO Fill temp with Outfits 50
+            // TODO Fill temp with 50 Outfits
             // Ex.
             tempOutfits.add(new Outfit(
                     "Simple Casual",
@@ -43,9 +43,12 @@ public class OutfitLibrary {
     }
 
     public static boolean isInit() { return initialized; }
-    public static Outfit[] getOutfits() { return outfits.clone(); }
+    public static Outfit[] getOutfits() {
+        init();
+        return outfits.clone();
+    }
     public static Outfit[] getOutfitsContainingItems(Item[] items) {
-
+        init();
         LinkedList<Outfit> filtered = new LinkedList<>();
 
         for (Outfit outfit : outfits) {

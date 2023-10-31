@@ -5,6 +5,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -39,12 +40,6 @@ public class ClosetItemAdapter extends RecyclerView.Adapter<ClosetItemAdapter.Vi
         public AddViewHolder(View view) {
             super(view, VIEW_TYPE);
             plus_button = view.findViewById(R.id.plus_button);
-            plus_button.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    ((ClosetActivity) v.getContext()).showAddItemPopup();
-                }
-            });
         }
 
         public ImageButton getPlusButton() {
@@ -118,22 +113,43 @@ public class ClosetItemAdapter extends RecyclerView.Adapter<ClosetItemAdapter.Vi
     }
 
     private void bindAddViewHolder(AddViewHolder holder, int position) {
-        // Empty
+        ImageButton plus_button = holder.getPlusButton();
+        plus_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((ClosetActivity) v.getContext()).showAddItemPopup();
+            }
+        });
     }
 
     private void bindItemViewHolder(ItemViewHolder holder, int position) {
-        ImageView type_image = holder.getTypeImage();
-        TextView type_text = holder.getTypeText();
-        TextView color_text = holder.getColorText();
-        CardView color_preview = holder.getColorPreview();
-        CheckBox check_box = holder.getCheckBox();
-
         Item item = closet.getItemAt(positionToIndex(position));
 
+        ImageView type_image = holder.getTypeImage();
         type_image.setImageResource(item.drawable_id);
+
+        TextView type_text = holder.getTypeText();
         type_text.setText(item.type.asStr);
+
+        TextView color_text = holder.getColorText();
         color_text.setText(item.color.asStr);
+
+        CardView color_preview = holder.getColorPreview();
         color_preview.setCardBackgroundColor(item.color.asInt);
+
+        CheckBox check_box = holder.getCheckBox();
+        check_box.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                ClosetActivity context = (ClosetActivity) buttonView.getContext();
+                if (isChecked) {
+                    context.selectedItems.add(item);
+                }
+                else {
+                    context.selectedItems.remove(item);
+                }
+            }
+        });
     }
 
     @Override

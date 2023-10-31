@@ -23,21 +23,28 @@ import android.widget.PopupWindow;
 import android.widget.Spinner;
 
 import com.example.mystylist.AccountActivity;
+import com.example.mystylist.OutfitLibrary;
 import com.example.mystylist.R;
 import com.example.mystylist.enums.EColor;
 import com.example.mystylist.enums.EItemType;
 import com.example.mystylist.structures.Closet;
 import com.example.mystylist.structures.Item;
+import com.example.mystylist.structures.Outfit;
 import com.google.android.material.snackbar.Snackbar;
+
+import java.util.LinkedList;
 
 public class ClosetActivity extends AppCompatActivity {
 
-    ConstraintLayout layout;
-    ImageButton back_button;
-    Button clear_all_button;
-    RecyclerView recyclerView;
-    ClosetItemAdapter adapter;
+    public ConstraintLayout layout;
+    public ImageButton back_button;
+    public Button clear_all_button;
+    public Button search_outfits_button;
+    public RecyclerView recyclerView;
+    public ClosetItemAdapter adapter;
     public static Closet current_closet;
+
+    public LinkedList<Item> selectedItems;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,12 +53,13 @@ public class ClosetActivity extends AppCompatActivity {
         layout = findViewById(R.id.constraintLayout);
         back_button = findViewById(R.id.back_button);
         clear_all_button = findViewById(R.id.clear_all_button);
+        search_outfits_button = findViewById(R.id.search_outfits_button);
         recyclerView = findViewById(R.id.items_list);
 
         back_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Added for presentation
+                // TODO
                 Intent intent = new Intent(ClosetActivity.this, AccountActivity.class);
                 startActivity(intent);
             }
@@ -61,6 +69,21 @@ public class ClosetActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 showClearAllConfirmationPopup();
+            }
+        });
+
+        search_outfits_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Outfit[] outfits;
+                if (selectedItems.size() == 0)
+                    outfits = OutfitLibrary.getOutfits();
+                else
+                    outfits = OutfitLibrary.getOutfitsContainingItems(selectedItems.toArray(new Item[]{}));
+
+                // TODO when outfit activity created
+                //Intent intent =  new Intent(ClosetActivity.this, OutfitActivity.this);
+                //startActivity(intent);
             }
         });
 
@@ -79,6 +102,8 @@ public class ClosetActivity extends AppCompatActivity {
         adapter = new ClosetItemAdapter(current_closet);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        selectedItems = new LinkedList<>();
 
         // Must be done at end
         enableSwipeToDelete();
