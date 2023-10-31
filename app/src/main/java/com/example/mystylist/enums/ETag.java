@@ -51,7 +51,7 @@ public enum ETag {
         return (mask1 & mask2) != 0;
     }
 
-    public static ETag[] flagsToTags(long flags) {
+    public static ETag[] maskToTags(long flags) {
         ArrayList<ETag> tags = new ArrayList<>();
         for (ETag tag : values()) {
             if (hasMatch(tag.mask, flags))
@@ -59,7 +59,7 @@ public enum ETag {
         }
         return tags.toArray(new ETag[] {});
     }
-    public static long tagsToFlags(ETag[] tags) {
+    public static long tagsToMask(ETag[] tags) {
         long flags = 0;
         for (ETag tag : tags)
             flags |= tag.mask;

@@ -14,6 +14,12 @@ public class Outfit {
         this.items = items;
         this.tagFlags = tagFlags;
     }
+    public Outfit(String outfitName, String outfitDesc, Item[] items, ETag[] tags) {
+        this.outfitName = outfitName;
+        this.outfitDesc = outfitDesc;
+        this.items = items;
+        this.tagFlags = ETag.tagsToMask(tags);
+    }
 
     public String getOutfitName() { return outfitName; }
     public String getOutfitDesc() { return outfitDesc; }
@@ -21,7 +27,7 @@ public class Outfit {
     public long getTagFlags() { return tagFlags; }
 
     public ETag[] getTags() {
-        return ETag.flagsToTags(tagFlags);
+        return ETag.maskToTags(tagFlags);
     }
 
     public boolean tagsSatisfyFilter(long filterMask) {
