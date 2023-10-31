@@ -12,7 +12,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -79,7 +78,7 @@ public class ClosetActivity extends AppCompatActivity {
                 if (selectedItems.size() == 0)
                     outfits = OutfitLibrary.getOutfits();
                 else
-                    outfits = OutfitLibrary.getOutfitsContainingItems(selectedItems.toArray(new Item[]{}));
+                    outfits = OutfitLibrary.getOutfitsContainingItem(selectedItems.toArray(new Item[]{}));
 
                 // TODO when outfit activity created
                 //Intent intent =  new Intent(ClosetActivity.this, OutfitActivity.this);

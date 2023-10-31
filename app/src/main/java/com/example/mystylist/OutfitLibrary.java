@@ -6,7 +6,6 @@ import com.example.mystylist.enums.ETag;
 import com.example.mystylist.structures.Item;
 import com.example.mystylist.structures.Outfit;
 
-import java.util.Collections;
 import java.util.LinkedList;
 
 public class OutfitLibrary {
@@ -47,7 +46,18 @@ public class OutfitLibrary {
         init();
         return outfits.clone();
     }
-    public static Outfit[] getOutfitsContainingItems(Item[] items) {
+    public static Outfit[] getOutfitsContainingItem(Item item) {
+        init();
+        LinkedList<Outfit> filtered = new LinkedList<>();
+
+        for (Outfit outfit : outfits) {
+            if (outfit.contains(item))
+                filtered.add(outfit);
+        }
+
+        return filtered.toArray(new Outfit[]{});
+    }
+    public static Outfit[] getOutfitsContainingItem(Item[] items) {
         init();
         LinkedList<Outfit> filtered = new LinkedList<>();
 
