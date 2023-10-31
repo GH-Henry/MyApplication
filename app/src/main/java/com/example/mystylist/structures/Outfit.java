@@ -33,4 +33,12 @@ public class Outfit {
     public boolean tagsSatisfyFilter(long filterMask) {
         return (tagFlags & filterMask) == filterMask;
     }
+
+    public boolean contains(Item item) {
+        for (Item check : items) {
+            if (item == check)
+                return true;
+        }
+        return false;
+    }
 }
