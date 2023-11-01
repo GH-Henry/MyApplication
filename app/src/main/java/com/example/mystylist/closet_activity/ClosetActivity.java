@@ -78,7 +78,7 @@ public class ClosetActivity extends AppCompatActivity {
                 if (selectedItems.size() == 0)
                     outfits = OutfitLibrary.getOutfits();
                 else
-                    outfits = OutfitLibrary.getOutfitsContainingItem(selectedItems.toArray(new Item[]{}));
+                    outfits = OutfitLibrary.getOutfitsContaining(selectedItems.toArray(new Item[]{}));
 
                 // TODO when outfit activity created
                 //Intent intent =  new Intent(ClosetActivity.this, OutfitActivity.this);

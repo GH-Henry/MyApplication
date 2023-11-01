@@ -101,4 +101,30 @@ public class Outfit {
         }
         return false;
     }
+
+    /**
+     * Returns whether this outfit contains all of the given items.
+     * @param items the items to check for.
+     * @return true, if all the items are in the outfit; else false.
+     */
+    public boolean contains(Item[] items) {
+        for (Item item : items) {
+            if (!contains(item))
+                return false;
+        }
+        return true;
+    }
+
+    /**
+     * Returns whether this outfit contains any of the given items.
+     * @param items the items to check for.
+     * @return true, if any of the items are in the outfit; else false.
+     */
+    public boolean containsAny(Item[] items) {
+        for (Item item : items) {
+            if (contains(item))
+                return true;
+        }
+        return false;
+    }
 }

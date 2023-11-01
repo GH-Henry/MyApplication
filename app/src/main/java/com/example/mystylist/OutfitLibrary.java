@@ -9,9 +9,19 @@ import com.example.mystylist.structures.Outfit;
 import java.util.LinkedList;
 
 public class OutfitLibrary {
+    /**
+     * The state of initialization for the outfits array.
+     */
     private static boolean initialized = false;
+    /**
+     * The outfits in the library.
+     */
     private static Outfit[] outfits;
 
+    /**
+     * Initializes the outfits array for the library. Keeps track of initialized state, so should
+     * call first every time the outfits array is used.
+     */
     public static void init() {
         if (!initialized) {
 
@@ -41,12 +51,21 @@ public class OutfitLibrary {
         }
     }
 
-    public static boolean isInit() { return initialized; }
+    /**
+     * Returns all outfits in the library.
+     * @return an array of outfits in the library.
+     */
     public static Outfit[] getOutfits() {
         init();
         return outfits.clone();
     }
-    public static Outfit[] getOutfitsContainingItem(Item item) {
+
+    /**
+     * Returns the outfits in the library that contain the given item.
+     * @param item the item to filter by.
+     * @return an array of outfits that contain the item.
+     */
+    public static Outfit[] getOutfitsContaining(Item item) {
         init();
         LinkedList<Outfit> filtered = new LinkedList<>();
 
@@ -57,18 +76,38 @@ public class OutfitLibrary {
 
         return filtered.toArray(new Outfit[]{});
     }
-    public static Outfit[] getOutfitsContainingItem(Item[] items) {
+
+    /**
+     * Returns the outfits in the library that contain all of the given items.
+     * @param items the items to filter by.
+     * @return an array of outfits that have all of the given items.
+     */
+    public static Outfit[] getOutfitsContaining(Item[] items) {
         init();
         LinkedList<Outfit> filtered = new LinkedList<>();
 
         for (Outfit outfit : outfits) {
-            for (Item item : items) {
-                if (outfit.contains(item)) {
-                    filtered.add(outfit);
-                    break;
-                }
-            }
+            if (outfit.contains(items))
+                filtered.add(outfit);
         }
+
+        return filtered.toArray(new Outfit[] {});
+    }
+
+    /**
+     * Returns the outfits in the library that contain at least one of the items given.
+     * @param items the items to filter by.
+     * @return an array of outfits that have at least one of the given items.
+     */
+    public static Outfit[] getOutfitsContainingAny(Item[] items) {
+        init();
+        LinkedList<Outfit> filtered = new LinkedList<>();
+
+        for (Outfit outfit : outfits) {
+            if (outfit.containsAny(items))
+                filtered.add(outfit);
+        }
+
         return filtered.toArray(new Outfit[] {});
     }
 
