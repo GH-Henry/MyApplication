@@ -2,7 +2,7 @@ package com.example.mystylist.enums;
 
 import androidx.annotation.NonNull;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 
 public enum ETag {
 
@@ -33,37 +33,80 @@ public enum ETag {
     STYLE_SEMI_FORMAL(          "Semi-formal",           0b010000 << 24),
     STYLE_FORMAL(               "Formal",                0b100000 << 24);
 
+    /**
+     * A mask that encompasses all bits.
+     */
     public static final long EVERYTHING_MASK = 0xffffffffffffffffL;
+    /**
+     * A mask that encompasses all masked bits in the Gender category.
+     */
     public static final long GENDER_CATEGORY_MASK = 0b111;
+    /**
+     * A mask that encompasses all masked bits in the Season category.
+     */
     public static final long SEASON_CATEGORY_MASK = 0b1111 << 8;
+    /**
+     * A mask that encompasses all masked bits in the Weather category.
+     */
     public static final long WEATHER_CATEGORY_MASK = 0b1111 << 16;
+    /**
+     * A mask that encompasses all masked bits in the Style category.
+     */
     public static final long STYLE_CATEGORY_MASK = 0b111111 << 24;
 
+    /**
+     * The text representation of the enum.
+     */
     public final String text;
+    /**
+     * The bit mask representation of the enum.
+     */
     public final long mask;
 
+    /**
+     * Constructor.
+     * @param text the text representation of the enum.
+     * @param mask the bit mask representation of the enum.
+     */
     ETag(String text, long mask) {
         this.text = text;
         this.mask = mask;
     }
 
+    /**
+     * Returns whether any of the bits in the given mask are both active and match (the corresponding bits are both 1).
+     * @param mask1 the first mask.
+     * @param mask2 the second mask.
+     * @return true, if the bitwise 'and' results in a non zero number; else false.
+     */
     public static boolean hasMatch(long mask1, long mask2) {
         return (mask1 & mask2) != 0;
     }
 
-    public static ETag[] maskToTags(long flags) {
-        ArrayList<ETag> tags = new ArrayList<>();
+    /**
+     * Converts the given bit mask to an array of ETags.
+     * @param mask the mask to convert to an ETag array.
+     * @return an ETag array representation of the bit mask.
+     */
+    public static ETag[] maskToTags(long mask) {
+        LinkedList<ETag> tags = new LinkedList<>();
         for (ETag tag : values()) {
-            if (hasMatch(tag.mask, flags))
+            if (hasMatch(tag.mask, mask))
                 tags.add(tag);
         }
         return tags.toArray(new ETag[] {});
     }
+
+    /**
+     * Returns the mask representation of the given ETags
+     * @param tags the array of ETags to convert to a mask.
+     * @return a bit mask representation of the tags.
+     */
     public static long tagsToMask(ETag[] tags) {
-        long flags = 0;
+        long mask = 0;
         for (ETag tag : tags)
-            flags |= tag.mask;
-        return flags;
+            mask |= tag.mask;
+        return mask;
     }
 
     @NonNull
