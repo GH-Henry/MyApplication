@@ -2,7 +2,9 @@ package com.example.mystylist.structures;
 
 import com.example.mystylist.enums.ETag;
 
-public class Outfit {
+import java.io.Serializable;
+
+public class Outfit implements Serializable {
     /**
      * The name of the outfit.
      */

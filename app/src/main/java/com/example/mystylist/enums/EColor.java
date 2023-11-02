@@ -2,8 +2,10 @@ package com.example.mystylist.enums;
 
 import androidx.annotation.NonNull;
 
+import java.io.Serializable;
+
 @SuppressWarnings("unused")
-public enum EColor {
+public enum EColor implements Serializable {
     PINK("Pink", 0xfff9e6e6),
     RED("Red", 0xffcf202a),
     ORANGE("Orange", 0xffff9900),

@@ -2,9 +2,10 @@ package com.example.mystylist.enums;
 
 import androidx.annotation.NonNull;
 
+import java.io.Serializable;
 import java.util.LinkedList;
 
-public enum ETag {
+public enum ETag implements Serializable {
 
     // Flag Distribution: 0b 00000000 00000000 00000000 00000000 00444444 00003333 00002222 00000111
     // 1 = Gender
@@ -74,7 +75,7 @@ public enum ETag {
     }
 
     /**
-     * Returns whether any of the bits in the given mask are both active and match (the corresponding bits are both 1).
+     * Returns whether any of the bits in the given masks are both active and match (the corresponding bits are both 1).
      * @param mask1 the first mask.
      * @param mask2 the second mask.
      * @return true, if the bitwise 'and' results in a non zero number; else false.

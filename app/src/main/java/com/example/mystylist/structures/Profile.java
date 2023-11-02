@@ -1,6 +1,8 @@
 package com.example.mystylist.structures;
 
-public class Profile {
+import java.io.Serializable;
+
+public class Profile implements Serializable {
     private final String name;
     public String getName(){
         return this.name;

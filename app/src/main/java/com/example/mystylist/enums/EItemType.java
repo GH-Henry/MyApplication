@@ -2,8 +2,10 @@ package com.example.mystylist.enums;
 
 import androidx.annotation.NonNull;
 
+import java.io.Serializable;
+
 @SuppressWarnings("unused")
-public enum EItemType {
+public enum EItemType implements Serializable {
     T_SHIRT("T-shirt"),
     SLEEVELESS_SHIRT("Sleeveless Shirt"),
     POLO("Polo"),
