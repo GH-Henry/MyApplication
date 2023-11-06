@@ -8,6 +8,7 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -15,9 +16,7 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.mystylist.R;
-
-abstract public class SwipeToDeleteCallback extends ItemTouchHelper.Callback {
+abstract public class ClosetSwipeToDeleteCallback extends ItemTouchHelper.Callback {
     public static final float DEFAULT_SWIPE_THRESHOLD = 0.7f;
 
     public Context context;
@@ -30,10 +29,10 @@ abstract public class SwipeToDeleteCallback extends ItemTouchHelper.Callback {
 
     public float swipeThreshold;
 
-    SwipeToDeleteCallback(Context context) {
+    ClosetSwipeToDeleteCallback(Context context) {
         this(context, DEFAULT_SWIPE_THRESHOLD);
     }
-    SwipeToDeleteCallback(Context context, float swipeThreshold) {
+    ClosetSwipeToDeleteCallback(Context context, float swipeThreshold) {
         this.context = context;
         this.clearPaint = new Paint();
         this.clearPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
@@ -47,7 +46,11 @@ abstract public class SwipeToDeleteCallback extends ItemTouchHelper.Callback {
 
     @Override
     public int getMovementFlags(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder) {
-        return makeMovementFlags(0, ItemTouchHelper.LEFT);
+        ClosetItemAdapter.ViewHolder viewHolder1 = (ClosetItemAdapter.ViewHolder) viewHolder;
+        if (viewHolder1.view_type == ClosetItemAdapter.ItemViewHolder.VIEW_TYPE)
+            return makeMovementFlags(0, ItemTouchHelper.LEFT);
+        else
+            return makeMovementFlags(0, 0);
     }
 
     @Override

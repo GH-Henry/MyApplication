@@ -12,6 +12,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,13 +36,14 @@ import java.util.LinkedList;
 
 public class ClosetActivity extends AppCompatActivity {
 
+    public Closet closet;
+
     public ConstraintLayout layout;
     public ImageButton back_button;
     public Button clear_all_button;
     public Button search_outfits_button;
     public RecyclerView recyclerView;
     public ClosetItemAdapter adapter;
-    public static Closet current_closet;
 
     public LinkedList<Item> selectedItems;
 
@@ -50,6 +52,15 @@ public class ClosetActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_closet);
         layout = findViewById(R.id.constraintLayout);
+
+        // Data
+        Intent intent = getIntent();
+        if (intent == null)
+            showSnackbar("success");
+        else
+            showSnackbar("Fail");
+
+        // Setup layout
         back_button = findViewById(R.id.back_button);
         clear_all_button = findViewById(R.id.clear_all_button);
         search_outfits_button = findViewById(R.id.search_outfits_button);
@@ -81,7 +92,7 @@ public class ClosetActivity extends AppCompatActivity {
                     outfits = OutfitLibrary.getOutfitsContaining(selectedItems.toArray(new Item[]{}));
 
                 // TODO when outfit activity created
-                //Intent intent =  new Intent(ClosetActivity.this, OutfitActivity.this);
+                // Intent intent =  new Intent(ClosetActivity.this, OutfitActivity.this);
                 //startActivity(intent);
             }
         });
@@ -89,16 +100,16 @@ public class ClosetActivity extends AppCompatActivity {
         recyclerView.setHasFixedSize(false);
 
         // TODO: Remove for deployment
-        current_closet = new Closet(null);
-        current_closet.addItem(new Item(EItemType.T_SHIRT, EColor.BLACK));
-        current_closet.addItem(new Item(EItemType.BLOUSE, EColor.WHITE));
-        current_closet.addItem(new Item(EItemType.COAT, EColor.BROWN));
-        current_closet.addItem(new Item(EItemType.DRESS, EColor.BEIGE));
-        current_closet.addItem(new Item(EItemType.HEELS, EColor.GREEN));
-        current_closet.addItem(new Item(EItemType.LONG_SLEEVE_SHIRT, EColor.GREY));
-        current_closet.addItem(new Item(EItemType.LOAFERS, EColor.DARK_BLUE));
+        closet = new Closet(null);
+        closet.addItem(new Item(EItemType.T_SHIRT, EColor.BLACK));
+        closet.addItem(new Item(EItemType.BLOUSE, EColor.WHITE));
+        closet.addItem(new Item(EItemType.COAT, EColor.BROWN));
+        closet.addItem(new Item(EItemType.DRESS, EColor.BEIGE));
+        closet.addItem(new Item(EItemType.HEELS, EColor.GREEN));
+        closet.addItem(new Item(EItemType.LONG_SLEEVE_SHIRT, EColor.GREY));
+        closet.addItem(new Item(EItemType.LOAFERS, EColor.DARK_BLUE));
 
-        adapter = new ClosetItemAdapter(current_closet);
+        adapter = new ClosetItemAdapter(closet);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -161,8 +172,8 @@ public class ClosetActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 // Save items in case undo
-                Item[] items = current_closet.getItems();
-                current_closet.clearItems();
+                Item[] items = closet.getItems();
+                closet.clearItems();
                 adapter.notifyItemRangeRemoved(1, items.length);
 
                 // Undo
@@ -170,7 +181,7 @@ public class ClosetActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         for (Item i : items)
-                            current_closet.addItem(i);
+                            closet.addItem(i);
                         adapter.notifyItemRangeInserted(1, items.length);
                     }
                 });
@@ -183,9 +194,11 @@ public class ClosetActivity extends AppCompatActivity {
     }
 
     private void enableSwipeToDelete() {
-        SwipeToDeleteCallback callback = new SwipeToDeleteCallback(this, 0.7f) {
+        final float swipeThreshold = 0.7f;
+        ClosetSwipeToDeleteCallback callback = new ClosetSwipeToDeleteCallback(this, swipeThreshold) {
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+
                 final int position = viewHolder.getAdapterPosition();
                 final Item item = adapter.removeItemAt(position);
                 if (item == null)
@@ -204,13 +217,19 @@ public class ClosetActivity extends AppCompatActivity {
         itemTouchHelper.attachToRecyclerView(recyclerView);
     }
 
-    private void showSnackbar(String text, String actionText, View.OnClickListener listener) {
-        showSnackbar(text, actionText, listener, Snackbar.LENGTH_LONG);
+    private void showSnackbar(String text, int duration) {
+        Snackbar.make(layout, text, duration).show();
+    }
+    private void showSnackbar(String text) {
+        showSnackbar(text, Snackbar.LENGTH_LONG);
     }
     private void showSnackbar(String text, String actionText, View.OnClickListener action, int duration) {
         Snackbar snackbar = Snackbar.make(layout, text, duration);
         snackbar.setAction(actionText, action);
         snackbar.setActionTextColor(Color.YELLOW);
         snackbar.show();
+    }
+    private void showSnackbar(String text, String actionText, View.OnClickListener listener) {
+        showSnackbar(text, actionText, listener, Snackbar.LENGTH_LONG);
     }
 }
