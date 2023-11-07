@@ -22,6 +22,7 @@ import android.widget.PopupWindow;
 import android.widget.Spinner;
 
 import com.example.mystylist.AccountActivity;
+import com.example.mystylist.OutfitActivity;
 import com.example.mystylist.OutfitLibrary;
 import com.example.mystylist.R;
 import com.example.mystylist.enums.EColor;

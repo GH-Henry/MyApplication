@@ -5,18 +5,22 @@ import com.example.mystylist.enums.ETag;
 import java.io.Serializable;
 
 public class Outfit implements Serializable {
+
     /**
      * The name of the outfit.
      */
     private final String outfitName;
+
     /**
      * The description of the outfit.
      */
     private final String outfitDesc;
+
     /**
      * The items of the outfit.
      */
     private final Item[] items;
+
     /**
      * The tags of the outfit as a bit mask.
      */
@@ -128,5 +132,14 @@ public class Outfit implements Serializable {
                 return true;
         }
         return false;
+    }
+
+    public int numberOfItems () {
+        int i = 0;
+        for (Item item : items) {
+            if (contains(item))
+                i++;
+        }
+        return i;
     }
 }
