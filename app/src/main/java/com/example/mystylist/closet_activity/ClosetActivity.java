@@ -33,6 +33,8 @@ import com.example.mystylist.structures.Item;
 import com.example.mystylist.structures.Outfit;
 import com.google.android.material.snackbar.Snackbar;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
 
 public class ClosetActivity extends AppCompatActivity {
@@ -54,13 +56,6 @@ public class ClosetActivity extends AppCompatActivity {
         setContentView(R.layout.activity_closet);
         layout = findViewById(R.id.constraintLayout);
 
-        // Data
-        Intent intent = getIntent();
-        if (intent == null)
-            showSnackbar("success");
-        else
-            showSnackbar("Fail");
-
         // Setup layout
         back_button = findViewById(R.id.back_button);
         clear_all_button = findViewById(R.id.clear_all_button);
@@ -70,9 +65,7 @@ public class ClosetActivity extends AppCompatActivity {
         back_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO
-                Intent intent = new Intent(ClosetActivity.this, AccountActivity.class);
-                startActivity(intent);
+                finish();
             }
         });
 
@@ -92,9 +85,9 @@ public class ClosetActivity extends AppCompatActivity {
                 else
                     outfits = OutfitLibrary.getOutfitsContaining(selectedItems.toArray(new Item[]{}));
 
-                // TODO when outfit activity created
-                // Intent intent =  new Intent(ClosetActivity.this, OutfitActivity.this);
-                //startActivity(intent);
+                Intent intent =  new Intent(ClosetActivity.this, OutfitActivity.class);
+                OutfitActivity.filteredOutfits = new ArrayList<>(Arrays.asList(outfits));
+                startActivity(intent);
             }
         });
 

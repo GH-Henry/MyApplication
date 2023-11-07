@@ -77,7 +77,7 @@ public class OutfitItemAdapter extends RecyclerView.Adapter<OutfitItemAdapter.Vi
 
         outfitText.setText(outfit.getOutfitName());
 
-        colorText.setText(outfit.numberOfItems());
+        colorText.setText(String.valueOf(outfit.numberOfItems()));
         // Retrieve data to put in item
         //Outfit itemData = filteredOutfits.get(position);
 //        Outfit outfit = filteredOutfits.get(position);

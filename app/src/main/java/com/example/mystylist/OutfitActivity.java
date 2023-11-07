@@ -1,40 +1,22 @@
 package com.example.mystylist;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.view.Gravity;
-import android.view.LayoutInflater;
+import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.PopupWindow;
-import android.widget.Spinner;
 import android.widget.CheckBox;
 
-import com.example.mystylist.AccountActivity;
-import com.example.mystylist.OutfitLibrary;
-import com.example.mystylist.R;
-import com.example.mystylist.enums.EColor;
-import com.example.mystylist.enums.EItemType;
-import com.example.mystylist.enums.ETag;
-import com.example.mystylist.structures.Closet;
 import com.example.mystylist.closet_activity.ClosetActivity;
-import com.example.mystylist.structures.Item;
 import com.example.mystylist.structures.Outfit;
-import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class OutfitActivity extends AppCompatActivity {
 
@@ -43,9 +25,9 @@ public class OutfitActivity extends AppCompatActivity {
 
     Outfit[] outfits = OutfitLibrary.getOutfits();
 
+    ImageButton backButton;
     CheckBox casualCheckbox;
     CheckBox winterCheckbox;
-
     public Button filterButton;
 
 
@@ -62,16 +44,24 @@ public class OutfitActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private OutfitItemAdapter adapter;
 
-    public static ArrayList<Outfit> filteredOutfits; // Populate before creating adapter
+    public static ArrayList<Outfit> filteredOutfits = null; // Populate before creating adapter
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_outfits);
 
+        backButton = findViewById(R.id.back_button);
         casualCheckbox = (CheckBox)findViewById(R.id.casual_filter);
         winterCheckbox = (CheckBox)findViewById(R.id.winter_filter);
         filterButton = findViewById(R.id.filter_button);
+
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
         filterButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,6 +76,8 @@ public class OutfitActivity extends AppCompatActivity {
             }
         });
 
+        if (filteredOutfits == null)
+            filteredOutfits = new ArrayList<>(Arrays.asList(OutfitLibrary.getOutfits()));
 
         recyclerView = findViewById(R.id.list_of_filtered);
         adapter = new OutfitItemAdapter(filteredOutfits);
