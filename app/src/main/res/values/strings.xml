@@ -17,6 +17,23 @@
     <string name="click_to_register">Click to register</string>
     <string name="click_to_login">Click to login</string>
     <string name="logout">Logout</string>
+
+    <string-array name="seasons_array">
+    <item>Spring</item>
+    <item>Summer</item>
+    <item>Fall</item>
+    <item>Winter</item>
+    </string-array>
+
+    <string-array name="occasions_array">
+        <item>Semi-Casual</item>
+        <item>Casual</item>
+        <item>Formal</item>
+        <item>Party</item>
+        <item>Sportswear</item>
+        <!-- Add more occasion types as needed -->
+    </string-array>
+
     <string name="title_activity_scrolling">ScrollingActivity</string>
     <string name="large_text">
         "Material is the metaphor.\n\n"

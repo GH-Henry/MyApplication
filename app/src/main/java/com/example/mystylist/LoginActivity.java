@@ -19,11 +19,14 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 public class LoginActivity extends AppCompatActivity {
+    public static String username;
     TextView forgotPassword;
+
     EditText loginUsername, loginPassword;
     Button loginButton, signupButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         loginUsername = findViewById(R.id.login_username);
@@ -90,6 +93,7 @@ public class LoginActivity extends AppCompatActivity {
                         String nameFromDB = snapshot.child(userUsername).child("name").getValue(String.class);
                         String emailFromDB = snapshot.child(userUsername).child("email").getValue(String.class);
                         String usernameFromDB = snapshot.child(userUsername).child("username").getValue(String.class);
+                        username = userUsername;
                         Intent intent = new Intent(LoginActivity.this, AccountActivity.class);
                         intent.putExtra("name", nameFromDB);
                         intent.putExtra("email", emailFromDB);

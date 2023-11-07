@@ -14,8 +14,6 @@ public class Item implements Serializable {
     public Item(EItemType type, EColor color) {
         this.type = type;
         this.color = color;
-
-        // Search for the image of the item type of the particular color
         this.drawable_id = R.drawable.ic_launcher_background;
     }
 
