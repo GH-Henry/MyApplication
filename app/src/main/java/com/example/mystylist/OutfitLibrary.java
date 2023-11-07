@@ -39,9 +39,24 @@ public class OutfitLibrary {
                     },
                     new ETag[] {
                             ETag.GENDER_NEUTRAL,
-                            ETag.SEASON_SPRING, ETag.SEASON_SUMMER, ETag.SEASON_FALL, ETag.SEASON_WINTER,
+                            ETag.SEASON_SPRING, ETag.SEASON_SUMMER, ETag.SEASON_FALL,
                             ETag.WEATHER_FAIR, ETag.WEATHER_HOT,
                             ETag.STYLE_CASUAL,
+                    }));
+
+            tempOutfits.add(new Outfit(
+                    "Fall or Winter Smart Casual",
+                    "A smart casual outfit to wear to work or out with friends.",
+                    new Item[] {
+                            new Item(EItemType.SWEATER, EColor.BLACK),
+                            new Item(EItemType.JEANS, EColor.DARK_BLUE),
+                            new Item(EItemType.JACKET, EColor.GREY),
+                    },
+                    new ETag[] {
+                            ETag.GENDER_FEMININE,
+                            ETag.SEASON_WINTER, ETag.SEASON_FALL,
+                            ETag.WEATHER_FAIR, ETag.WEATHER_COLD,
+                            ETag.STYLE_SMART_CASUAL,
                     }));
 
 
