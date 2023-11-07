@@ -43,7 +43,7 @@
                 android:layout_height="wrap_content"
                 android:text="Name:"
                 android:textSize="20sp"
-                app:layout_constraintEnd_toEndOf="@+id/color_label"
+                app:layout_constraintStart_toStartOf="@+id/color_label"
                 app:layout_constraintTop_toTopOf="@+id/type_image" />
 
             <TextView
@@ -56,44 +56,28 @@
                 android:textSize="20sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/color_label"
+                app:layout_constraintStart_toEndOf="@+id/outfit_label"
                 app:layout_constraintTop_toTopOf="@+id/outfit_label" />
 
             <TextView
                 android:id="@+id/color_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="40dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginStart="24dp"
                 android:text="# of Items:"
                 android:textSize="20sp"
                 app:layout_constraintStart_toEndOf="@+id/type_image"
-                app:layout_constraintTop_toBottomOf="@+id/outfit_label" />
+                app:layout_constraintTop_toBottomOf="@+id/outfit_text" />
 
             <TextView
                 android:id="@+id/color_text"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="28dp"
-                android:layout_marginEnd="8dp"
                 android:textSize="20sp"
                 android:textStyle="bold"
-                app:layout_constraintEnd_toStartOf="@+id/color_preview"
-                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintEnd_toEndOf="@+id/color_label"
                 app:layout_constraintStart_toStartOf="@+id/color_label"
                 app:layout_constraintTop_toBottomOf="@+id/color_label" />
-
-            <androidx.cardview.widget.CardView
-                android:id="@+id/color_preview"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                app:cardBackgroundColor="#ffffff"
-                app:cardElevation="2dp"
-                app:layout_constraintBottom_toBottomOf="@+id/type_image"
-                app:layout_constraintDimensionRatio='w,1:1'
-                app:layout_constraintHorizontal_bias="0.55"
-                app:layout_constraintStart_toEndOf="@+id/color_label"
-                app:layout_constraintTop_toBottomOf="@+id/outfit_text" />
 
             <androidx.constraintlayout.widget.Barrier
                 android:layout_width="wrap_content"

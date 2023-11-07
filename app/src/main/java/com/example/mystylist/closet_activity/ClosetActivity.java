@@ -39,7 +39,7 @@ import java.util.LinkedList;
 
 public class ClosetActivity extends AppCompatActivity {
 
-    public Closet closet;
+    public static Closet closet = null;
 
     public ConstraintLayout layout;
     public ImageButton back_button;
@@ -85,6 +85,8 @@ public class ClosetActivity extends AppCompatActivity {
                 else
                     outfits = OutfitLibrary.getOutfitsContaining(selectedItems.toArray(new Item[]{}));
 
+                Log.d("test", String.valueOf(outfits.length));
+
                 Intent intent =  new Intent(ClosetActivity.this, OutfitActivity.class);
                 OutfitActivity.filteredOutfits = new ArrayList<>(Arrays.asList(outfits));
                 startActivity(intent);
@@ -93,15 +95,10 @@ public class ClosetActivity extends AppCompatActivity {
 
         recyclerView.setHasFixedSize(false);
 
-        // TODO: Remove for deployment
-        closet = new Closet(null);
-        closet.addItem(new Item(EItemType.T_SHIRT, EColor.BLACK));
-        closet.addItem(new Item(EItemType.BLOUSE, EColor.WHITE));
-        closet.addItem(new Item(EItemType.COAT, EColor.BROWN));
-        closet.addItem(new Item(EItemType.DRESS, EColor.BEIGE));
-        closet.addItem(new Item(EItemType.HEELS, EColor.GREEN));
-        closet.addItem(new Item(EItemType.LONG_SLEEVE_SHIRT, EColor.GREY));
-        closet.addItem(new Item(EItemType.LOAFERS, EColor.DARK_BLUE));
+        // TODO: For demo only. Remove for deployment
+        if (closet == null) {
+            closet = Closet.generateDemoCloset();
+        }
 
         adapter = new ClosetItemAdapter(closet);
         recyclerView.setAdapter(adapter);
@@ -225,5 +222,11 @@ public class ClosetActivity extends AppCompatActivity {
     }
     private void showSnackbar(String text, String actionText, View.OnClickListener listener) {
         showSnackbar(text, actionText, listener, Snackbar.LENGTH_LONG);
+    }
+
+    @Override
+    public void finish() {
+        closet = null;
+        super.finish();
     }
 }

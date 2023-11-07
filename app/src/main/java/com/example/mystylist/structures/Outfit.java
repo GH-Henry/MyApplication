@@ -102,7 +102,7 @@ public class Outfit implements Serializable {
      */
     public boolean contains(Item item) {
         for (Item check : items) {
-            if (item == check)
+            if (item.equals(check))
                 return true;
         }
         return false;
@@ -113,7 +113,7 @@ public class Outfit implements Serializable {
      * @param items the items to check for.
      * @return true, if all the items are in the outfit; else false.
      */
-    public boolean contains(Item[] items) {
+    public boolean containsAll(Item[] items) {
         for (Item item : items) {
             if (!contains(item))
                 return false;
@@ -135,11 +135,6 @@ public class Outfit implements Serializable {
     }
 
     public int numberOfItems () {
-        int i = 0;
-        for (Item item : items) {
-            if (contains(item))
-                i++;
-        }
-        return i;
+        return items.length;
     }
 }

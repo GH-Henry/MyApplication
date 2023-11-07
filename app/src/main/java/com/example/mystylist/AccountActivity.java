@@ -10,6 +10,10 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.mystylist.closet_activity.ClosetActivity;
+import com.example.mystylist.enums.EColor;
+import com.example.mystylist.enums.EItemType;
+import com.example.mystylist.structures.Closet;
+import com.example.mystylist.structures.Item;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -19,6 +23,7 @@ import com.google.firebase.database.ValueEventListener;
 public class AccountActivity extends AppCompatActivity {
     TextView AccountName;
     Button editAccountButton, outfitsButton, closetButton, favoritesButton;
+    Closet closet = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,6 +34,12 @@ public class AccountActivity extends AppCompatActivity {
         closetButton = findViewById(R.id.closetButton);
         favoritesButton = findViewById(R.id.favoritesButton);
         showAllUserData();
+
+        // TODO: Only for presentation. Remove on deployment.
+        if (closet == null) {
+            closet = Closet.generateDemoCloset();
+        }
+
         AccountName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -44,11 +55,18 @@ public class AccountActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        outfitsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(AccountActivity.this, OutfitActivity.class);
+                startActivity(intent);
+            }
+        });
         closetButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Added for presentation
                 Intent intent = new Intent(AccountActivity.this, ClosetActivity.class);
+                ClosetActivity.closet = closet;
                 startActivity(intent);
             }
         });

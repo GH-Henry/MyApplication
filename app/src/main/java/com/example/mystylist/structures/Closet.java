@@ -80,4 +80,17 @@ public class Closet implements Serializable {
     public Item getItemAt(int index) {
         return this.items.get(index);
     }
+
+    public static Closet generateDemoCloset() {
+        Closet closet = new Closet(null);
+        closet = new Closet(null);
+        closet.addItem(new Item(EItemType.T_SHIRT, EColor.BLACK));
+        closet.addItem(new Item(EItemType.BLOUSE, EColor.WHITE));
+        closet.addItem(new Item(EItemType.COAT, EColor.BROWN));
+        closet.addItem(new Item(EItemType.DRESS, EColor.BEIGE));
+        closet.addItem(new Item(EItemType.HEELS, EColor.GREEN));
+        closet.addItem(new Item(EItemType.LONG_SLEEVE_SHIRT, EColor.GREY));
+        closet.addItem(new Item(EItemType.LOAFERS, EColor.DARK_BLUE));
+        return closet;
+    }
 }

@@ -86,7 +86,11 @@ public class OutfitActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
-
+    @Override
+    public void finish() {
+        filteredOutfits = null;
+        super.finish();
+    }
 
 
 }
