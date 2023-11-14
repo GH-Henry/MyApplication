@@ -17,6 +17,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.mystylist.closet_activity.ClosetActivity;
 import com.example.mystylist.structures.ItemInfo;
+import com.example.mystylist.enums.EColor;
+import com.example.mystylist.enums.EItemType;
+import com.example.mystylist.structures.Closet;
+import com.example.mystylist.structures.Item;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -43,7 +47,6 @@ public class AccountActivity extends AppCompatActivity {
         closetButton = findViewById(R.id.closetButton);
         favoritesButton = findViewById(R.id.favoritesButton);
         showAllUserData();
-
         AccountName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

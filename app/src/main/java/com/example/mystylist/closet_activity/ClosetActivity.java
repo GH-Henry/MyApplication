@@ -26,13 +26,15 @@ import android.widget.PopupWindow;
 import android.widget.Spinner;
 
 import com.example.mystylist.AccountActivity;
+import com.example.mystylist.OutfitActivity;
+import com.example.mystylist.OutfitLibrary;
 import com.example.mystylist.LoginActivity;
 import com.example.mystylist.R;
 import com.example.mystylist.enums.EColor;
 import com.example.mystylist.enums.EItemType;
 import com.example.mystylist.structures.Closet;
 import com.example.mystylist.structures.Item;
-import com.example.mystylist.structures.ItemInfo;
+import com.example.mystylist.structures.Outfit;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -40,10 +42,14 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
 
 public class ClosetActivity extends AppCompatActivity {
     public static ArrayList<String> itemList = new ArrayList<>();
+
+    public static Closet closet = null;
 
     public ConstraintLayout layout;
     public ImageButton back_button;
@@ -51,7 +57,7 @@ public class ClosetActivity extends AppCompatActivity {
     public Button search_outfits_button;
     public RecyclerView recyclerView;
     public ClosetItemAdapter adapter;
-    public static Closet current_closet;
+
     public LinkedList<Item> selectedItems;
     public static Map<String, ItemInfo> clothingTypeToSeasonAndOccasion = new HashMap<>();
 
@@ -89,13 +95,14 @@ public class ClosetActivity extends AppCompatActivity {
         return clothingTypeToSeasonAndOccasion;
     }
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         SeasonToItem();
         loadClosetItemsFromFirebase();
         setContentView(R.layout.activity_closet);
         layout = findViewById(R.id.constraintLayout);
+
+        // Setup layout
         back_button = findViewById(R.id.back_button);
         clear_all_button = findViewById(R.id.clear_all_button);
         search_outfits_button = findViewById(R.id.search_outfits_button);
@@ -104,9 +111,7 @@ public class ClosetActivity extends AppCompatActivity {
         back_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO
-                Intent intent = new Intent(ClosetActivity.this, AccountActivity.class);
-                startActivity(intent);
+                finish();
             }
         });
 
@@ -126,10 +131,12 @@ public class ClosetActivity extends AppCompatActivity {
 
         recyclerView.setHasFixedSize(false);
 
-        // TODO: Remove for deployment
-        current_closet = new Closet(null);
+        // TODO: For demo only. Remove for deployment
+        if (closet == null) {
+            closet = Closet.generateDemoCloset();
+        }
 
-        adapter = new ClosetItemAdapter(current_closet);
+        adapter = new ClosetItemAdapter(closet);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -243,7 +250,6 @@ public class ClosetActivity extends AppCompatActivity {
         popupWindow.showAtLocation(recyclerView, Gravity.CENTER, 0, 0);
     }
 
-
     public void showClearAllConfirmationPopup() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setCancelable(true);
@@ -253,9 +259,9 @@ public class ClosetActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 // Save items in case undo
-                Item[] items = current_closet.getItems();
-                current_closet.clearItems();
-                adapter.notifyDataSetChanged(); // Update the adapter
+                Item[] items = closet.getItems();
+                closet.clearItems();
+                adapter.notifyItemRangeRemoved(1, items.length); // Update the adapter
 
                 String usernameFromLoginActivity = LoginActivity.username;
 
@@ -269,8 +275,8 @@ public class ClosetActivity extends AppCompatActivity {
                     public void onClick(View v) {
                         // Add the items back to the local adapter
                         for (Item i : items)
-                            current_closet.addItem(i);
-                        adapter.notifyDataSetChanged(); // Update the adapter
+                            closet.addItem(i);
+                        adapter.notifyItemRangeInserted(1, items.length); // Update the adapter
 
                         // Add the items back to the database
                         DatabaseReference userClosetItemRef = FirebaseDatabase.getInstance().getReference().child("users").child(usernameFromLoginActivity).child("closetItem");
@@ -289,9 +295,11 @@ public class ClosetActivity extends AppCompatActivity {
     }
 
     private void enableSwipeToDelete() {
-        SwipeToDeleteCallback callback = new SwipeToDeleteCallback(this, 0.7f) {
+        final float swipeThreshold = 0.7f;
+        ClosetSwipeToDeleteCallback callback = new ClosetSwipeToDeleteCallback(this, swipeThreshold) {
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+
                 final int position = viewHolder.getAdapterPosition();
                 final Item item = adapter.removeItemAt(position);
                 if (item == null)
@@ -310,13 +318,25 @@ public class ClosetActivity extends AppCompatActivity {
         itemTouchHelper.attachToRecyclerView(recyclerView);
     }
 
-    private void showSnackbar(String text, String actionText, View.OnClickListener listener) {
-        showSnackbar(text, actionText, listener, Snackbar.LENGTH_LONG);
+    private void showSnackbar(String text, int duration) {
+        Snackbar.make(layout, text, duration).show();
+    }
+    private void showSnackbar(String text) {
+        showSnackbar(text, Snackbar.LENGTH_LONG);
     }
     private void showSnackbar(String text, String actionText, View.OnClickListener action, int duration) {
         Snackbar snackbar = Snackbar.make(layout, text, duration);
         snackbar.setAction(actionText, action);
         snackbar.setActionTextColor(Color.YELLOW);
         snackbar.show();
+    }
+    private void showSnackbar(String text, String actionText, View.OnClickListener listener) {
+        showSnackbar(text, actionText, listener, Snackbar.LENGTH_LONG);
+    }
+
+    @Override
+    public void finish() {
+        closet = null;
+        super.finish();
     }
 }

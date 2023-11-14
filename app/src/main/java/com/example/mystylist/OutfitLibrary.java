@@ -31,17 +31,153 @@ public class OutfitLibrary {
             // TODO Fill temp with 50 Outfits
             // Ex.
             tempOutfits.add(new Outfit(
-                    "Simple Casual",
+                    "Average Day",
                     "A simple, casual outfit to wear at home or out with friends.",
                     new Item[] {
                             new Item(EItemType.T_SHIRT, EColor.BLACK),
                             new Item(EItemType.SHORTS, EColor.BEIGE),
+                            new Item(EItemType.SNEAKERS, EColor.BLACK),
                     },
                     new ETag[] {
                             ETag.GENDER_NEUTRAL,
-                            ETag.SEASON_SPRING, ETag.SEASON_SUMMER, ETag.SEASON_FALL, ETag.SEASON_WINTER,
+                            ETag.SEASON_SPRING, ETag.SEASON_SUMMER, ETag.SEASON_FALL,
                             ETag.WEATHER_FAIR, ETag.WEATHER_HOT,
                             ETag.STYLE_CASUAL,
+                    }));
+            tempOutfits.add(new Outfit(
+                    "Something Different",
+                    "WRITE ME", // TODO
+                    new Item[] {
+                            // TODO
+                            new Item(EItemType.T_SHIRT, EColor.BLACK),
+                            new Item(EItemType.SHORTS, EColor.BEIGE),
+                    },
+                    new ETag[] {
+                            // TODO
+                    }));
+            tempOutfits.add(new Outfit(
+                    "Lounging at Home",
+                    "WRITE ME", // TODO
+                    new Item[] {
+                            // TODO
+                            new Item(EItemType.T_SHIRT, EColor.BLACK),
+                            new Item(EItemType.SHORTS, EColor.BEIGE),
+                    },
+                    new ETag[] {
+                            // TODO
+                    }));
+            tempOutfits.add(new Outfit(
+                    "Fancy Dinner",
+                    "WRITE ME", // TODO
+                    new Item[] {
+                            // TODO
+                            new Item(EItemType.BLOUSE, EColor.WHITE),
+                            new Item(EItemType.SHORTS, EColor.BEIGE),
+                            new Item(EItemType.SHORTS, EColor.DARK_BLUE),
+                    },
+                    new ETag[] {
+                            // TODO
+                    }));
+            tempOutfits.add(new Outfit(
+                    "Family Party",
+                    "WRITE ME", // TODO
+                    new Item[] {
+                            // TODO
+                            new Item(EItemType.BLOUSE, EColor.WHITE),
+                            new Item(EItemType.SHORTS, EColor.BEIGE),
+                    },
+                    new ETag[] {
+                            // TODO
+                    }));
+            tempOutfits.add(new Outfit(
+                    "Catch His Eye",
+                    "WRITE ME", // TODO
+                    new Item[] {
+                            // TODO
+                            new Item(EItemType.DRESS, EColor.BEIGE),
+                            new Item(EItemType.SHORTS, EColor.BEIGE),
+                    },
+                    new ETag[] {
+                            // TODO
+                    }));
+            tempOutfits.add(new Outfit(
+                    "Sandy Outing",
+                    "WRITE ME", // TODO
+                    new Item[] {
+                            // TODO
+                            new Item(EItemType.DRESS, EColor.BEIGE),
+                            new Item(EItemType.SHORTS, EColor.BEIGE),
+                            new Item(EItemType.SHORTS, EColor.BEIGE),
+                    },
+                    new ETag[] {
+                            // TODO
+                    }));
+            tempOutfits.add(new Outfit(
+                    "Irish Fem Fatale",
+                    "WRITE ME", // TODO
+                    new Item[] {
+                            // TODO
+                            new Item(EItemType.HEELS, EColor.GREEN),
+                            new Item(EItemType.SHORTS, EColor.BEIGE),
+                            new Item(EItemType.SHORTS, EColor.BEIGE),
+                            new Item(EItemType.SHORTS, EColor.BEIGE),
+                    },
+                    new ETag[] {
+                            // TODO
+                    }));
+            tempOutfits.add(new Outfit(
+                    "Business Day",
+                    "WRITE ME", // TODO
+                    new Item[] {
+                            // TODO
+                            new Item(EItemType.LONG_SLEEVE_SHIRT, EColor.GREY),
+                            new Item(EItemType.SHORTS, EColor.BEIGE),
+                            new Item(EItemType.LOAFERS, EColor.DARK_BLUE),
+                    },
+                    new ETag[] {
+                            // TODO
+                    }));
+            tempOutfits.add(new Outfit(
+                    "Flowery Day",
+                    "WRITE ME", // TODO
+                    new Item[] {
+                            // TODO
+                            new Item(EItemType.T_SHIRT, EColor.PINK),
+                            new Item(EItemType.JEANS, EColor.DARK_BLUE),
+                            new Item(EItemType.SNEAKERS, EColor.GREY),
+                    },
+                    new ETag[] {
+                            // TODO
+                    }));
+
+            tempOutfits.add(new Outfit(
+                    "Cold Day Outside",
+                    "WRITE ME", // TODO
+                    new Item[] {
+                            new Item(EItemType.SWEATER, EColor.BLACK),
+                            new Item(EItemType.JEANS, EColor.DARK_BLUE),
+                            new Item(EItemType.JACKET, EColor.GREY),
+                            new Item(EItemType.COAT, EColor.BROWN),
+                    },
+                    new ETag[] {
+                            ETag.GENDER_FEMININE,
+                            ETag.SEASON_WINTER, ETag.SEASON_FALL,
+                            ETag.WEATHER_FAIR, ETag.WEATHER_COLD,
+                            ETag.STYLE_SMART_CASUAL,
+                    }));
+            tempOutfits.add(new Outfit(
+                    "Cold Day in the Forrest",
+                    "WRITE ME", // TODO
+                    new Item[] {
+                            new Item(EItemType.SWEATER, EColor.BLACK),
+                            new Item(EItemType.JEANS, EColor.DARK_BLUE),
+                            new Item(EItemType.COAT, EColor.BROWN),
+                    },
+                    new ETag[] {
+                            ETag.GENDER_FEMININE,
+                            ETag.SEASON_WINTER, ETag.SEASON_FALL,
+                            ETag.WEATHER_FAIR, ETag.WEATHER_COLD,
+                            ETag.STYLE_SMART_CASUAL,
                     }));
 
 
@@ -87,7 +223,7 @@ public class OutfitLibrary {
         LinkedList<Outfit> filtered = new LinkedList<>();
 
         for (Outfit outfit : outfits) {
-            if (outfit.contains(items))
+            if (outfit.containsAll(items))
                 filtered.add(outfit);
         }
 
