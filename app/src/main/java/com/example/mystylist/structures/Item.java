@@ -10,13 +10,50 @@ public class Item implements Serializable {
     public int drawable_id;
     public EItemType type;
     public EColor color;
+    private int quantity;
 
-    public Item(EItemType type, EColor color) {
+    public Item(EItemType type, EColor color, int quantity) {
         this.type = type;
         this.color = color;
+        this.quantity = quantity;
 
         // Search for the image of the item type of the particular color
         this.drawable_id = R.drawable.ic_launcher_background;
+    }
+    public Item(EItemType type, EColor color) {
+        this(type, color, 1);
+    }
+
+    public int getDrawableId() {
+        return drawable_id;
+    }
+    public Item setDrawableId(int drawableId) {
+        this.drawable_id = drawableId;
+        return this;
+    }
+
+    public EItemType getType() {
+        return type;
+    }
+    public Item setType(EItemType type) {
+        this.type = type;
+        return this;
+    }
+
+    public EColor getColor() {
+        return color;
+    }
+    public Item setColor(EColor color) {
+        this.color = color;
+        return this;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+    public Item setQuantity(int quantity) {
+        this.quantity = quantity;
+        return this;
     }
 
     @Override
