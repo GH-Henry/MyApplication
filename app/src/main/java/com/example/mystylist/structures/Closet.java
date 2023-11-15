@@ -59,24 +59,13 @@ public class Closet implements Serializable {
     }
 
     public Item removeItem(Item item) {
-        // TODO
-        // Check if equivalent item is in teh closet
-        // If so, remove it from items and return the item
-        // else, return null
-        Log.d("UNFINISHED_FUNCTION", "Use of unfinished function removeItem(Item) in Closet class");
-        return null;
+        if (items.remove(item))
+            return item;
+        else
+            return null;
     }
     public Item removeItemAt(int index) {
         return items.remove(index);
-    }
-
-    public Item removeItem(EItemType type, EColor color) {
-        // TODO
-        // Check if there is a matching item in the closet
-        // if so, remove and return it
-        // else, return null
-        Log.d("UNFINISHED_FUNCTION", "Use of unfinished function removeItem(EItemType, EColor) in Closet class");
-        return null;
     }
 
     public void clearItems() {
