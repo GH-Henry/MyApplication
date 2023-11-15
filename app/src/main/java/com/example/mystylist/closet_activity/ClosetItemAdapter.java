@@ -129,13 +129,13 @@ public class ClosetItemAdapter extends RecyclerView.Adapter<ClosetItemAdapter.Vi
         type_image.setImageResource(item.drawable_id);
 
         TextView type_text = holder.getTypeText();
-        type_text.setText(item.type.asStr);
+        type_text.setText(item.type.toString());
 
         TextView color_text = holder.getColorText();
-        color_text.setText(item.color.asStr);
+        color_text.setText(item.color.toString());
 
         CardView color_preview = holder.getColorPreview();
-        color_preview.setCardBackgroundColor(item.color.asInt);
+        color_preview.setCardBackgroundColor(item.color.toInt());
 
         CheckBox check_box = holder.getCheckBox();
         check_box.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {

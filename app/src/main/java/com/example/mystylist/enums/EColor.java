@@ -22,15 +22,20 @@ public enum EColor implements Serializable {
     GREY("Grey", 0xff787470),
     BLACK("Black", 0xff333333);
 
-    private static Map<String, EColor> fromStr;
-    private static boolean fromStrInitialized = false;
+    private static Map<Integer, EColor> intMap;
+    private static Map<String, EColor> strMap;
+    private static boolean mapsInitialized = false;
 
-    public final String asStr;
-    public final int asInt;
+    private final String asStr;
+    private final int asInt;
 
     private EColor(String asText, int asInt) {
         this.asStr = asText;
         this.asInt = asInt;
+    }
+
+    public int toInt() {
+        return asInt;
     }
 
     @NonNull
@@ -39,17 +44,23 @@ public enum EColor implements Serializable {
         return asStr;
     }
 
-    public static EColor fromString(String str) {
-        if (!fromStrInitialized)
-            initFromStr();
-        return fromStr.get(str);
+    public static EColor fromInt(int i) {
+        if (!mapsInitialized)
+            initMaps();
+        return intMap.get(i);
     }
-
-    private static void initFromStr() {
-        fromStr = new HashMap<>();
+    public static EColor fromString(String str) {
+        if (!mapsInitialized)
+            initMaps();
+        return strMap.get(str);
+    }
+    private static void initMaps() {
+        intMap = new HashMap<>();
+        strMap = new HashMap<>();
         for (EColor color : EColor.values()) {
-            fromStr.put(color.toString(), color);
+            intMap.put(color.toInt(), color);
+            strMap.put(color.toString(), color);
         }
-        fromStrInitialized = true;
+        mapsInitialized = true;
     }
 }

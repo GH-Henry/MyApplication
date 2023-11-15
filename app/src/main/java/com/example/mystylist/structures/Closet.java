@@ -7,6 +7,7 @@ import com.example.mystylist.enums.EItemType;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 @SuppressWarnings("unused")
 public class Closet implements Serializable {
@@ -22,8 +23,13 @@ public class Closet implements Serializable {
         return this.parent;
     }
 
-    public Item[] getItems() {
-        return this.items.toArray(new Item[] {});
+    public List<Item> getItems() {
+        return this.items;
+    }
+
+    public Closet setItems(ArrayList<Item> items) {
+        this.items = items;
+        return this;
     }
 
     public int getItemCount() {

@@ -5,23 +5,20 @@ import com.example.mystylist.enums.EColor;
 import com.example.mystylist.enums.EItemType;
 
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Item implements Serializable {
     public int drawable_id;
     public EItemType type;
     public EColor color;
-    private int quantity;
 
-    public Item(EItemType type, EColor color, int quantity) {
+    public Item(EItemType type, EColor color) {
         this.type = type;
         this.color = color;
-        this.quantity = quantity;
 
         // Search for the image of the item type of the particular color
         this.drawable_id = R.drawable.ic_launcher_background;
-    }
-    public Item(EItemType type, EColor color) {
-        this(type, color, 1);
     }
 
     public int getDrawableId() {
@@ -48,12 +45,18 @@ public class Item implements Serializable {
         return this;
     }
 
-    public int getQuantity() {
-        return quantity;
+    public Map<String, Object> getAttributeMap() {
+        Map<String, Object> map = new HashMap<>();
+
+        map.put("type", type.toId());
+        map.put("color", color.toInt());
+
+        return map;
     }
-    public Item setQuantity(int quantity) {
-        this.quantity = quantity;
-        return this;
+
+    @Override
+    public String toString() {
+        return "{" + type.toString() + "," + color.toString() + "}";
     }
 
     @Override

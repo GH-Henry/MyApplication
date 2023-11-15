@@ -8,11 +8,7 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -25,32 +21,24 @@ import android.widget.ImageButton;
 import android.widget.PopupWindow;
 import android.widget.Spinner;
 
-import com.example.mystylist.AccountActivity;
-import com.example.mystylist.OutfitActivity;
-import com.example.mystylist.OutfitLibrary;
+import com.example.mystylist.Database;
 import com.example.mystylist.LoginActivity;
 import com.example.mystylist.R;
 import com.example.mystylist.enums.EColor;
 import com.example.mystylist.enums.EItemType;
 import com.example.mystylist.structures.Closet;
 import com.example.mystylist.structures.Item;
-import com.example.mystylist.structures.ItemInfo;
-import com.example.mystylist.structures.Outfit;
 import com.google.android.material.snackbar.Snackbar;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.LinkedList;
+import java.util.List;
+import java.util.function.Function;
 
 public class ClosetActivity extends AppCompatActivity {
-    public static ArrayList<String> itemList = new ArrayList<>();
-
-    public static Closet closet = null;
+    public Closet closet = null;
 
     public ConstraintLayout layout;
     public ImageButton back_button;
@@ -60,48 +48,15 @@ public class ClosetActivity extends AppCompatActivity {
     public ClosetItemAdapter adapter;
 
     public LinkedList<Item> selectedItems;
-    public static Map<String, ItemInfo> clothingTypeToSeasonAndOccasion = new HashMap<>();
 
-    public void SeasonToItem() {
-
-        clothingTypeToSeasonAndOccasion.put(EItemType.T_SHIRT.toString(), new ItemInfo("Spring , Summer", "Casual", "Unisex", "Top"));
-        clothingTypeToSeasonAndOccasion.put(EItemType.SHORTS.toString(), new ItemInfo("Spring , Summer", "Casual", "Unisex", "Bottom"));
-        clothingTypeToSeasonAndOccasion.put(EItemType.SLEEVELESS_SHIRT.toString(), new ItemInfo("Spring , Summer", "Casual", "Unisex", "Top"));
-        clothingTypeToSeasonAndOccasion.put(EItemType.POLO.toString(), new ItemInfo("Spring , Summer", "Semi-Casual", "Unisex", "Top"));
-        clothingTypeToSeasonAndOccasion.put(EItemType.LONG_SKIRT.toString(), new ItemInfo("Spring", "Casual", "Female", "Bottom"));
-        clothingTypeToSeasonAndOccasion.put(EItemType.SHORT_SKIRT.toString(), new ItemInfo("Spring , Summer", "Casual", "Female", "Bottom"));
-        clothingTypeToSeasonAndOccasion.put(EItemType.SHORT_SOCKS.toString(), new ItemInfo("Spring , Summer", "Casual", "Unisex", "Socks"));
-        clothingTypeToSeasonAndOccasion.put(EItemType.LONG_SOCKS.toString(), new ItemInfo("Spring , Summer", "Casual", "Unisex", "Socks"));
-        clothingTypeToSeasonAndOccasion.put(EItemType.LEGGINGS.toString(), new ItemInfo("Spring", "Casual", "Female", "Bottom"));
-        clothingTypeToSeasonAndOccasion.put(EItemType.LOAFERS.toString(), new ItemInfo("Spring , Summer", "Casual", "Unisex", "Shoes"));
-        clothingTypeToSeasonAndOccasion.put(EItemType.DRESS.toString(), new ItemInfo("Spring , Summer", "Casual", "Female", "Top"));
-        clothingTypeToSeasonAndOccasion.put(EItemType.SANDALS.toString(), new ItemInfo("Spring , Summer", "Casual", "Unisex", "Shoes"));
-
-        clothingTypeToSeasonAndOccasion.put(EItemType.SPORTS_BRA.toString(), new ItemInfo("Summer", "Sports", "Female", "Top"));
-        clothingTypeToSeasonAndOccasion.put(EItemType.SNEAKERS.toString(), new ItemInfo("Spring , Summer", "Casual", "Unisex", "Shoes"));
-
-// Fall Clothing Types
-        clothingTypeToSeasonAndOccasion.put(EItemType.PANTS.toString(), new ItemInfo("Fall", "Casual", "Unisex", "Bottom"));
-        clothingTypeToSeasonAndOccasion.put(EItemType.SWEATER.toString(), new ItemInfo("Fall , Winter", "Casual", "Unisex", "Top"));
-        clothingTypeToSeasonAndOccasion.put(EItemType.HOODIE.toString(), new ItemInfo("Fall , Winter", "Casual", "Unisex", "Top"));
-        clothingTypeToSeasonAndOccasion.put(EItemType.JEANS.toString(), new ItemInfo("Fall , Winter", "Casual", "Unisex", "Bottom"));
-        clothingTypeToSeasonAndOccasion.put(EItemType.JACKET.toString(), new ItemInfo("Fall , Winter", "Casual", "Unisex", "Outerwear"));
-        clothingTypeToSeasonAndOccasion.put(EItemType.WINDBREAKER.toString(), new ItemInfo("Fall , Winter", "Casual", "Unisex", "Outerwear"));
-        clothingTypeToSeasonAndOccasion.put(EItemType.COAT.toString(), new ItemInfo("Fall , Winter", "Casual", "Unisex", "Outerwear"));
-        clothingTypeToSeasonAndOccasion.put(EItemType.LONG_SLEEVE_SHIRT.toString(), new ItemInfo("Fall , Winter", "Casual", "Unisex", "Top"));
-        clothingTypeToSeasonAndOccasion.put(EItemType.LONG_SOCKS.toString(), new ItemInfo("Fall , Winter", "Casual", "Unisex", "Socks"));
-
-    }
-    public Map<String, ItemInfo> getClothingTypeToSeasonAndOccasion() {
-        return clothingTypeToSeasonAndOccasion;
-    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        SeasonToItem();
-        loadClosetItemsFromFirebase();
         setContentView(R.layout.activity_closet);
         layout = findViewById(R.id.constraintLayout);
+
+        closet = new Closet(null);
+        Database.receiveItemsFromCloset(LoginActivity.username, new receiveItemCallback());
 
         // Setup layout
         back_button = findViewById(R.id.back_button);
@@ -130,16 +85,10 @@ public class ClosetActivity extends AppCompatActivity {
             }
         });
 
-        recyclerView.setHasFixedSize(false);
-
-        // TODO: For demo only. Remove for deployment
-        if (closet == null) {
-            closet = Closet.generateDemoCloset();
-        }
-
         adapter = new ClosetItemAdapter(closet);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setHasFixedSize(false);
 
         selectedItems = new LinkedList<>();
 
@@ -147,44 +96,23 @@ public class ClosetActivity extends AppCompatActivity {
         enableSwipeToDelete();
     }
 
-    private void loadClosetItemsFromFirebase() {
+    private class receiveItemCallback implements Function<Item, Void> {
+        @Override
+        public Void apply(Item item) {
+            ClosetActivity activity = ClosetActivity.this;
 
-            String usernameFromLoginActivity = LoginActivity.username; // Assuming you have a valid username
-            DatabaseReference closetItemsRef = FirebaseDatabase.getInstance().getReference()
-                    .child("users").child(usernameFromLoginActivity).child("closetItem");
+            // Try to add to closet
+            if (activity.closet.addItem(item) != null) {
+                activity.adapter.notifyItemInserted(activity.closet.getItemCount());
+                Log.d("ClosetActivity", "Added item to closet: " + item.toString());
+            }
+            else {
+                Log.d("ClosetActivity", "Failed to add item to closet: " + item.toString() + ". Might be duplicate item");
+            }
 
-            closetItemsRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    if (snapshot.exists()) {
-                        closet = new Closet(null);
-                        itemList.clear(); // Clear the existing items
-
-                        for (DataSnapshot itemSnapshot : snapshot.getChildren()) {
-                            String itemType = itemSnapshot.child("itemType").getValue(String.class);
-                            if (itemType != null) {
-                                itemList.add(itemType);
-                            }
-                        }
-
-                        // Now, your itemList is populated with data from Firebase.
-                        // You can use it as needed.
-                    } else {
-                        // Handle the case when there is no data (snapshot doesn't exist)
-                        // For example, you can display a message to the user.
-                        Log.d("MyTag", "No data found in Firebase");
-                    }
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-                    // Handle any errors if necessary
-                    Log.e("MyTag", "Firebase data loading error: " + error.getMessage());
-                }
-            });
+            return null;
         }
-
-
+    }
 
     public void showAddItemPopup() {
         LayoutInflater inflater = LayoutInflater.from(this);
@@ -213,39 +141,27 @@ public class ClosetActivity extends AppCompatActivity {
         button_accept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // Get values from spinners
                 EItemType item_type = EItemType.values()[type_spinner.getSelectedItemPosition()];
                 EColor color = EColor.values()[color_spinner.getSelectedItemPosition()];
-                ItemInfo itemInfo = clothingTypeToSeasonAndOccasion.get(item_type.toString());
-                String season = itemInfo.getSeason();
-                String occasion = itemInfo.getOccasion();
-                String gender = itemInfo.getGender();
-                String style = itemInfo.getClothingType();
-                Log.d("MyTag", "item_type: " + item_type.toString());
-                Log.d("MyTag", "color: " + color.toString());
-                Log.d("MyTag", "itemInfo: " + itemInfo.toString());
-                Log.d("MyTag", "season: " + season);
-                Log.d("MyTag", "occasion: " + occasion);
-                Log.d("MyTag", "gender: " + gender);
-                itemList.add(item_type.toString());
-                String usernameFromLoginActivity = LoginActivity.username;
-                DatabaseReference closetItemsRef = FirebaseDatabase.getInstance().getReference().child("users").child(usernameFromLoginActivity).child("closetItem");
-                String itemId = closetItemsRef.push().getKey(); // Generate a unique key
 
-                // Create a map to store item attributes
-                Map<String, Object> itemAttributes = new HashMap<>();
-                itemAttributes.put("season", season);
-                itemAttributes.put("occasion", occasion);
-                itemAttributes.put("gender", gender);
-                itemAttributes.put("itemType", item_type.toString());
-                itemAttributes.put("color", color.toString());
-                itemAttributes.put("style", style);
-
-                // Set the item attributes in the database
-                closetItemsRef.child(itemId).updateChildren(itemAttributes);
+                // Create item from values
                 Item item = new Item(item_type, color);
-                // Add the item to your local adapter
-                adapter.addItemAt(1, item);
-                popupWindow.dismiss();
+
+                // Try to add item to closet
+                if (closet.addItem(item) != null) {
+                    // Notify adapter of added item
+                    adapter.notifyItemInserted(closet.getItemCount());
+                    // Add item to database
+                    Database.addItemToCloset(LoginActivity.username, item);
+                    // Close popup
+                    popupWindow.dismiss();
+                }
+                else {
+                    // Inform user addition failed
+                    Snackbar snackbar = Snackbar.make(v, "Item already in closet.", Snackbar.LENGTH_SHORT);
+                    snackbar.show();
+                }
             }
         });
 
@@ -261,15 +177,10 @@ public class ClosetActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 // Save items in case undo
-                Item[] items = closet.getItems();
+                List<Item> items = new ArrayList<>(closet.getItems());
                 closet.clearItems();
-                adapter.notifyItemRangeRemoved(1, items.length); // Update the adapter
-
-                String usernameFromLoginActivity = LoginActivity.username;
-
-                // Remove all closet items for the user from the database
-                DatabaseReference closetItemsRef = FirebaseDatabase.getInstance().getReference().child("users").child(usernameFromLoginActivity).child("closetItem");
-                closetItemsRef.removeValue();
+                adapter.notifyItemRangeRemoved(1, items.size()); // Update the adapter
+                Database.removeAllItemsFromCloset(LoginActivity.username);
 
                 // Undo
                 showSnackbar("Closet has been cleared.", "UNDO", new View.OnClickListener() {
@@ -278,14 +189,10 @@ public class ClosetActivity extends AppCompatActivity {
                         // Add the items back to the local adapter
                         for (Item i : items)
                             closet.addItem(i);
-                        adapter.notifyItemRangeInserted(1, items.length); // Update the adapter
-
-                        // Add the items back to the database
-                        DatabaseReference userClosetItemRef = FirebaseDatabase.getInstance().getReference().child("users").child(usernameFromLoginActivity).child("closetItem");
-                        for (Item item : items) {
-                            String itemId = userClosetItemRef.push().getKey();
-                            userClosetItemRef.child(itemId).setValue(item);
-                        }
+                        // Update the adapter
+                        adapter.notifyItemRangeInserted(1, items.size());
+                        // Add items back to database
+                        Database.addItemsToCloset(LoginActivity.username, closet.getItems());
                     }
                 });
             }
@@ -303,14 +210,17 @@ public class ClosetActivity extends AppCompatActivity {
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
 
                 final int position = viewHolder.getAdapterPosition();
-                final Item item = adapter.removeItemAt(position);
+                final Item item = adapter.removeItemAt(position);  // Also removes item from closet
                 if (item == null)
                     return;  // Position not a closet item
+                Database.removeItemFromCloset(LoginActivity.username, item);
 
                 showSnackbar("Item was removed from the closet.", "UNDO", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        Log.d("onClickTest", "What is happening?");
                         adapter.addItemAt(position, item);
+                        Database.addItemToCloset(LoginActivity.username, item);
                     }
                 });
             }
@@ -320,25 +230,19 @@ public class ClosetActivity extends AppCompatActivity {
         itemTouchHelper.attachToRecyclerView(recyclerView);
     }
 
+    private void showSnackbar(String text) {
+        showSnackbar(text, Snackbar.LENGTH_LONG);
+    }
     private void showSnackbar(String text, int duration) {
         Snackbar.make(layout, text, duration).show();
     }
-    private void showSnackbar(String text) {
-        showSnackbar(text, Snackbar.LENGTH_LONG);
+    private void showSnackbar(String text, String actionText, View.OnClickListener listener) {
+        showSnackbar(text, actionText, listener, Snackbar.LENGTH_LONG);
     }
     private void showSnackbar(String text, String actionText, View.OnClickListener action, int duration) {
         Snackbar snackbar = Snackbar.make(layout, text, duration);
         snackbar.setAction(actionText, action);
         snackbar.setActionTextColor(Color.YELLOW);
         snackbar.show();
-    }
-    private void showSnackbar(String text, String actionText, View.OnClickListener listener) {
-        showSnackbar(text, actionText, listener, Snackbar.LENGTH_LONG);
-    }
-
-    @Override
-    public void finish() {
-        closet = null;
-        super.finish();
     }
 }

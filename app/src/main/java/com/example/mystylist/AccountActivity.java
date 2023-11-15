@@ -100,29 +100,7 @@ public class AccountActivity extends AppCompatActivity {
 
                         Set<String> uniqueOutfitArr = new HashSet<>(); // Use a Set to store unique items
 
-                        for (String s : ClosetActivity.itemList) {
-                            ItemInfo itemInfo = ClosetActivity.clothingTypeToSeasonAndOccasion.get(s);
-                            String season = itemInfo.getSeason();
-                            String occasion = itemInfo.getOccasion();
-                            String gender = itemInfo.getGender();
-                            String clothingtype = itemInfo.getClothingType();
-
-                            String[] seasons = season.split(",\\s*");
-                            boolean seasonMatch = false;
-
-                            for (String singleSeason : seasons) {
-                                Log.d(selectedSeason, "Season from options");
-                                if (singleSeason.trim().equalsIgnoreCase(selectedSeason)) {
-                                    seasonMatch = true;
-                                    break;
-                                }
-                            }
-
-                            // Check if the item matches the selected season, occasion, and gender
-                            if (seasonMatch && occasion.equalsIgnoreCase(selectedOccasion) && (gender.equalsIgnoreCase("Unisex") || gender.equalsIgnoreCase(selectedGender))) {
-                                uniqueOutfitArr.add(s);
-                            }
-                        }
+                        // TODO:
 
                         // Convert the Set to a List to maintain order
                         OutfitArr = new ArrayList<>(uniqueOutfitArr);
