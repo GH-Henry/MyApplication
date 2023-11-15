@@ -3,6 +3,8 @@ package com.example.mystylist.enums;
 import androidx.annotation.NonNull;
 
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 
 @SuppressWarnings("unused")
 public enum EColor implements Serializable {
@@ -20,6 +22,9 @@ public enum EColor implements Serializable {
     GREY("Grey", 0xff787470),
     BLACK("Black", 0xff333333);
 
+    private static Map<String, EColor> fromStr;
+    private static boolean fromStrInitialized = false;
+
     public final String asStr;
     public final int asInt;
 
@@ -32,5 +37,19 @@ public enum EColor implements Serializable {
     @Override
     public String toString() {
         return asStr;
+    }
+
+    public static EColor fromString(String str) {
+        if (!fromStrInitialized)
+            initFromStr();
+        return fromStr.get(str);
+    }
+
+    private static void initFromStr() {
+        fromStr = new HashMap<>();
+        for (EColor color : EColor.values()) {
+            fromStr.put(color.toString(), color);
+        }
+        fromStrInitialized = true;
     }
 }
