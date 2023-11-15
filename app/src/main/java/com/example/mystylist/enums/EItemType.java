@@ -12,30 +12,30 @@ public enum EItemType implements Serializable {
     SLEEVELESS_SHIRT(2, "Spring , Summer", "Casual", "Unisex", "Top", "Sleeveless Shirt"),
     POLO(3, "Spring , Summer", "Semi-Casual", "Unisex", "Top", "Polo"),
     LONG_SLEEVE_SHIRT(4, "Fall , Winter", "Casual", "Unisex", "Top", "Long Sleeve Shirt"),
-    BUTTON_DOWN_SHIRT(5, "TODO", "TODO", "TODO", "TODO", "Button Down Shirt"),  // TODO
-    BLOUSE(6, "TODO", "TODO", "TODO", "TODO", "Blouse"),  // TODO
+    BUTTON_DOWN_SHIRT(5, "MISSING", "MISSING", "MISSING", "MISSING", "Button Down Shirt"),  // TODO
+    BLOUSE(6, "MISSING", "MISSING", "MISSING", "MISSING", "Blouse"),  // TODO
     PANTS(7, "Fall", "Casual", "Unisex", "Bottom", "Pants"),
     SHORTS(8, "Spring , Summer", "Casual", "Unisex", "Bottom", "Shorts"),
     JEANS(9, "Fall , Winter", "Casual", "Unisex", "Bottom", "Jeans"),
     LONG_SKIRT(10, "Spring", "Casual", "Female", "Bottom", "Long Skirt"),
     SHORT_SKIRT(11, "Spring , Summer", "Casual", "Female", "Bottom", "Short Skirt"),
-    SUIT_JACKET(12, "TODO", "TODO", "TODO", "TODO", "Suit Jacket"),  // TODO
+    SUIT_JACKET(12, "MISSING", "MISSING", "MISSING", "MISSING", "Suit Jacket"),  // TODO
     JACKET(13, "Fall , Winter", "Casual", "Unisex", "Outerwear", "Jacket"),
     COAT(14, "Fall , Winter", "Casual", "Unisex", "Outerwear", "Coat"),
     WINDBREAKER(15, "Fall , Winter", "Casual", "Unisex", "Outerwear", "Windbreaker"),
     SWEATER(16, "Fall , Winter", "Casual", "Unisex", "Top", "Sweater"),
     HOODIE(17, "Fall , Winter", "Casual", "Unisex", "Top", "Hoodie"),
     DRESS(18, "Spring , Summer", "Casual", "Female", "Top", "Dress"),
-    SUNDRESS(19, "TODO", "TODO", "TODO", "TODO", "Sundress"),  // TODO
+    SUNDRESS(19, "MISSING", "MISSING", "MISSING", "MISSING", "Sundress"),  // TODO
     SPORTS_BRA(20, "Summer", "Sports", "Female", "Top", "Sports Bra"),
     SHORT_SOCKS(21, "Spring , Summer", "Casual", "Unisex", "Socks", "Short Socks"),
     LONG_SOCKS(22, "Spring , Summer", "Casual", "Unisex", "Socks", "Long Socks"),
     LEGGINGS(23, "Spring", "Casual", "Female", "Bottom", "Leggings"),
     SNEAKERS(24, "Spring , Summer", "Casual", "Unisex", "Shoes", "Sneakers"),
     LOAFERS(25, "Spring , Summer", "Casual", "Unisex", "Shoes", "Loafers"),
-    DRESS_SHOES(26, "TODO", "TODO", "TODO", "TODO", "Dress Shoes"),  // TODO
-    HEELS(27, "TODO", "TODO", "TODO", "TODO", "Heels"),  // TODO
-    HIGH_HEELS(28, "TODO", "TODO", "TODO", "TODO", "High Heels"),  // TODO
+    DRESS_SHOES(26, "MISSING", "MISSING", "MISSING", "MISSING", "Dress Shoes"),  // TODO
+    HEELS(27, "MISSING", "MISSING", "MISSING", "MISSING", "Heels"),  // TODO
+    HIGH_HEELS(28, "MISSING", "MISSING", "MISSING", "MISSING", "High Heels"),  // TODO
     SANDALS(29, "Spring , Summer", "Casual", "Unisex", "Shoes", "Sandals");
 
     private static Map<Integer, EItemType> idMap;
@@ -68,6 +68,13 @@ public enum EItemType implements Serializable {
     public int toId() {
         return id;
     }
+
+    public static EItemType fromId(int id) {
+        if (!mapsInitialized)
+            initMaps();
+        return idMap.get(id);
+    }
+
     public String getSeason() {
         return season;
     }
@@ -85,12 +92,6 @@ public enum EItemType implements Serializable {
     @Override
     public String toString() {
         return asStr;
-    }
-
-    public static EItemType fromId(int id) {
-        if (!mapsInitialized)
-            initMaps();
-        return idMap.get(id);
     }
 
     public static EItemType fromString(String str) {
