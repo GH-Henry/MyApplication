@@ -29,8 +29,6 @@ import com.example.mystylist.enums.EItemType;
 import com.example.mystylist.structures.Closet;
 import com.example.mystylist.structures.Item;
 import com.google.android.material.snackbar.Snackbar;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -56,7 +54,7 @@ public class ClosetActivity extends AppCompatActivity {
         layout = findViewById(R.id.constraintLayout);
 
         closet = new Closet(null);
-        Database.receiveItemsFromCloset(LoginActivity.username, new receiveItemCallback());
+        Database.requestItemsFromCloset(LoginActivity.username, new receiveItemCallback());
 
         // Setup layout
         back_button = findViewById(R.id.back_button);

@@ -20,7 +20,12 @@ import java.util.function.Function;
 
 public class Database {
 
-    public static void receiveItemsFromCloset(@NonNull String username, @NonNull Function<Item, Void> getItemCallback) {
+    /**
+     * Requests the database for the items in the closet of the user with the given username.
+     * @param username the username of the user who's items to get.
+     * @param getItemCallback receives the items from the database asynchronously. Called once for each item received from the database.
+     */
+    public static void requestItemsFromCloset(@NonNull String username, @NonNull Function<Item, Void> getItemCallback) {
         DatabaseReference closetItemsRef = FirebaseDatabase.getInstance().getReference().child("users").child(username).child("closetItem");
         closetItemsRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -51,9 +56,21 @@ public class Database {
         });
     }
 
+    /**
+     * Adds the given item to the closet of the user with the given username.
+     * @param username the username of the user to add the item to.
+     * @param item the item to be added.
+     */
     public static void addItemToCloset(@NonNull String username, @NonNull Item item) {
         addItemToCloset(username, item, null);
     }
+
+    /**
+     * Adds the given item to the closet of the user with the given username.
+     * @param username the username of the user to add the item to.
+     * @param item the item to be added.
+     * @param onAddCallback called after the item has been added to the database.
+     */
     public static void addItemToCloset(@NonNull String username, @NonNull Item item, Function<Item, Void> onAddCallback) {
         // Get reference to closet in database
         DatabaseReference closetItemsRef = FirebaseDatabase.getInstance().getReference().child("users").child(username).child("closetItem");
@@ -69,9 +86,21 @@ public class Database {
             onAddCallback.apply(item);
     }
 
+    /**
+     * Adds the given list of items to the closet of the user with the given username.
+     * @param username the username of the user to add the items to.
+     * @param items the list of items to be added.
+     */
     public static void addItemsToCloset(@NonNull String username, @NonNull List<Item> items) {
         addItemsToCloset(username, items, null);
     }
+
+    /**
+     * Adds the given list of items to the closet of the user with the given username.
+     * @param username the username of the user to add the items to.
+     * @param items the list of items to be added.
+     * @param onAddCallback called once for each item that has been added to the database.
+     */
     public static void addItemsToCloset(String username, List<Item> items, Function<Item, Void> onAddCallback) {
         DatabaseReference closetItemsRef = FirebaseDatabase.getInstance().getReference().child("users").child(username).child("closetItem");
         for (Item item : items) {
@@ -84,9 +113,21 @@ public class Database {
         }
     }
 
+    /**
+     * Removes the given item from the closet of the user with given username.
+     * @param username the username of the user to remove the item from.
+     * @param item the item to be removed.
+     */
     public static void removeItemFromCloset(@NonNull String username, @NonNull Item item) {
         removeItemFromCloset(username, item, null);
     }
+
+    /**
+     * Removes the given item from the closet of the user with the given username.
+     * @param username the username of the user to remove the item from.
+     * @param item the item to be removed.
+     * @param onDeleteCallback called after the item has been removed from the database.
+     */
     public static void removeItemFromCloset(String username, Item item, Function<Item, Void> onDeleteCallback) {
         DatabaseReference closetItemReference = FirebaseDatabase.getInstance().getReference().child("users").child(username).child("closetItem");
 
@@ -123,9 +164,19 @@ public class Database {
         });
     }
 
+    /**
+     * Removes all items in the closet of the user with the given username.
+     * @param username the username of the user to clear the closet of.
+     */
     public static void removeAllItemsFromCloset(@NonNull String username) {
         removeAllItemsFromCloset(username, null);
     }
+
+    /**
+     * Removes all items in the closet of the user with the given username.
+     * @param username The username of the user to clear the closet of.
+     * @param onDeleteAllCallback called after all items have been removed from the database.
+     */
     public static void removeAllItemsFromCloset(@NonNull String username, Function<List<Item>, Void> onDeleteAllCallback) {
         DatabaseReference closetItemReference = FirebaseDatabase.getInstance().getReference().child("users").child(username).child("closetItem");
         if (onDeleteAllCallback == null) {
@@ -160,6 +211,11 @@ public class Database {
         }
     }
 
+    /**
+     * Parses an item from the database to an Item our program can use.
+     * @param itemSnapshot the snapshot of the item to parse.
+     * @return An Item the represents the snapshot.
+     */
     private static Item parseItem(@NonNull DataSnapshot itemSnapshot) {
         Item item = null;
         Integer type = itemSnapshot.child("type").getValue(Integer.class);
