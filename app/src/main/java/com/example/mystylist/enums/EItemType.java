@@ -3,6 +3,8 @@ package com.example.mystylist.enums;
 import androidx.annotation.NonNull;
 
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 
 @SuppressWarnings("unused")
 public enum EItemType implements Serializable {
@@ -36,6 +38,9 @@ public enum EItemType implements Serializable {
     HIGH_HEELS("High Heels"),
     SANDALS("Sandals");
 
+    private static Map<String, EItemType> fromStr;
+    private static boolean fromStrInitialized = false;
+
     public final String asStr;
 
     EItemType(String asStr) {
@@ -46,5 +51,20 @@ public enum EItemType implements Serializable {
     @Override
     public String toString() {
         return asStr;
+    }
+
+    public static EItemType fromString(String str) {
+        if (!fromStrInitialized)
+            initFromStr();
+        return fromStr.get(str);
+
+    }
+
+    private static void initFromStr() {
+        fromStr = new HashMap<>();
+        for (EItemType item : EItemType.values()) {
+            fromStr.put(item.toString(), item);
+        }
+        fromStrInitialized = true;
     }
 }

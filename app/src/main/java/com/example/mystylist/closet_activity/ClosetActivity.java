@@ -34,6 +34,7 @@ import com.example.mystylist.enums.EColor;
 import com.example.mystylist.enums.EItemType;
 import com.example.mystylist.structures.Closet;
 import com.example.mystylist.structures.Item;
+import com.example.mystylist.structures.ItemInfo;
 import com.example.mystylist.structures.Outfit;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.database.DataSnapshot;
@@ -63,32 +64,32 @@ public class ClosetActivity extends AppCompatActivity {
 
     public void SeasonToItem() {
 
-        clothingTypeToSeasonAndOccasion.put("T-shirt", new ItemInfo("Spring , Summer", "Casual", "Unisex", "Top"));
-        clothingTypeToSeasonAndOccasion.put("Shorts", new ItemInfo("Spring , Summer", "Casual", "Unisex", "Bottom"));
-        clothingTypeToSeasonAndOccasion.put("Sleeveless Shirt", new ItemInfo("Spring , Summer", "Casual", "Unisex", "Top"));
-        clothingTypeToSeasonAndOccasion.put("Polo", new ItemInfo("Spring , Summer", "Semi-Casual", "Unisex", "Top"));
-        clothingTypeToSeasonAndOccasion.put("Long Skirt", new ItemInfo("Spring", "Casual", "Female", "Bottom"));
-        clothingTypeToSeasonAndOccasion.put("Short Skirt", new ItemInfo("Spring , Summer", "Casual", "Female", "Bottom"));
-        clothingTypeToSeasonAndOccasion.put("Short Socks", new ItemInfo("Spring , Summer", "Casual", "Unisex", "Socks"));
-        clothingTypeToSeasonAndOccasion.put("Long Socks", new ItemInfo("Spring , Summer", "Casual", "Unisex", "Socks"));
-        clothingTypeToSeasonAndOccasion.put("Leggings", new ItemInfo("Spring", "Casual", "Female", "Bottom"));
-        clothingTypeToSeasonAndOccasion.put("Loafers", new ItemInfo("Spring , Summer", "Casual", "Unisex", "Shoes"));
-        clothingTypeToSeasonAndOccasion.put("Dress", new ItemInfo("Spring , Summer", "Casual", "Female", "Top"));
-        clothingTypeToSeasonAndOccasion.put("Sandals", new ItemInfo("Spring , Summer", "Casual", "Unisex", "Shoes"));
+        clothingTypeToSeasonAndOccasion.put(EItemType.T_SHIRT.toString(), new ItemInfo("Spring , Summer", "Casual", "Unisex", "Top"));
+        clothingTypeToSeasonAndOccasion.put(EItemType.SHORTS.toString(), new ItemInfo("Spring , Summer", "Casual", "Unisex", "Bottom"));
+        clothingTypeToSeasonAndOccasion.put(EItemType.SLEEVELESS_SHIRT.toString(), new ItemInfo("Spring , Summer", "Casual", "Unisex", "Top"));
+        clothingTypeToSeasonAndOccasion.put(EItemType.POLO.toString(), new ItemInfo("Spring , Summer", "Semi-Casual", "Unisex", "Top"));
+        clothingTypeToSeasonAndOccasion.put(EItemType.LONG_SKIRT.toString(), new ItemInfo("Spring", "Casual", "Female", "Bottom"));
+        clothingTypeToSeasonAndOccasion.put(EItemType.SHORT_SKIRT.toString(), new ItemInfo("Spring , Summer", "Casual", "Female", "Bottom"));
+        clothingTypeToSeasonAndOccasion.put(EItemType.SHORT_SOCKS.toString(), new ItemInfo("Spring , Summer", "Casual", "Unisex", "Socks"));
+        clothingTypeToSeasonAndOccasion.put(EItemType.LONG_SOCKS.toString(), new ItemInfo("Spring , Summer", "Casual", "Unisex", "Socks"));
+        clothingTypeToSeasonAndOccasion.put(EItemType.LEGGINGS.toString(), new ItemInfo("Spring", "Casual", "Female", "Bottom"));
+        clothingTypeToSeasonAndOccasion.put(EItemType.LOAFERS.toString(), new ItemInfo("Spring , Summer", "Casual", "Unisex", "Shoes"));
+        clothingTypeToSeasonAndOccasion.put(EItemType.DRESS.toString(), new ItemInfo("Spring , Summer", "Casual", "Female", "Top"));
+        clothingTypeToSeasonAndOccasion.put(EItemType.SANDALS.toString(), new ItemInfo("Spring , Summer", "Casual", "Unisex", "Shoes"));
 
-        clothingTypeToSeasonAndOccasion.put("Sports Bra", new ItemInfo("Summer", "Sports", "Female", "Top"));
-        clothingTypeToSeasonAndOccasion.put("Sneakers", new ItemInfo("Spring , Summer", "Casual", "Unisex", "Shoes"));
+        clothingTypeToSeasonAndOccasion.put(EItemType.SPORTS_BRA.toString(), new ItemInfo("Summer", "Sports", "Female", "Top"));
+        clothingTypeToSeasonAndOccasion.put(EItemType.SNEAKERS.toString(), new ItemInfo("Spring , Summer", "Casual", "Unisex", "Shoes"));
 
 // Fall Clothing Types
-        clothingTypeToSeasonAndOccasion.put("Pants", new ItemInfo("Fall", "Casual", "Unisex", "Bottom"));
-        clothingTypeToSeasonAndOccasion.put("Sweater", new ItemInfo("Fall , Winter", "Casual", "Unisex", "Top"));
-        clothingTypeToSeasonAndOccasion.put("Hoodie", new ItemInfo("Fall , Winter", "Casual", "Unisex", "Top"));
-        clothingTypeToSeasonAndOccasion.put("Jeans", new ItemInfo("Fall , Winter", "Casual", "Unisex", "Bottom"));
-        clothingTypeToSeasonAndOccasion.put("Jacket", new ItemInfo("Fall , Winter", "Casual", "Unisex", "Outerwear"));
-        clothingTypeToSeasonAndOccasion.put("Windbreaker", new ItemInfo("Fall , Winter", "Casual", "Unisex", "Outerwear"));
-        clothingTypeToSeasonAndOccasion.put("Coat", new ItemInfo("Fall , Winter", "Casual", "Unisex", "Outerwear"));
-        clothingTypeToSeasonAndOccasion.put("Long Sleeve Shirt", new ItemInfo("Fall , Winter", "Casual", "Unisex", "Top"));
-        clothingTypeToSeasonAndOccasion.put("Long Socks", new ItemInfo("Fall , Winter", "Casual", "Unisex", "Socks"));
+        clothingTypeToSeasonAndOccasion.put(EItemType.PANTS.toString(), new ItemInfo("Fall", "Casual", "Unisex", "Bottom"));
+        clothingTypeToSeasonAndOccasion.put(EItemType.SWEATER.toString(), new ItemInfo("Fall , Winter", "Casual", "Unisex", "Top"));
+        clothingTypeToSeasonAndOccasion.put(EItemType.HOODIE.toString(), new ItemInfo("Fall , Winter", "Casual", "Unisex", "Top"));
+        clothingTypeToSeasonAndOccasion.put(EItemType.JEANS.toString(), new ItemInfo("Fall , Winter", "Casual", "Unisex", "Bottom"));
+        clothingTypeToSeasonAndOccasion.put(EItemType.JACKET.toString(), new ItemInfo("Fall , Winter", "Casual", "Unisex", "Outerwear"));
+        clothingTypeToSeasonAndOccasion.put(EItemType.WINDBREAKER.toString(), new ItemInfo("Fall , Winter", "Casual", "Unisex", "Outerwear"));
+        clothingTypeToSeasonAndOccasion.put(EItemType.COAT.toString(), new ItemInfo("Fall , Winter", "Casual", "Unisex", "Outerwear"));
+        clothingTypeToSeasonAndOccasion.put(EItemType.LONG_SLEEVE_SHIRT.toString(), new ItemInfo("Fall , Winter", "Casual", "Unisex", "Top"));
+        clothingTypeToSeasonAndOccasion.put(EItemType.LONG_SOCKS.toString(), new ItemInfo("Fall , Winter", "Casual", "Unisex", "Socks"));
 
     }
     public Map<String, ItemInfo> getClothingTypeToSeasonAndOccasion() {
@@ -156,6 +157,7 @@ public class ClosetActivity extends AppCompatActivity {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     if (snapshot.exists()) {
+                        closet = new Closet(null);
                         itemList.clear(); // Clear the existing items
 
                         for (DataSnapshot itemSnapshot : snapshot.getChildren()) {
