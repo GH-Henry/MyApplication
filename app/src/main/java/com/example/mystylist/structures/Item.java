@@ -6,7 +6,7 @@ import com.example.mystylist.enums.EItemType;
 
 import java.io.Serializable;
 
-public class Item implements Serializable {
+public class Item implements Serializable, Comparable<Item> {
     public int drawable_id;
     public EItemType type;
     public EColor color;
@@ -71,5 +71,12 @@ public class Item implements Serializable {
         hash = PRIME * hash + color.hashCode();
 
         return hash;
+    }
+
+    @Override
+    public int compareTo(Item other) {
+        int myValue = (this.type.toId() << 16) + (this.color.toInt());
+        int otherValue = (other.type.toId() << 16) + (other.color.toInt());
+        return myValue - otherValue;
     }
 }
