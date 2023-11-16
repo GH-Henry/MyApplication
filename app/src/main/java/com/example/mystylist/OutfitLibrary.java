@@ -181,6 +181,11 @@ public class OutfitLibrary {
                     }));
 
 
+            for (Outfit outfit : tempOutfits) {
+                Database.addOutfit(outfit);
+            }
+
+
 
             outfits = tempOutfits.toArray(new Outfit[] {});
             initialized = true;
