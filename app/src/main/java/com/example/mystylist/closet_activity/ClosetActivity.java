@@ -147,9 +147,9 @@ public class ClosetActivity extends AppCompatActivity {
                 Item item = new Item(item_type, color);
 
                 // Try to add item to closet
-                if (closet.addItem(item) != null) {
+                if (closet.addItem(0, item) != null) {
                     // Notify adapter of added item
-                    adapter.notifyItemInserted(closet.getItemCount());
+                    adapter.notifyItemInserted(1);
                     // Add item to database
                     Database.addItemToCloset(LoginActivity.username, item);
                     // Close popup

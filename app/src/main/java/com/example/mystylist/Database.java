@@ -14,8 +14,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
 
 public class Database {
@@ -78,7 +80,7 @@ public class Database {
         String itemId = closetItemsRef.push().getKey();
         // Set the item attributes in the database to the item attributes
         assert itemId != null;
-        closetItemsRef.child(itemId).updateChildren(item.getAttributeMap());
+        closetItemsRef.child(itemId).updateChildren(getItemAttributeMap(item));
         // Report addition
         Log.d("Database", "Added item to closet: " + item);
         // Call callback if needed
@@ -106,7 +108,7 @@ public class Database {
         for (Item item : items) {
             String itemId = closetItemsRef.push().getKey();
             assert itemId != null;
-            closetItemsRef.child(itemId).updateChildren(item.getAttributeMap());
+            closetItemsRef.child(itemId).updateChildren(getItemAttributeMap(item));
             Log.d("Database", "Added item to closet: " + item);
             if (onAddCallback != null)  // Room for optimization
                 onAddCallback.apply(item);
@@ -212,9 +214,9 @@ public class Database {
     }
 
     /**
-     * Parses an item from the database to an Item our program can use.
+     * Parses the given item snapshot into an Item instance.
      * @param itemSnapshot the snapshot of the item to parse.
-     * @return An Item the represents the snapshot.
+     * @return An Item that represents the snapshot.
      */
     private static Item parseItem(@NonNull DataSnapshot itemSnapshot) {
         Item item = null;
@@ -224,5 +226,19 @@ public class Database {
             item = new Item(EItemType.fromId(type), EColor.fromInt(color));
         }
         return item;
+    }
+
+    /**
+     * Parses the given item into an attribute map to be stored in the database.
+     * @param item the item to be parsed.
+     * @return a hashmap of the attributes to store in the database.
+     */
+    private static Map<String, Object> getItemAttributeMap(@NonNull Item item) {
+        Map<String, Object> map = new HashMap<>();
+
+        map.put("type", item.getType().toId());
+        map.put("color", item.getColor().toInt());
+
+        return map;
     }
 }

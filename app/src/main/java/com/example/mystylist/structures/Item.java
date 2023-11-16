@@ -5,8 +5,6 @@ import com.example.mystylist.enums.EColor;
 import com.example.mystylist.enums.EItemType;
 
 import java.io.Serializable;
-import java.util.HashMap;
-import java.util.Map;
 
 public class Item implements Serializable {
     public int drawable_id;
@@ -43,15 +41,6 @@ public class Item implements Serializable {
     public Item setColor(EColor color) {
         this.color = color;
         return this;
-    }
-
-    public Map<String, Object> getAttributeMap() {
-        Map<String, Object> map = new HashMap<>();
-
-        map.put("type", type.toId());
-        map.put("color", color.toInt());
-
-        return map;
     }
 
     @Override
