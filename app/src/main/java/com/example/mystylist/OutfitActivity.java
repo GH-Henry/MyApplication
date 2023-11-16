@@ -21,11 +21,6 @@ import java.util.function.Function;
 
 public class OutfitActivity extends AppCompatActivity {
 
-    //OutfitLibrary outfits = new OutfitLibrary();
-    //private Outfit[] outfitList = outfits.getOutfits();
-
-    Outfit[] outfits = OutfitLibrary.getOutfits();
-
     ImageButton backButton;
     CheckBox casualCheckbox;
     CheckBox winterCheckbox;
