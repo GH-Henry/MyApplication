@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 
 import java.io.Serializable;
 import java.util.LinkedList;
+import java.util.List;
 
 public enum ETag implements Serializable {
 
@@ -89,13 +90,13 @@ public enum ETag implements Serializable {
      * @param mask the mask to convert to an ETag array.
      * @return an ETag array representation of the bit mask.
      */
-    public static ETag[] maskToTags(long mask) {
-        LinkedList<ETag> tags = new LinkedList<>();
+    public static List<ETag> maskToTags(long mask) {
+        List<ETag> tags = new LinkedList<>();
         for (ETag tag : values()) {
             if (hasMatch(tag.mask, mask))
                 tags.add(tag);
         }
-        return tags.toArray(new ETag[] {});
+        return tags;
     }
 
     /**
@@ -103,7 +104,7 @@ public enum ETag implements Serializable {
      * @param tags the array of ETags to convert to a mask.
      * @return a bit mask representation of the tags.
      */
-    public static long tagsToMask(ETag[] tags) {
+    public static long tagsToMask(@NonNull List<ETag> tags) {
         long mask = 0;
         for (ETag tag : tags)
             mask |= tag.mask;

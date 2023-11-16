@@ -1,8 +1,12 @@
 package com.example.mystylist.structures;
 
+import androidx.annotation.NonNull;
+
 import com.example.mystylist.enums.ETag;
 
 import java.io.Serializable;
+import java.util.Arrays;
+import java.util.List;
 
 public class Outfit implements Serializable {
 
@@ -19,7 +23,7 @@ public class Outfit implements Serializable {
     /**
      * The items of the outfit.
      */
-    private final Item[] items;
+    private final List<Item> items;
 
     /**
      * The tags of the outfit as a bit mask.
@@ -33,7 +37,7 @@ public class Outfit implements Serializable {
      * @param items the items of the outfit.
      * @param tagFlags the tags of the outfit as a bit mask.
      */
-    public Outfit(String outfitName, String outfitDesc, Item[] items, long tagFlags) {
+    public Outfit(String outfitName, String outfitDesc, @NonNull List<Item> items, long tagFlags) {
         this.outfitName = outfitName;
         this.outfitDesc = outfitDesc;
         this.items = items;
@@ -45,13 +49,32 @@ public class Outfit implements Serializable {
      * @param outfitName the name of the outfit.
      * @param outfitDesc the description of the outfit.
      * @param items the items of the outfit.
+     * @param tags the tags of the outfit as a list of ETags.
+     */
+    public Outfit(String outfitName, String outfitDesc, @NonNull List<Item> items, @NonNull List<ETag> tags) {
+        this(outfitName, outfitDesc, items, ETag.tagsToMask(tags));
+    }
+
+    /**
+     * Constructor.
+     * @param outfitName the name of the outfit.
+     * @param outfitDesc the description of the outfit.
+     * @param items the items of the outfit.
+     * @param tagFlags the tags of the outfit as a bit mask.
+     */
+    public Outfit(String outfitName, String outfitDesc, @NonNull Item[] items, long tagFlags) {
+        this(outfitName, outfitDesc, Arrays.asList(items), tagFlags);
+    }
+
+    /**
+     * Constructor.
+     * @param outfitName the name of the outfit.
+     * @param outfitDesc the description of the outfit.
+     * @param items the items of the outfit.
      * @param tags the tags of the outfit as an array of ETags.
      */
-    public Outfit(String outfitName, String outfitDesc, Item[] items, ETag[] tags) {
-        this.outfitName = outfitName;
-        this.outfitDesc = outfitDesc;
-        this.items = items;
-        this.tagFlags = ETag.tagsToMask(tags);
+    public Outfit(String outfitName, String outfitDesc, @NonNull Item[] items, @NonNull ETag[] tags) {
+        this(outfitName, outfitDesc, Arrays.asList(items), Arrays.asList(tags));
     }
 
     /**
@@ -70,7 +93,7 @@ public class Outfit implements Serializable {
      * Returns the items in this outfit
      * @return an Item array of this outfit's items.
      */
-    public Item[] getItems() { return items; }
+    public List<Item> getItems() { return items; }
 
     /**
      * Returns this outfit's tags as a bit mask.
@@ -82,7 +105,7 @@ public class Outfit implements Serializable {
      * Returns this outfit's tags as an ETag array.
      * @return an array of ETags representing this outfit's tags.
      */
-    public ETag[] getTags() {
+    public List<ETag> getTags() {
         return ETag.maskToTags(tagFlags);
     }
 
@@ -113,7 +136,7 @@ public class Outfit implements Serializable {
      * @param items the items to check for.
      * @return true, if all the items are in the outfit; else false.
      */
-    public boolean containsAll(Item[] items) {
+    public boolean containsAll(List<Item> items) {
         for (Item item : items) {
             if (!contains(item))
                 return false;
@@ -126,7 +149,7 @@ public class Outfit implements Serializable {
      * @param items the items to check for.
      * @return true, if any of the items are in the outfit; else false.
      */
-    public boolean containsAny(Item[] items) {
+    public boolean containsAny(List<Item> items) {
         for (Item item : items) {
             if (contains(item))
                 return true;
@@ -135,6 +158,6 @@ public class Outfit implements Serializable {
     }
 
     public int numberOfItems () {
-        return items.length;
+        return items.size();
     }
 }
