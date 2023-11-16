@@ -26,8 +26,10 @@ import com.example.mystylist.LoginActivity;
 import com.example.mystylist.R;
 import com.example.mystylist.enums.EColor;
 import com.example.mystylist.enums.EItemType;
+import com.example.mystylist.enums.ETag;
 import com.example.mystylist.structures.Closet;
 import com.example.mystylist.structures.Item;
+import com.example.mystylist.structures.Outfit;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
@@ -97,11 +99,11 @@ public class ClosetActivity extends AppCompatActivity {
     private class receiveItemCallback implements Function<Item, Void> {
         @Override
         public Void apply(Item item) {
-            ClosetActivity activity = ClosetActivity.this;
+            ClosetActivity context = ClosetActivity.this;
 
             // Try to add to closet
-            if (activity.closet.addItem(item) != null) {
-                activity.adapter.notifyItemInserted(activity.closet.getItemCount());
+            if (context.closet.addItem(item) != null) {
+                context.adapter.notifyItemInserted(context.closet.getItemCount());
                 Log.d("ClosetActivity", "Added item to closet: " + item.toString());
             }
             else {

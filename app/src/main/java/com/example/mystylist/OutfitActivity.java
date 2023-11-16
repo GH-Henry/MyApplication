@@ -17,6 +17,7 @@ import com.example.mystylist.structures.Outfit;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.function.Function;
 
 public class OutfitActivity extends AppCompatActivity {
 
@@ -44,7 +45,7 @@ public class OutfitActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private OutfitItemAdapter adapter;
 
-    public static ArrayList<Outfit> filteredOutfits = null; // Populate before creating adapter
+    private ArrayList<Outfit> filteredOutfits;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,20 +77,28 @@ public class OutfitActivity extends AppCompatActivity {
             }
         });
 
-        if (filteredOutfits == null)
-            filteredOutfits = new ArrayList<>(Arrays.asList(OutfitLibrary.getOutfits()));
+        filteredOutfits = new ArrayList<>();
+        Database.requestOutfits(new receiveOutfitCallback());
 
         recyclerView = findViewById(R.id.list_of_filtered);
         adapter = new OutfitItemAdapter(filteredOutfits);
 
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setHasFixedSize(false);
     }
 
-    @Override
-    public void finish() {
-        filteredOutfits = null;
-        super.finish();
+    private class receiveOutfitCallback implements Function<Outfit, Void> {
+        @Override
+        public Void apply(Outfit outfit) {
+            OutfitActivity context = OutfitActivity.this;
+
+            filteredOutfits.add(0, outfit);
+            context.adapter.notifyItemInserted(0);
+            Log.d("OutfitActivity", "Added outfit to list: " + outfit.toString());
+
+            return null;
+        }
     }
 
 
