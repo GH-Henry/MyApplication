@@ -35,7 +35,7 @@ public class Database {
     public static final String ITEM_TYPE_KEY = "type";
     public static final String ITEM_COLOR_KEY = "color";
 
-    public static final String OUTFITS_KEY = "outfits";
+    public static final String OUTFITS_KEY = "designerOutfits";
     public static final String OUTFIT_NAME_KEY = "name";
     public static final String OUTFIT_DESC_KEY = "desc";
     public static final String OUTFIT_NOI_KEY = "numberOfItems";
