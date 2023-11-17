@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -21,8 +22,10 @@ import android.widget.ImageButton;
 import android.widget.PopupWindow;
 import android.widget.Spinner;
 
+import com.example.mystylist.AccountActivity;
 import com.example.mystylist.Database;
 import com.example.mystylist.LoginActivity;
+import com.example.mystylist.OutfitActivity;
 import com.example.mystylist.R;
 import com.example.mystylist.enums.EColor;
 import com.example.mystylist.enums.EItemType;
@@ -81,7 +84,9 @@ public class ClosetActivity extends AppCompatActivity {
         search_outfits_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                OutfitActivity.filterItems = new ArrayList<>(selectedItems);
+                Intent intent = new Intent(ClosetActivity.this, OutfitActivity.class);
+                startActivity(intent);
             }
         });
 

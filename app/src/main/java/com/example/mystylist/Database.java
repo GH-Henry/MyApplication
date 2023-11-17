@@ -115,6 +115,47 @@ public class Database {
         });
     }
 
+    /**
+     * Requests the database to return the outfits that contain the given items.
+     * @param items the items to match for.
+     * @param getOutfitCallback receives the outfits from the database asynchronously. Called once for each outfit received.
+     */
+    public static void requestOutfitsMatching(@NonNull List<Item> items, @NonNull Function<Outfit, Void> getOutfitCallback) {
+        DatabaseReference outfitsRef = FirebaseDatabase.getInstance().getReference().child(OUTFITS_KEY);
+        outfitsRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    for (DataSnapshot outfitSnapshot : snapshot.getChildren()) {
+                        Outfit outfit = parseOutfit(outfitSnapshot);
+                        if (outfit != null) {
+                            if (outfit.containsAll(items)) {
+                                Log.d("Database", "Loaded Outfit: " + outfit.toString());
+                                getOutfitCallback.apply(outfit);
+                            }
+                            else {
+                                Log.d("Database", "Rejected Outfit: " + outfit.toString());
+                            }
+                        }
+                        else {
+                            Log.d("Database", "Failed to load outfit: " + outfitSnapshot.toString());
+                        }
+                    }
+                } else {
+                    // Handle the case when there is no data (snapshot doesn't exist)
+                    // For example, you can display a message to the user.
+                    Log.d("Database", "No data found in Firebase");
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                // Handle any errors if necessary
+                Log.e("Database", "Firebase data loading error: " + error.getMessage());
+            }
+        });
+    }
+
 
     /**
      * Adds the given item to the closet of the user with the given username.
@@ -371,7 +412,7 @@ public class Database {
 
         map.put(OUTFIT_NAME_KEY, outfit.getOutfitName());
         map.put(OUTFIT_DESC_KEY, outfit.getOutfitDesc());
-        map.put(OUTFIT_NOI_KEY, outfit.getItems().length);
+        map.put(OUTFIT_NOI_KEY, outfit.getItems().size());
         int arbitraryIndex = 0;
         Map<String, Object> itemMap = new HashMap<>();
         for (Item item : outfit.getItems()) {
@@ -385,10 +426,11 @@ public class Database {
 
 
     /**
-     * !!! DO NOT USE !!! Clears and rebuilds the default outfits in the database. It's much easier
-     * to add outfits here than manually through firebase UI.
+     * !!! DANGER !!! DO NOT USE !!! Clears and rebuilds the default outfits in the database. (it's much easier
+     * to add outfits here than through Firebase UI).
      */
     public static void rebuildOutfitsInDatabase() {
+        // !!! DO NOT USE !!! (unless you really know what you're doing).
         DatabaseReference outfitsRef = FirebaseDatabase.getInstance().getReference().child(OUTFITS_KEY);
         outfitsRef.removeValue();
 
