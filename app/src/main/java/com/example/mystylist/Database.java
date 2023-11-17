@@ -24,7 +24,7 @@ import java.util.function.Function;
 
 public class Database {
 
-    // Use these when traversing/building database json. (keeps inputs/outputs synchronized).
+    // Use when traversing/building database json. (keeps inputs/outputs uniform and synchronized).
     public static final String USERS_KEY = "users";
     public static final String USER_USERNAME_KEY = "username";
     public static final String USER_PASSWORD_KEY = "password";
@@ -130,6 +130,47 @@ public class Database {
                         Outfit outfit = parseOutfit(outfitSnapshot);
                         if (outfit != null) {
                             if (outfit.containsAll(items)) {
+                                Log.d("Database", "Loaded Outfit: " + outfit.toString());
+                                getOutfitCallback.apply(outfit);
+                            }
+                            else {
+                                Log.d("Database", "Rejected Outfit: " + outfit.toString());
+                            }
+                        }
+                        else {
+                            Log.d("Database", "Failed to load outfit: " + outfitSnapshot.toString());
+                        }
+                    }
+                } else {
+                    // Handle the case when there is no data (snapshot doesn't exist)
+                    // For example, you can display a message to the user.
+                    Log.d("Database", "No data found in Firebase");
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                // Handle any errors if necessary
+                Log.e("Database", "Firebase data loading error: " + error.getMessage());
+            }
+        });
+    }
+
+    /**
+     * Requests the database to return the outfits that match the given tag mask.
+     * @param tagMask the tag mask to match against.
+     * @param getOutfitCallback receives the outfits from the database asynchronously. Called once for each outfit received.
+     */
+    public static void requestOutfitsMatching(long tagMask, @NonNull Function<Outfit, Void> getOutfitCallback) {
+        DatabaseReference outfitsRef = FirebaseDatabase.getInstance().getReference().child(OUTFITS_KEY);
+        outfitsRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    for (DataSnapshot outfitSnapshot : snapshot.getChildren()) {
+                        Outfit outfit = parseOutfit(outfitSnapshot);
+                        if (outfit != null) {
+                            if (outfit.tagsSatisfyFilter(tagMask)) {
                                 Log.d("Database", "Loaded Outfit: " + outfit.toString());
                                 getOutfitCallback.apply(outfit);
                             }

@@ -41,6 +41,7 @@ public class OutfitActivity extends AppCompatActivity {
 
     private ArrayList<Outfit> outfits;
 
+    public static List<Outfit> givenOutfits = null;
     public static List<Item> filterItems = null;
     public static Long filterTags = null;
 
@@ -76,13 +77,20 @@ public class OutfitActivity extends AppCompatActivity {
 
         // Decide how to load outfits
         outfits = new ArrayList<>();
-        if (filterItems != null) {
+        if (givenOutfits != null) {
+            // Use the outfit(s) given to you.
+            outfits = new ArrayList<>(givenOutfits);
+        }
+        else if (filterItems != null) {
+            // Use the outfits from the database that match the items
             Database.requestOutfitsMatching(filterItems, new receiveOutfitCallback());
         }
         else if (filterTags != null) {
-            // TODO
+            // Use the outfits from the database that match the filter
+            Database.requestOutfitsMatching(filterTags, new receiveOutfitCallback());
         }
         else {
+            // Use every outfit from the database
             Database.requestOutfits(new receiveOutfitCallback());
         }
 
@@ -112,7 +120,9 @@ public class OutfitActivity extends AppCompatActivity {
     @Override
     public void finish() {
         super.finish();
+        givenOutfits = null;
         filterItems = null;
+        filterTags = null;
     }
 
 
