@@ -100,7 +100,7 @@ public class AccountActivity extends AppCompatActivity {
 
                         Set<String> uniqueOutfitArr = new HashSet<>(); // Use a Set to store unique items
 
-                        // TODO:
+                        // TODO: replace what was here previously
 
                         // Convert the Set to a List to maintain order
                         OutfitArr = new ArrayList<>(uniqueOutfitArr);
