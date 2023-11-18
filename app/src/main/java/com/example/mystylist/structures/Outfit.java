@@ -160,4 +160,10 @@ public class Outfit implements Serializable {
     public int numberOfItems () {
         return items.size();
     }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return "{Name: " + outfitName + ", # of Items:" + numberOfItems() + "}";
+    }
 }

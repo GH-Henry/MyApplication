@@ -1,5 +1,7 @@
 package com.example.mystylist.structures;
 
+import androidx.annotation.NonNull;
+
 import com.example.mystylist.R;
 import com.example.mystylist.enums.EColor;
 import com.example.mystylist.enums.EItemType;
@@ -43,9 +45,10 @@ public class Item implements Serializable, Comparable<Item> {
         return this;
     }
 
+    @NonNull
     @Override
     public String toString() {
-        return "{" + type.toString() + "," + color.toString() + "}";
+        return "{" + type.toString() + ", " + color.toString() + "}";
     }
 
     @Override
