@@ -44,7 +44,7 @@ public class Database {
 
 
     /**
-     * Requests the database for the items in the closet of the user with the given username.
+     * Requests items from the closet of the given user from the database.
      * @param username the username of the user who's items to get.
      * @param getItemCallback receives the items from the database asynchronously. Called once for each item received from the database.
      */
@@ -81,7 +81,7 @@ public class Database {
 
 
     /**
-     * Requests the database for the list of outfits.
+     * Requests outfits from the database.
      * @param getOutfitCallback receives the outfits from the database asynchronously. Called once for each outfit received from the database.
      */
     public static void requestOutfits(@NonNull Function<Outfit, Void> getOutfitCallback) {
@@ -116,7 +116,7 @@ public class Database {
     }
 
     /**
-     * Requests the database to return the outfits that contain the given items.
+     * Requests outfits from the database that contain the given items.
      * @param items the items to match for.
      * @param getOutfitCallback receives the outfits from the database asynchronously. Called once for each outfit received.
      */
@@ -157,7 +157,7 @@ public class Database {
     }
 
     /**
-     * Requests the database to return the outfits that match the given tag mask.
+     * Requests outfits from the database that match the given tag mask filter.
      * @param tagMask the tag mask to match against.
      * @param getOutfitCallback receives the outfits from the database asynchronously. Called once for each outfit received.
      */
@@ -468,7 +468,7 @@ public class Database {
 
     /**
      * !!! DANGER !!! DO NOT USE !!! Clears and rebuilds the default outfits in the database. (it's much easier
-     * to add outfits here than through Firebase UI).
+     * to add outfits here than through Firebase GUI).
      */
     public static void rebuildOutfitsInDatabase() {
         // !!! DO NOT USE !!! (unless you really know what you're doing).
