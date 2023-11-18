@@ -1,6 +1,9 @@
 package com.example.mystylist;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -115,6 +118,22 @@ public class OutfitActivity extends AppCompatActivity {
 
             return null;
         }
+    }
+
+    public void startDisplayOutfitFragment(Outfit outfit) {
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("outfit", outfit);
+
+        FragmentTransaction trans = getSupportFragmentManager().beginTransaction();
+        trans.setReorderingAllowed(true);
+        trans.add(R.id.fragmentContainerView, OutfitDisplayFragment.class, bundle);
+        trans.commit();
+    }
+
+    public void stopDisplayOutfitFragment(Fragment fragment) {
+        FragmentTransaction trans = getSupportFragmentManager().beginTransaction();
+        trans.remove(fragment);
+        trans.commit();
     }
 
     @Override

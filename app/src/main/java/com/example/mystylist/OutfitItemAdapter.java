@@ -1,5 +1,10 @@
 package com.example.mystylist;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.ContextWrapper;
+import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +20,7 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mystylist.R;
+import com.example.mystylist.closet_activity.ClosetActivity;
 import com.example.mystylist.structures.Outfit;
 import com.example.mystylist.structures.Item;
 import com.google.android.material.snackbar.Snackbar;
@@ -33,6 +39,7 @@ public class OutfitItemAdapter extends RecyclerView.Adapter<OutfitItemAdapter.Vi
         private TextView text;
         private TextView outfit_text;
         private TextView color_text;
+        private Button see_details_button;
 
         // ViewHolder constructor
         public ViewHolder(View view) {
@@ -40,12 +47,16 @@ public class OutfitItemAdapter extends RecyclerView.Adapter<OutfitItemAdapter.Vi
             //text = view.findViewById(R.id.text);
             outfit_text = view.findViewById(R.id.outfit_text);
             color_text = view.findViewById(R.id.color_text);
+            see_details_button = view.findViewById(R.id.see_details_button);
         }
 
         // Getters
         public TextView getText() { return text; }
         public TextView getOutfitText() { return outfit_text; }
         public TextView getColorText() { return color_text; }
+        public Button getSeeDetailsButton() {
+            return see_details_button;
+        }
     }
 
     // Adapter constructor
@@ -72,42 +83,33 @@ public class OutfitItemAdapter extends RecyclerView.Adapter<OutfitItemAdapter.Vi
         Outfit outfit = filteredOutfits.get(position);
 
         TextView outfitText = holder.getOutfitText();
-
         TextView colorText = holder.getColorText();
+        Button seeDetailsButton = holder.getSeeDetailsButton();
 
         outfitText.setText(outfit.getOutfitName());
 
         colorText.setText(String.valueOf(outfit.numberOfItems()));
-        // Retrieve data to put in item
-        //Outfit itemData = filteredOutfits.get(position);
-//        Outfit outfit = filteredOutfits.get(position);
-//
-//        // Retrieve views from holder
-//        TextView text = holder.getText();
-//
-//        TextView outfitText = holder.getOutfitText();
-//
-//        outfitText.setText(outfit.getItems()[0].type.toString());
-//
-////        // Retrieve data to put in item
-////        //Outfit itemData = filteredOutfits.get(position);
-////        Outfit outfit = filteredOutfits.get(position);
-//
-//        // Fill layout with data
-//        //text.setText(itemData.toString());
-//
-//        for (Outfit oneOutfit : filteredOutfits) {
-//            for (Item item : outfit.getItems()) {
-//                String textForOutfit = item.type.toString();
-//                outfitText.setText(outfit.getItems()[0].type.toString());
-//                outfit_text.setText(textForOutfit);
-//            }
-//        }
+
+        seeDetailsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("debug", "success");
+                ((OutfitActivity) unwrap(v.getContext())).startDisplayOutfitFragment(outfit);
+            }
+        });
+
 
     }
 
     // Return number of items in list.
     @Override
     public int getItemCount() { return filteredOutfits.size(); }
+
+    private static Activity unwrap(Context context) {
+        while (!(context instanceof Activity) && context instanceof ContextWrapper) {
+            context = ((ContextWrapper) context).getBaseContext();
+        }
+        return (Activity) context;
+    }
 
 }

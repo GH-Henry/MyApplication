@@ -19,10 +19,10 @@
     <string name="logout">Logout</string>
 
     <string-array name="seasons_array">
-    <item>Spring</item>
-    <item>Summer</item>
-    <item>Fall</item>
-    <item>Winter</item>
+        <item>Spring</item>
+        <item>Summer</item>
+        <item>Fall</item>
+        <item>Winter</item>
     </string-array>
 
     <string-array name="occasions_array">

@@ -626,6 +626,7 @@ public class Database {
                         ETag.WEATHER_FAIR, ETag.WEATHER_COLD,
                         ETag.STYLE_SMART_CASUAL,
                 }));
+        // TODO: Still need 38 more to meet requirements
 
 
         for (Outfit outfit : tempOutfits) {
