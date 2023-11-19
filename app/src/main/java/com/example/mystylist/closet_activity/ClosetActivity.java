@@ -59,7 +59,23 @@ public class ClosetActivity extends AppCompatActivity {
         layout = findViewById(R.id.constraintLayout);
 
         closet = new Closet(null);
-        Database.requestItemsFromCloset(LoginActivity.username, new receiveItemCallback());
+        Database.requestItemsFromCloset(LoginActivity.username, new Function<Item, Void>() {
+            @Override
+            public Void apply(Item item) {
+                ClosetActivity context = ClosetActivity.this;
+
+                // Try to add to closet
+                if (context.closet.addItem(item) != null) {
+                    context.adapter.notifyItemInserted(context.closet.getItemCount());
+                    Log.d("ClosetActivity", "Added item to closet: " + item.toString());
+                }
+                else {
+                    Log.d("ClosetActivity", "Failed to add item to closet: " + item.toString() + ". Might be duplicate item");
+                }
+
+                return null;
+            }
+        });
 
         // Setup layout
         back_button = findViewById(R.id.back_button);
@@ -99,24 +115,6 @@ public class ClosetActivity extends AppCompatActivity {
 
         // Must be done at end
         enableSwipeToDelete();
-    }
-
-    private class receiveItemCallback implements Function<Item, Void> {
-        @Override
-        public Void apply(Item item) {
-            ClosetActivity context = ClosetActivity.this;
-
-            // Try to add to closet
-            if (context.closet.addItem(item) != null) {
-                context.adapter.notifyItemInserted(context.closet.getItemCount());
-                Log.d("ClosetActivity", "Added item to closet: " + item.toString());
-            }
-            else {
-                Log.d("ClosetActivity", "Failed to add item to closet: " + item.toString() + ". Might be duplicate item");
-            }
-
-            return null;
-        }
     }
 
     public void showAddItemPopup() {

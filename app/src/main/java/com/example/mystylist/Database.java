@@ -35,6 +35,9 @@ public class Database {
     public static final String ITEM_TYPE_KEY = "type";
     public static final String ITEM_COLOR_KEY = "color";
 
+    public static final String USER_FAVORITES_KEY = "favorites";
+    public static final String FAVORITE_OUTFIT_REF_KEY = "outfitRef";
+
     public static final String OUTFITS_KEY = "designerOutfits";
     public static final String OUTFIT_NAME_KEY = "name";
     public static final String OUTFIT_DESC_KEY = "desc";
@@ -62,6 +65,43 @@ public class Database {
                         }
                         else {
                             Log.d("Database", "Failed to load item: " + itemSnapshot.toString());
+                        }
+                    }
+                } else {
+                    // Handle the case when there is no data (snapshot doesn't exist)
+                    // For example, you can display a message to the user.
+                    Log.d("Database", "No data found in Firebase");
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                // Handle any errors if necessary
+                Log.e("Database", "Firebase data loading error: " + error.getMessage());
+            }
+        });
+    }
+
+
+    /**
+     * Requests favorited outfits from the user with the given username.
+     * @param username the username of the user to get favorites of.
+     * @param getOutfitCallback receives the outfits from the database asynchronously. Called once for each item received from the database.
+     */
+    public static void requestFavoritedOutfits(@NonNull String username, @NonNull Function<Outfit, Void> getOutfitCallback) {
+        DatabaseReference favoritedOutfitsRef = FirebaseDatabase.getInstance().getReference().child(USERS_KEY).child(username).child(USER_FAVORITES_KEY);
+        favoritedOutfitsRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                DatabaseReference outfitsRef = FirebaseDatabase.getInstance().getReference().child(OUTFITS_KEY);
+                if (snapshot.exists()) {
+                    for (DataSnapshot favoriteSnapshot : snapshot.getChildren()) {
+                        String outfitKey = favoriteSnapshot.child(FAVORITE_OUTFIT_REF_KEY).getValue(String.class);
+                        if (outfitKey != null) {
+                            requestOutfitFromKey(outfitKey, getOutfitCallback);
+                        }
+                        else {
+                            Log.d("Database", "Failed to load favorite: " + favoriteSnapshot.toString());
                         }
                     }
                 } else {
@@ -197,6 +237,85 @@ public class Database {
         });
     }
 
+    /**
+     * Requests outfit with the given key from the database.
+     * @param key the key of the outfit to retrieve.
+     * @param getOutfitCallback receives outfit from the database asynchronously. Called once when outfit found. Argument will be the outfit. If outfit is not found, argument will be null.
+     */
+    public static void requestOutfitFromKey(String key, @NonNull Function<Outfit, Void> getOutfitCallback) {
+        DatabaseReference outfitRef = FirebaseDatabase.getInstance().getReference().child(OUTFITS_KEY).child(key);
+        outfitRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    Outfit outfit = parseOutfit(snapshot);
+                    if (outfit != null) {
+                        Log.d("Database", "Loaded Outfit: " + outfit.toString());
+                        getOutfitCallback.apply(outfit);
+                    }
+                    else {
+                        Log.d("Database", "Failed to load outfit: " + snapshot.toString());
+                        getOutfitCallback.apply(null);
+                    }
+                } else {
+                    Log.d("Database", "Could not find outfit with key: " + key);
+                    getOutfitCallback.apply(null);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                // Handle any errors if necessary
+                Log.e("Database", "Firebase data loading error: " + error.getMessage());
+            }
+        });
+    }
+
+    /**
+     * Requests the data snapshot of the outfit in the database that is equivalent to the given outfit.
+     * @param outfit the outfit to match with.
+     * @param getDataSnapshotCallback receives the outfit snapshot that matches the outfit asynchronously. If outfit not found, argument is null.
+     */
+    public static void requestOutfitSnapshotMatching(@NonNull Outfit outfit, @NonNull Function<DataSnapshot, Void> getDataSnapshotCallback) {
+        DatabaseReference outfitsRef = FirebaseDatabase.getInstance().getReference().child(OUTFITS_KEY);
+        outfitsRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                DataSnapshot foundOutfitSnapshot = null;
+                if (snapshot.exists()) {
+                    for (DataSnapshot outfitSnapshot : snapshot.getChildren()) {
+                        Outfit check = parseOutfit(outfitSnapshot);
+                        if (check != null) {
+                            if (outfit.equals(check)) {
+                                Log.d("Database", "Matched with outfit: " + check.toString());
+                                foundOutfitSnapshot = outfitSnapshot;
+                                break;
+                            }
+                            else {
+                                Log.d("Database", "Loaded Outfit but no match: " + check.toString());
+                            }
+
+                        }
+                        else {
+                            Log.d("Database", "Failed to load outfit: " + outfitSnapshot.toString());
+                        }
+                    }
+                } else {
+                    // Handle the case when there is no data (snapshot doesn't exist)
+                    // For example, you can display a message to the user.
+                    Log.d("Database", "No data found in Firebase");
+                }
+                getDataSnapshotCallback.apply(foundOutfitSnapshot);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                // Handle any errors if necessary
+                Log.e("Database", "Firebase data loading error: " + error.getMessage());
+            }
+        });
+    }
+
 
     /**
      * Adds the given item to the closet of the user with the given username.
@@ -253,6 +372,50 @@ public class Database {
             if (onAddCallback != null)  // Room for optimization
                 onAddCallback.apply(item);
         }
+    }
+
+
+    /**
+     * Adds the given outfit to the favorites of the user with the given username.
+     * @param username the username of the user to add favorite outfit to.
+     * @param outfit the outfit to add.
+     */
+    public static void addFavoritedOutfit(@NonNull String username, @NonNull Outfit outfit) {
+        addFavoritedOutfit(username, outfit, null);
+    }
+
+    /**
+     * Adds the given outfit to the favorites of the user with the given username.
+     * @param username the username of the user to add favorite outfit to.
+     * @param outfit the outfit to add.
+     * @param onFavoriteCallback called after the outfit has been added to favorites.
+     */
+    public static void addFavoritedOutfit(@NonNull String username, @NonNull Outfit outfit, Function<Outfit, Void> onFavoriteCallback) {
+        requestOutfitSnapshotMatching(outfit, new Function<DataSnapshot, Void>() {
+            @Override
+            public Void apply(DataSnapshot dataSnapshot) {
+                if (dataSnapshot != null) {
+                    String outfitKey = dataSnapshot.getKey();
+                    DatabaseReference favoritesRef = FirebaseDatabase.getInstance().getReference().child(USERS_KEY).child(username).child(USER_FAVORITES_KEY);
+                    String favoriteId = favoritesRef.push().getKey();
+
+                    Map<String, Object> map = new HashMap<>();
+                    map.put(FAVORITE_OUTFIT_REF_KEY, outfitKey);
+
+                    assert favoriteId != null;
+                    favoritesRef.child(favoriteId).updateChildren(map);
+                    Log.d("Database", "Added outfit to favorites: " + outfitKey);
+                    if (onFavoriteCallback != null)
+                        onFavoriteCallback.apply(outfit);
+                }
+                else {
+                    Log.d("Database", "Failed to favorite outfit: " + outfit.toString());
+                    if (onFavoriteCallback != null)
+                        onFavoriteCallback.apply(null);
+                }
+                return null;
+            }
+        });
     }
 
 
@@ -369,6 +532,62 @@ public class Database {
 
 
     /**
+     * Removes the given outfit from the favorites of the user with the given username.
+     * @param username the username of the user to remove outfit from.
+     * @param outfit the outfit to remove.
+     * @param onDeleteCallback called after the outfit has been removed from the user.
+     */
+    public static void removeFavoritedOutfit(@NonNull String username, @NonNull Outfit outfit, Function<Outfit, Void> onDeleteCallback) {
+        requestOutfitSnapshotMatching(outfit, new Function<DataSnapshot, Void>() {
+            @Override
+            public Void apply(DataSnapshot dataSnapshot) {
+                if (dataSnapshot != null) {
+                    String outfitKey = dataSnapshot.getKey();
+                    assert outfitKey != null;
+                    DatabaseReference favoritesRef = FirebaseDatabase.getInstance().getReference().child(USERS_KEY).child(username).child(USER_FAVORITES_KEY);
+                    favoritesRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            Outfit deletedOutfit = null;
+                            if (snapshot.exists()) {
+                                for (DataSnapshot favoriteSnapshot : snapshot.getChildren()) {
+                                    String checkKey = favoriteSnapshot.child(FAVORITE_OUTFIT_REF_KEY).getValue(String.class);
+                                    if (checkKey != null) {
+                                        if (outfitKey.equals(checkKey)) {
+                                            favoriteSnapshot.getRef().removeValue();
+                                            Log.d("Database", "Removed favorited outfit: " + checkKey);
+                                            deletedOutfit = outfit;
+                                            break;
+                                        }
+                                    } else {
+                                        Log.d("Database", "Failed to check outfit key for removal: " + favoriteSnapshot.toString());
+                                    }
+                                }
+                            }
+                            if (onDeleteCallback != null) {
+                                onDeleteCallback.apply(deletedOutfit);
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+                            // Handle any errors if necessary
+                            Log.e("Database", "Firebase data deletion error: " + error.getMessage());
+                        }
+                    });
+                }
+                else {
+                    Log.d("Database", "Failed to find outfit: " + outfit.toString());
+                    if (onDeleteCallback != null)
+                        onDeleteCallback.apply(null);
+                }
+                return null;
+            }
+        });
+    }
+
+
+    /**
      * Parses the given item snapshot into an Item instance.
      * @param itemSnapshot the snapshot of the item to parse.
      * @return An Item that represents the snapshot.
@@ -467,8 +686,7 @@ public class Database {
 
 
     /**
-     * !!! DANGER !!! DO NOT USE !!! Clears and rebuilds the default outfits in the database. (it's much easier
-     * to add outfits here than through Firebase GUI).
+     * !!! DANGER !!! DO NOT USE !!! Outfits are _supposed_ to be static in the database. Clears and rebuilds the default outfits in the database. (it's much easier to add outfits here than through Firebase GUI).
      */
     public static void rebuildOutfitsInDatabase() {
         // !!! DO NOT USE !!! (unless you really know what you're doing).

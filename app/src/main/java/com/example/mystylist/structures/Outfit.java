@@ -166,4 +166,25 @@ public class Outfit implements Serializable {
     public String toString() {
         return "{Name: " + outfitName + ", # of Items:" + numberOfItems() + "}";
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof Outfit))
+            return false;
+
+        final Outfit other = (Outfit) obj;
+        return this.outfitName.equals(other.outfitName) && this.tagFlags == other.tagFlags;
+    }
+
+    @Override
+    public int hashCode() {
+        final int PRIME = 23;  // Arbitrary prime number
+        int hash = 5;  // Arbitrary starting position
+
+        hash = PRIME * hash + outfitName.hashCode();
+        hash = PRIME * hash + (int)tagFlags;
+        hash = PRIME * hash + (int)(tagFlags >> 32);
+
+        return hash;
+    }
 }
