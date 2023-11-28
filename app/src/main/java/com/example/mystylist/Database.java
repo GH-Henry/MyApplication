@@ -87,6 +87,170 @@ public class Database {
 
 
     /**
+     * Adds the given item to the closet of the user with the given username.
+     * @param username the username of the user to add the item to.
+     * @param profileName the profile to add to.
+     * @param item the item to be added.
+     */
+    public static void addItemToCloset(@NonNull String username, @NonNull String profileName, @NonNull Item item) {
+        addItemToCloset(username, profileName, item, null);
+    }
+
+    /**
+     * Adds the given item to the closet of the user with the given username.
+     * @param username the username of the user to add the item to.
+     * @param profileName the profile to add to.
+     * @param item the item to be added.
+     * @param onAddCallback called after the item has been added to the database.
+     */
+    public static void addItemToCloset(@NonNull String username, @NonNull String profileName, @NonNull Item item, Function<Item, Void> onAddCallback) {
+        // Get reference to closet in database
+        DatabaseReference closetItemsRef = getProfileReference(username, profileName).child(PROFILE_CLOSET_KEY);
+        // Generate a unique key
+        String itemId = closetItemsRef.push().getKey();
+        // Set the item attributes in the database to the item attributes
+        assert itemId != null;
+        closetItemsRef.child(itemId).updateChildren(getItemAttributeMap(item));
+        // Report addition
+        Log.d("Database", "Added item to closet: " + item.toString());
+        // Call callback if needed
+        if (onAddCallback != null)
+            onAddCallback.apply(item);
+    }
+
+    /**
+     * Adds the given list of items to the closet of the user with the given username.
+     * @param username the username of the user to add the items to.
+     * @param profileName the profile to add to.
+     * @param items the list of items to be added.
+     */
+    public static void addItemsToCloset(@NonNull String username, @NonNull String profileName, @NonNull List<Item> items) {
+        addItemsToCloset(username, profileName, items, null);
+    }
+
+    /**
+     * Adds the given list of items to the closet of the user with the given username.
+     * @param username the username of the user to add the items to.
+     * @param profileName the profile to add to.
+     * @param items the list of items to be added.
+     * @param onAddCallback called once for each item that has been added to the database.
+     */
+    public static void addItemsToCloset(@NonNull String username, @NonNull String profileName, List<Item> items, Function<Item, Void> onAddCallback) {
+        DatabaseReference closetItemsRef = getProfileReference(username, profileName).child(PROFILE_CLOSET_KEY);
+        for (Item item : items) {
+            String itemId = closetItemsRef.push().getKey();
+            assert itemId != null;
+            closetItemsRef.child(itemId).updateChildren(getItemAttributeMap(item));
+            Log.d("Database", "Added item to closet: " + item.toString());
+            if (onAddCallback != null)  // Room for optimization
+                onAddCallback.apply(item);
+        }
+    }
+
+
+    /**
+     * Removes the given item from the closet of the user with given username.
+     * @param username the username of the user to remove the item from.
+     * @param profileName the profile to remove from.
+     * @param item the item to be removed.
+     */
+    public static void removeItemFromCloset(@NonNull String username, @NonNull String profileName, @NonNull Item item) {
+        removeItemFromCloset(username, profileName, item, null);
+    }
+
+    /**
+     * Removes the given item from the closet of the user with the given username.
+     * @param username the username of the user to remove the item from.
+     * @param profileName the profile to remove from.
+     * @param item the item to be removed.
+     * @param onDeleteCallback called after the item has been removed from the database.
+     */
+    public static void removeItemFromCloset(@NonNull String username, @NonNull String profileName, Item item, Function<Item, Void> onDeleteCallback) {
+        DatabaseReference closetItemReference = getProfileReference(username, profileName).child(PROFILE_CLOSET_KEY);
+        closetItemReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                // Known bug: When closet has more than 1 item, deleting causes many "phantom" deletes of item
+                // No functional side effects
+                if (snapshot.exists()) {
+                    for (DataSnapshot itemSnapshot : snapshot.getChildren()) {
+                        Item check = parseItem(itemSnapshot);
+                        if (check != null) {
+                            Log.d("Database", "Loaded " + check.toString());
+                            if (item.equals(check)) {
+                                itemSnapshot.getRef().removeValue();
+                                Log.d("Database", "Removed item: " + item.toString());
+                                if (onDeleteCallback != null)
+                                    onDeleteCallback.apply(item);
+                                break;  // Only delete the first match
+                            }
+                        } else {
+                            Log.d("Database", "Failed to check item for removal: " + itemSnapshot.toString());
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                // Handle any errors if necessary
+                Log.e("Database", "Firebase data deletion error: " + error.getMessage());
+            }
+        });
+    }
+
+    /**
+     * Removes all items in the closet of the user with the given username.
+     * @param username the username of the user to clear the closet of.
+     * @param profileName the profile to clear.
+     */
+    public static void removeAllItemsFromCloset(@NonNull String username, @NonNull String profileName) {
+        removeAllItemsFromCloset(username, profileName, null);
+    }
+
+    /**
+     * Removes all items in the closet of the user with the given username.
+     * @param username The username of the user to clear the closet of.
+     * @param profileName the profile to clear.
+     * @param onDeleteAllCallback called after all items have been removed from the database.
+     */
+    public static void removeAllItemsFromCloset(@NonNull String username, @NonNull String profileName, Function<List<Item>, Void> onDeleteAllCallback) {
+        DatabaseReference closetItemReference = getProfileReference(username, profileName).child(PROFILE_CLOSET_KEY);
+        if (onDeleteAllCallback == null) {
+            // Easy version
+            closetItemReference.removeValue();
+        }
+        else {
+            // If callback provided, need to retrieve data before deleting from database
+            closetItemReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    LinkedList<Item> removedItems = new LinkedList<>();
+                    if (snapshot.exists()) {
+                        for (DataSnapshot itemSnapshot : snapshot.getChildren()) {
+                            Item item = parseItem(itemSnapshot);
+                            if (item != null) {
+                                removedItems.add(item);
+                            } else {
+                                Log.d("Database", "Failed to load item for removal: " + itemSnapshot.toString());
+                            }
+                        }
+                    }
+                    snapshot.getRef().removeValue();
+                    onDeleteAllCallback.apply(new ArrayList<>(removedItems));
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    // Handle any errors if necessary
+                    Log.e("Database", "Firebase data deletion error: " + error.getMessage());
+                }
+            });
+        }
+    }
+
+
+    /**
      * Requests favorited outfits from the user.
      * @param username the username of the user to get favorites of.
      * @param profileName the profile to get from.
@@ -119,6 +283,109 @@ public class Database {
             public void onCancelled(@NonNull DatabaseError error) {
                 // Handle any errors if necessary
                 Log.e("Database", "Firebase data loading error: " + error.getMessage());
+            }
+        });
+    }
+
+
+    /**
+     * Adds the given outfit to the favorites of the user with the given username.
+     * @param username the username of the user to add favorite outfit to.
+     * @param profileName the profile to add to.
+     * @param outfit the outfit to add.
+     */
+    public static void addFavoritedOutfit(@NonNull String username, @NonNull String profileName, @NonNull Outfit outfit) {
+        addFavoritedOutfit(username, profileName, outfit, null);
+    }
+
+    /**
+     * Adds the given outfit to the favorites of the user with the given username.
+     * @param username the username of the user to add favorite outfit to.
+     * @param profileName the profile to add to.
+     * @param outfit the outfit to add.
+     * @param onFavoriteCallback called after the outfit has been added to favorites.
+     */
+    public static void addFavoritedOutfit(@NonNull String username, @NonNull String profileName, @NonNull Outfit outfit, Function<Outfit, Void> onFavoriteCallback) {
+        requestOutfitSnapshotMatching(outfit, new Function<DataSnapshot, Void>() {
+            @Override
+            public Void apply(DataSnapshot dataSnapshot) {
+                if (dataSnapshot != null) {
+                    String outfitKey = dataSnapshot.getKey();
+                    DatabaseReference favoritesRef = getProfileReference(username, profileName).child(PROFILE_FAVORITES_KEY);
+                    String favoriteId = favoritesRef.push().getKey();
+
+                    Map<String, Object> map = new HashMap<>();
+                    map.put(FAVORITE_OUTFIT_REF_KEY, outfitKey);
+
+                    assert favoriteId != null;
+                    favoritesRef.child(favoriteId).updateChildren(map);
+                    Log.d("Database", "Added outfit to favorites: " + outfitKey);
+                    if (onFavoriteCallback != null)
+                        onFavoriteCallback.apply(outfit);
+                }
+                else {
+                    Log.d("Database", "Failed to favorite outfit: " + outfit.toString());
+                    if (onFavoriteCallback != null)
+                        onFavoriteCallback.apply(null);
+                }
+                return null;
+            }
+        });
+    }
+
+
+    /**
+     * Removes the given outfit from the favorites of the user with the given username.
+     * @param username the username of the user to remove outfit from.
+     * @param profileName the profile to remove from.
+     * @param outfit the outfit to remove.
+     * @param onDeleteCallback called after the outfit has been removed from the user.
+     */
+    public static void removeFavoritedOutfit(@NonNull String username, @NonNull String profileName, @NonNull Outfit outfit, Function<Outfit, Void> onDeleteCallback) {
+        requestOutfitSnapshotMatching(outfit, new Function<DataSnapshot, Void>() {
+            @Override
+            public Void apply(DataSnapshot dataSnapshot) {
+                if (dataSnapshot != null) {
+                    String outfitKey = dataSnapshot.getKey();
+                    assert outfitKey != null;
+                    DatabaseReference favoritesRef = getProfileReference(username, profileName).child(PROFILE_FAVORITES_KEY);
+                    favoritesRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            Outfit deletedOutfit = null;
+                            if (snapshot.exists()) {
+                                for (DataSnapshot favoriteSnapshot : snapshot.getChildren()) {
+                                    String checkKey = favoriteSnapshot.child(FAVORITE_OUTFIT_REF_KEY).getValue(String.class);
+                                    if (checkKey != null) {
+                                        if (outfitKey.equals(checkKey)) {
+                                            favoriteSnapshot.getRef().removeValue();
+                                            Log.d("Database", "Removed favorited outfit: " + checkKey);
+                                            deletedOutfit = outfit;
+                                            break;
+                                        }
+                                    } else {
+                                        Log.d("Database", "Failed to check outfit key for removal: " + favoriteSnapshot.toString());
+                                    }
+                                }
+                            }
+                            if (onDeleteCallback != null) {
+                                onDeleteCallback.apply(deletedOutfit);
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+                            // Handle any errors if necessary
+                            Log.e("Database", "Firebase data deletion error: " + error.getMessage());
+                        }
+                    });
+                }
+                else {
+                    Log.d("Database", "Failed to find outfit: " + outfit.toString());
+                    if (onDeleteCallback != null)
+                        onDeleteCallback.apply(null);
+                }
+                return null;
             }
         });
     }
@@ -275,12 +542,13 @@ public class Database {
         });
     }
 
+
     /**
      * Requests the data snapshot of the outfit in the database that is equivalent to the given outfit.
      * @param outfit the outfit to match with.
      * @param getDataSnapshotCallback receives the outfit snapshot that matches the outfit asynchronously. If outfit not found, argument is null.
      */
-    public static void requestOutfitSnapshotMatching(@NonNull Outfit outfit, @NonNull Function<DataSnapshot, Void> getDataSnapshotCallback) {
+    private static void requestOutfitSnapshotMatching(@NonNull Outfit outfit, @NonNull Function<DataSnapshot, Void> getDataSnapshotCallback) {
         DatabaseReference outfitsRef = FirebaseDatabase.getInstance().getReference().child(OUTFITS_KEY);
         outfitsRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -322,114 +590,6 @@ public class Database {
 
 
     /**
-     * Adds the given item to the closet of the user with the given username.
-     * @param username the username of the user to add the item to.
-     * @param profileName the profile to add to.
-     * @param item the item to be added.
-     */
-    public static void addItemToCloset(@NonNull String username, @NonNull String profileName, @NonNull Item item) {
-        addItemToCloset(username, profileName, item, null);
-    }
-
-    /**
-     * Adds the given item to the closet of the user with the given username.
-     * @param username the username of the user to add the item to.
-     * @param profileName the profile to add to.
-     * @param item the item to be added.
-     * @param onAddCallback called after the item has been added to the database.
-     */
-    public static void addItemToCloset(@NonNull String username, @NonNull String profileName, @NonNull Item item, Function<Item, Void> onAddCallback) {
-        // Get reference to closet in database
-        DatabaseReference closetItemsRef = getProfileReference(username, profileName).child(PROFILE_CLOSET_KEY);
-        // Generate a unique key
-        String itemId = closetItemsRef.push().getKey();
-        // Set the item attributes in the database to the item attributes
-        assert itemId != null;
-        closetItemsRef.child(itemId).updateChildren(getItemAttributeMap(item));
-        // Report addition
-        Log.d("Database", "Added item to closet: " + item.toString());
-        // Call callback if needed
-        if (onAddCallback != null)
-            onAddCallback.apply(item);
-    }
-
-    /**
-     * Adds the given list of items to the closet of the user with the given username.
-     * @param username the username of the user to add the items to.
-     * @param profileName the profile to add to.
-     * @param items the list of items to be added.
-     */
-    public static void addItemsToCloset(@NonNull String username, @NonNull String profileName, @NonNull List<Item> items) {
-        addItemsToCloset(username, profileName, items, null);
-    }
-
-    /**
-     * Adds the given list of items to the closet of the user with the given username.
-     * @param username the username of the user to add the items to.
-     * @param profileName the profile to add to.
-     * @param items the list of items to be added.
-     * @param onAddCallback called once for each item that has been added to the database.
-     */
-    public static void addItemsToCloset(@NonNull String username, @NonNull String profileName, List<Item> items, Function<Item, Void> onAddCallback) {
-        DatabaseReference closetItemsRef = getProfileReference(username, profileName).child(PROFILE_CLOSET_KEY);
-        for (Item item : items) {
-            String itemId = closetItemsRef.push().getKey();
-            assert itemId != null;
-            closetItemsRef.child(itemId).updateChildren(getItemAttributeMap(item));
-            Log.d("Database", "Added item to closet: " + item.toString());
-            if (onAddCallback != null)  // Room for optimization
-                onAddCallback.apply(item);
-        }
-    }
-
-
-    /**
-     * Adds the given outfit to the favorites of the user with the given username.
-     * @param username the username of the user to add favorite outfit to.
-     * @param profileName the profile to add to.
-     * @param outfit the outfit to add.
-     */
-    public static void addFavoritedOutfit(@NonNull String username, @NonNull String profileName, @NonNull Outfit outfit) {
-        addFavoritedOutfit(username, profileName, outfit, null);
-    }
-
-    /**
-     * Adds the given outfit to the favorites of the user with the given username.
-     * @param username the username of the user to add favorite outfit to.
-     * @param profileName the profile to add to.
-     * @param outfit the outfit to add.
-     * @param onFavoriteCallback called after the outfit has been added to favorites.
-     */
-    public static void addFavoritedOutfit(@NonNull String username, @NonNull String profileName, @NonNull Outfit outfit, Function<Outfit, Void> onFavoriteCallback) {
-        requestOutfitSnapshotMatching(outfit, new Function<DataSnapshot, Void>() {
-            @Override
-            public Void apply(DataSnapshot dataSnapshot) {
-                if (dataSnapshot != null) {
-                    String outfitKey = dataSnapshot.getKey();
-                    DatabaseReference favoritesRef = getProfileReference(username, profileName).child(PROFILE_FAVORITES_KEY);
-                    String favoriteId = favoritesRef.push().getKey();
-
-                    Map<String, Object> map = new HashMap<>();
-                    map.put(FAVORITE_OUTFIT_REF_KEY, outfitKey);
-
-                    assert favoriteId != null;
-                    favoritesRef.child(favoriteId).updateChildren(map);
-                    Log.d("Database", "Added outfit to favorites: " + outfitKey);
-                    if (onFavoriteCallback != null)
-                        onFavoriteCallback.apply(outfit);
-                }
-                else {
-                    Log.d("Database", "Failed to favorite outfit: " + outfit.toString());
-                    if (onFavoriteCallback != null)
-                        onFavoriteCallback.apply(null);
-                }
-                return null;
-            }
-        });
-    }
-
-
-    /**
      * Adds the given outfit to the database. (easier than inputting directly into database).
      * @param outfit the outfit to be added.
      */
@@ -439,165 +599,6 @@ public class Database {
         assert outfitId != null;
         outfitsRef.child(outfitId).updateChildren(getOutfitAttributeMap(outfit));
         Log.d("Database", "Added outfit to database: " + outfit.toString());
-    }
-
-
-    /**
-     * Removes the given item from the closet of the user with given username.
-     * @param username the username of the user to remove the item from.
-     * @param profileName the profile to remove from.
-     * @param item the item to be removed.
-     */
-    public static void removeItemFromCloset(@NonNull String username, @NonNull String profileName, @NonNull Item item) {
-        removeItemFromCloset(username, profileName, item, null);
-    }
-
-    /**
-     * Removes the given item from the closet of the user with the given username.
-     * @param username the username of the user to remove the item from.
-     * @param profileName the profile to remove from.
-     * @param item the item to be removed.
-     * @param onDeleteCallback called after the item has been removed from the database.
-     */
-    public static void removeItemFromCloset(@NonNull String username, @NonNull String profileName, Item item, Function<Item, Void> onDeleteCallback) {
-        DatabaseReference closetItemReference = getProfileReference(username, profileName).child(PROFILE_CLOSET_KEY);
-        closetItemReference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                // Known bug: When closet has more than 1 item, deleting causes many "phantom" deletes of item
-                // No functional side effects
-                if (snapshot.exists()) {
-                    for (DataSnapshot itemSnapshot : snapshot.getChildren()) {
-                        Item check = parseItem(itemSnapshot);
-                        if (check != null) {
-                            Log.d("Database", "Loaded " + check.toString());
-                            if (item.equals(check)) {
-                                itemSnapshot.getRef().removeValue();
-                                Log.d("Database", "Removed item: " + item.toString());
-                                if (onDeleteCallback != null)
-                                    onDeleteCallback.apply(item);
-                                break;  // Only delete the first match
-                            }
-                        } else {
-                            Log.d("Database", "Failed to check item for removal: " + itemSnapshot.toString());
-                        }
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                // Handle any errors if necessary
-                Log.e("Database", "Firebase data deletion error: " + error.getMessage());
-            }
-        });
-    }
-
-    /**
-     * Removes all items in the closet of the user with the given username.
-     * @param username the username of the user to clear the closet of.
-     * @param profileName the profile to clear.
-     */
-    public static void removeAllItemsFromCloset(@NonNull String username, @NonNull String profileName) {
-        removeAllItemsFromCloset(username, profileName, null);
-    }
-
-    /**
-     * Removes all items in the closet of the user with the given username.
-     * @param username The username of the user to clear the closet of.
-     * @param profileName the profile to clear.
-     * @param onDeleteAllCallback called after all items have been removed from the database.
-     */
-    public static void removeAllItemsFromCloset(@NonNull String username, @NonNull String profileName, Function<List<Item>, Void> onDeleteAllCallback) {
-        DatabaseReference closetItemReference = getProfileReference(username, profileName).child(PROFILE_CLOSET_KEY);
-        if (onDeleteAllCallback == null) {
-            // Easy version
-            closetItemReference.removeValue();
-        }
-        else {
-            // If callback provided, need to retrieve data before deleting from database
-            closetItemReference.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    LinkedList<Item> removedItems = new LinkedList<>();
-                    if (snapshot.exists()) {
-                        for (DataSnapshot itemSnapshot : snapshot.getChildren()) {
-                            Item item = parseItem(itemSnapshot);
-                            if (item != null) {
-                                removedItems.add(item);
-                            } else {
-                                Log.d("Database", "Failed to load item for removal: " + itemSnapshot.toString());
-                            }
-                        }
-                    }
-                    snapshot.getRef().removeValue();
-                    onDeleteAllCallback.apply(new ArrayList<>(removedItems));
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-                    // Handle any errors if necessary
-                    Log.e("Database", "Firebase data deletion error: " + error.getMessage());
-                }
-            });
-        }
-    }
-
-
-    /**
-     * Removes the given outfit from the favorites of the user with the given username.
-     * @param username the username of the user to remove outfit from.
-     * @param profileName the profile to remove from.
-     * @param outfit the outfit to remove.
-     * @param onDeleteCallback called after the outfit has been removed from the user.
-     */
-    public static void removeFavoritedOutfit(@NonNull String username, @NonNull String profileName, @NonNull Outfit outfit, Function<Outfit, Void> onDeleteCallback) {
-        requestOutfitSnapshotMatching(outfit, new Function<DataSnapshot, Void>() {
-            @Override
-            public Void apply(DataSnapshot dataSnapshot) {
-                if (dataSnapshot != null) {
-                    String outfitKey = dataSnapshot.getKey();
-                    assert outfitKey != null;
-                    DatabaseReference favoritesRef = getProfileReference(username, profileName).child(PROFILE_FAVORITES_KEY);
-                    favoritesRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            Outfit deletedOutfit = null;
-                            if (snapshot.exists()) {
-                                for (DataSnapshot favoriteSnapshot : snapshot.getChildren()) {
-                                    String checkKey = favoriteSnapshot.child(FAVORITE_OUTFIT_REF_KEY).getValue(String.class);
-                                    if (checkKey != null) {
-                                        if (outfitKey.equals(checkKey)) {
-                                            favoriteSnapshot.getRef().removeValue();
-                                            Log.d("Database", "Removed favorited outfit: " + checkKey);
-                                            deletedOutfit = outfit;
-                                            break;
-                                        }
-                                    } else {
-                                        Log.d("Database", "Failed to check outfit key for removal: " + favoriteSnapshot.toString());
-                                    }
-                                }
-                            }
-                            if (onDeleteCallback != null) {
-                                onDeleteCallback.apply(deletedOutfit);
-                            }
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
-                            // Handle any errors if necessary
-                            Log.e("Database", "Firebase data deletion error: " + error.getMessage());
-                        }
-                    });
-                }
-                else {
-                    Log.d("Database", "Failed to find outfit: " + outfit.toString());
-                    if (onDeleteCallback != null)
-                        onDeleteCallback.apply(null);
-                }
-                return null;
-            }
-        });
     }
 
 
