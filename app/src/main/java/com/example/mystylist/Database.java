@@ -25,34 +25,37 @@ import java.util.function.Function;
 public class Database {
 
     // Use when traversing/building database json. (keeps inputs/outputs uniform and synchronized).
-    public static final String USERS_KEY = "users";
-    public static final String USER_USERNAME_KEY = "username";
-    public static final String USER_PASSWORD_KEY = "password";
-    public static final String USER_EMAIL_KEY = "email";
-    public static final String USER_PERSONAL_NAME_KEY = "name";
+    private static final String USERS_KEY = "users";
+    private static final String USER_USERNAME_KEY = "username";
+    private static final String USER_PASSWORD_KEY = "password";
+    private static final String USER_EMAIL_KEY = "email";
+    private static final String USER_PERSONAL_NAME_KEY = "name";
 
-    public static final String USER_CLOSET_KEY = "closetItem";
-    public static final String ITEM_TYPE_KEY = "type";
-    public static final String ITEM_COLOR_KEY = "color";
+    private static final String USER_PROFILES_KEY = "profiles";
 
-    public static final String USER_FAVORITES_KEY = "favorites";
-    public static final String FAVORITE_OUTFIT_REF_KEY = "outfitRef";
+    private static final String PROFILE_CLOSET_KEY = "closet";
+    private static final String ITEM_TYPE_KEY = "type";
+    private static final String ITEM_COLOR_KEY = "color";
 
-    public static final String OUTFITS_KEY = "designerOutfits";
-    public static final String OUTFIT_NAME_KEY = "name";
-    public static final String OUTFIT_DESC_KEY = "desc";
-    public static final String OUTFIT_NOI_KEY = "numberOfItems";
-    public static final String OUTFIT_ITEMS_KEY = "items";
-    public static final String OUTFIT_TAGS_KEY = "tags";
+    private static final String PROFILE_FAVORITES_KEY = "favorites";
+    private static final String FAVORITE_OUTFIT_REF_KEY = "outfitRef";
+
+    private static final String OUTFITS_KEY = "designerOutfits";
+    private static final String OUTFIT_NAME_KEY = "name";
+    private static final String OUTFIT_DESC_KEY = "desc";
+    private static final String OUTFIT_NOI_KEY = "numberOfItems";
+    private static final String OUTFIT_ITEMS_KEY = "items";
+    private static final String OUTFIT_TAGS_KEY = "tags";
 
 
     /**
      * Requests items from the closet of the given user from the database.
      * @param username the username of the user who's items to get.
+     * @param profileName the profile to get from.
      * @param getItemCallback receives the items from the database asynchronously. Called once for each item received from the database.
      */
-    public static void requestItemsFromCloset(@NonNull String username, @NonNull Function<Item, Void> getItemCallback) {
-        DatabaseReference closetItemsRef = FirebaseDatabase.getInstance().getReference().child(USERS_KEY).child(username).child(USER_CLOSET_KEY);
+    public static void requestItemsFromCloset(@NonNull String username, @NonNull String profileName, @NonNull Function<Item, Void> getItemCallback) {
+        DatabaseReference closetItemsRef = getProfileReference(username, profileName).child(PROFILE_CLOSET_KEY);
         closetItemsRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -84,12 +87,13 @@ public class Database {
 
 
     /**
-     * Requests favorited outfits from the user with the given username.
+     * Requests favorited outfits from the user.
      * @param username the username of the user to get favorites of.
+     * @param profileName the profile to get from.
      * @param getOutfitCallback receives the outfits from the database asynchronously. Called once for each item received from the database.
      */
-    public static void requestFavoritedOutfits(@NonNull String username, @NonNull Function<Outfit, Void> getOutfitCallback) {
-        DatabaseReference favoritedOutfitsRef = FirebaseDatabase.getInstance().getReference().child(USERS_KEY).child(username).child(USER_FAVORITES_KEY);
+    public static void requestFavoritedOutfits(@NonNull String username, @NonNull String profileName, @NonNull Function<Outfit, Void> getOutfitCallback) {
+        DatabaseReference favoritedOutfitsRef = getProfileReference(username, profileName).child(PROFILE_FAVORITES_KEY);
         favoritedOutfitsRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -320,21 +324,23 @@ public class Database {
     /**
      * Adds the given item to the closet of the user with the given username.
      * @param username the username of the user to add the item to.
+     * @param profileName the profile to add to.
      * @param item the item to be added.
      */
-    public static void addItemToCloset(@NonNull String username, @NonNull Item item) {
-        addItemToCloset(username, item, null);
+    public static void addItemToCloset(@NonNull String username, @NonNull String profileName, @NonNull Item item) {
+        addItemToCloset(username, profileName, item, null);
     }
 
     /**
      * Adds the given item to the closet of the user with the given username.
      * @param username the username of the user to add the item to.
+     * @param profileName the profile to add to.
      * @param item the item to be added.
      * @param onAddCallback called after the item has been added to the database.
      */
-    public static void addItemToCloset(@NonNull String username, @NonNull Item item, Function<Item, Void> onAddCallback) {
+    public static void addItemToCloset(@NonNull String username, @NonNull String profileName, @NonNull Item item, Function<Item, Void> onAddCallback) {
         // Get reference to closet in database
-        DatabaseReference closetItemsRef = FirebaseDatabase.getInstance().getReference().child(USERS_KEY).child(username).child(USER_CLOSET_KEY);
+        DatabaseReference closetItemsRef = getProfileReference(username, profileName).child(PROFILE_CLOSET_KEY);
         // Generate a unique key
         String itemId = closetItemsRef.push().getKey();
         // Set the item attributes in the database to the item attributes
@@ -350,20 +356,22 @@ public class Database {
     /**
      * Adds the given list of items to the closet of the user with the given username.
      * @param username the username of the user to add the items to.
+     * @param profileName the profile to add to.
      * @param items the list of items to be added.
      */
-    public static void addItemsToCloset(@NonNull String username, @NonNull List<Item> items) {
-        addItemsToCloset(username, items, null);
+    public static void addItemsToCloset(@NonNull String username, @NonNull String profileName, @NonNull List<Item> items) {
+        addItemsToCloset(username, profileName, items, null);
     }
 
     /**
      * Adds the given list of items to the closet of the user with the given username.
      * @param username the username of the user to add the items to.
+     * @param profileName the profile to add to.
      * @param items the list of items to be added.
      * @param onAddCallback called once for each item that has been added to the database.
      */
-    public static void addItemsToCloset(String username, List<Item> items, Function<Item, Void> onAddCallback) {
-        DatabaseReference closetItemsRef = FirebaseDatabase.getInstance().getReference().child(USERS_KEY).child(username).child(USER_CLOSET_KEY);
+    public static void addItemsToCloset(@NonNull String username, @NonNull String profileName, List<Item> items, Function<Item, Void> onAddCallback) {
+        DatabaseReference closetItemsRef = getProfileReference(username, profileName).child(PROFILE_CLOSET_KEY);
         for (Item item : items) {
             String itemId = closetItemsRef.push().getKey();
             assert itemId != null;
@@ -378,25 +386,27 @@ public class Database {
     /**
      * Adds the given outfit to the favorites of the user with the given username.
      * @param username the username of the user to add favorite outfit to.
+     * @param profileName the profile to add to.
      * @param outfit the outfit to add.
      */
-    public static void addFavoritedOutfit(@NonNull String username, @NonNull Outfit outfit) {
-        addFavoritedOutfit(username, outfit, null);
+    public static void addFavoritedOutfit(@NonNull String username, @NonNull String profileName, @NonNull Outfit outfit) {
+        addFavoritedOutfit(username, profileName, outfit, null);
     }
 
     /**
      * Adds the given outfit to the favorites of the user with the given username.
      * @param username the username of the user to add favorite outfit to.
+     * @param profileName the profile to add to.
      * @param outfit the outfit to add.
      * @param onFavoriteCallback called after the outfit has been added to favorites.
      */
-    public static void addFavoritedOutfit(@NonNull String username, @NonNull Outfit outfit, Function<Outfit, Void> onFavoriteCallback) {
+    public static void addFavoritedOutfit(@NonNull String username, @NonNull String profileName, @NonNull Outfit outfit, Function<Outfit, Void> onFavoriteCallback) {
         requestOutfitSnapshotMatching(outfit, new Function<DataSnapshot, Void>() {
             @Override
             public Void apply(DataSnapshot dataSnapshot) {
                 if (dataSnapshot != null) {
                     String outfitKey = dataSnapshot.getKey();
-                    DatabaseReference favoritesRef = FirebaseDatabase.getInstance().getReference().child(USERS_KEY).child(username).child(USER_FAVORITES_KEY);
+                    DatabaseReference favoritesRef = getProfileReference(username, profileName).child(PROFILE_FAVORITES_KEY);
                     String favoriteId = favoritesRef.push().getKey();
 
                     Map<String, Object> map = new HashMap<>();
@@ -435,21 +445,22 @@ public class Database {
     /**
      * Removes the given item from the closet of the user with given username.
      * @param username the username of the user to remove the item from.
+     * @param profileName the profile to remove from.
      * @param item the item to be removed.
      */
-    public static void removeItemFromCloset(@NonNull String username, @NonNull Item item) {
-        removeItemFromCloset(username, item, null);
+    public static void removeItemFromCloset(@NonNull String username, @NonNull String profileName, @NonNull Item item) {
+        removeItemFromCloset(username, profileName, item, null);
     }
 
     /**
      * Removes the given item from the closet of the user with the given username.
      * @param username the username of the user to remove the item from.
+     * @param profileName the profile to remove from.
      * @param item the item to be removed.
      * @param onDeleteCallback called after the item has been removed from the database.
      */
-    public static void removeItemFromCloset(String username, Item item, Function<Item, Void> onDeleteCallback) {
-        DatabaseReference closetItemReference = FirebaseDatabase.getInstance().getReference().child(USERS_KEY).child(username).child(USER_CLOSET_KEY);
-
+    public static void removeItemFromCloset(@NonNull String username, @NonNull String profileName, Item item, Function<Item, Void> onDeleteCallback) {
+        DatabaseReference closetItemReference = getProfileReference(username, profileName).child(PROFILE_CLOSET_KEY);
         closetItemReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -485,18 +496,20 @@ public class Database {
     /**
      * Removes all items in the closet of the user with the given username.
      * @param username the username of the user to clear the closet of.
+     * @param profileName the profile to clear.
      */
-    public static void removeAllItemsFromCloset(@NonNull String username) {
-        removeAllItemsFromCloset(username, null);
+    public static void removeAllItemsFromCloset(@NonNull String username, @NonNull String profileName) {
+        removeAllItemsFromCloset(username, profileName, null);
     }
 
     /**
      * Removes all items in the closet of the user with the given username.
      * @param username The username of the user to clear the closet of.
+     * @param profileName the profile to clear.
      * @param onDeleteAllCallback called after all items have been removed from the database.
      */
-    public static void removeAllItemsFromCloset(@NonNull String username, Function<List<Item>, Void> onDeleteAllCallback) {
-        DatabaseReference closetItemReference = FirebaseDatabase.getInstance().getReference().child(USERS_KEY).child(username).child(USER_CLOSET_KEY);
+    public static void removeAllItemsFromCloset(@NonNull String username, @NonNull String profileName, Function<List<Item>, Void> onDeleteAllCallback) {
+        DatabaseReference closetItemReference = getProfileReference(username, profileName).child(PROFILE_CLOSET_KEY);
         if (onDeleteAllCallback == null) {
             // Easy version
             closetItemReference.removeValue();
@@ -534,17 +547,18 @@ public class Database {
     /**
      * Removes the given outfit from the favorites of the user with the given username.
      * @param username the username of the user to remove outfit from.
+     * @param profileName the profile to remove from.
      * @param outfit the outfit to remove.
      * @param onDeleteCallback called after the outfit has been removed from the user.
      */
-    public static void removeFavoritedOutfit(@NonNull String username, @NonNull Outfit outfit, Function<Outfit, Void> onDeleteCallback) {
+    public static void removeFavoritedOutfit(@NonNull String username, @NonNull String profileName, @NonNull Outfit outfit, Function<Outfit, Void> onDeleteCallback) {
         requestOutfitSnapshotMatching(outfit, new Function<DataSnapshot, Void>() {
             @Override
             public Void apply(DataSnapshot dataSnapshot) {
                 if (dataSnapshot != null) {
                     String outfitKey = dataSnapshot.getKey();
                     assert outfitKey != null;
-                    DatabaseReference favoritesRef = FirebaseDatabase.getInstance().getReference().child(USERS_KEY).child(username).child(USER_FAVORITES_KEY);
+                    DatabaseReference favoritesRef = getProfileReference(username, profileName).child(PROFILE_FAVORITES_KEY);
                     favoritesRef.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -682,6 +696,11 @@ public class Database {
         map.put(OUTFIT_TAGS_KEY, outfit.getTagFlags());
 
         return map;
+    }
+
+
+    private static DatabaseReference getProfileReference(@NonNull String username, @NonNull String profileName) {
+        return FirebaseDatabase.getInstance().getReference().child(USERS_KEY).child(username).child(USER_PROFILES_KEY).child(profileName);
     }
 
 

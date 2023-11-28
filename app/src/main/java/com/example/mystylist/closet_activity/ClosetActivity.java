@@ -59,7 +59,7 @@ public class ClosetActivity extends AppCompatActivity {
         layout = findViewById(R.id.constraintLayout);
 
         closet = new Closet(null);
-        Database.requestItemsFromCloset(LoginActivity.username, new Function<Item, Void>() {
+        Database.requestItemsFromCloset(LoginActivity.username, AccountActivity.profileName, new Function<Item, Void>() {
             @Override
             public Void apply(Item item) {
                 ClosetActivity context = ClosetActivity.this;
@@ -156,7 +156,7 @@ public class ClosetActivity extends AppCompatActivity {
                     // Notify adapter of added item
                     adapter.notifyItemInserted(1);
                     // Add item to database
-                    Database.addItemToCloset(LoginActivity.username, item);
+                    Database.addItemToCloset(LoginActivity.username, AccountActivity.profileName, item);
                     // Close popup
                     popupWindow.dismiss();
                 }
@@ -183,7 +183,7 @@ public class ClosetActivity extends AppCompatActivity {
                 List<Item> items = new ArrayList<>(closet.getItems());
                 closet.clearItems();
                 adapter.notifyItemRangeRemoved(1, items.size()); // Update the adapter
-                Database.removeAllItemsFromCloset(LoginActivity.username);
+                Database.removeAllItemsFromCloset(LoginActivity.username, AccountActivity.profileName);
 
                 // Undo
                 showSnackbar("Closet has been cleared.", "UNDO", new View.OnClickListener() {
@@ -195,7 +195,7 @@ public class ClosetActivity extends AppCompatActivity {
                         // Update the adapter
                         adapter.notifyItemRangeInserted(1, items.size());
                         // Add items back to database
-                        Database.addItemsToCloset(LoginActivity.username, closet.getItems());
+                        Database.addItemsToCloset(LoginActivity.username, AccountActivity.profileName, closet.getItems());
                     }
                 });
             }
@@ -216,14 +216,14 @@ public class ClosetActivity extends AppCompatActivity {
                 final Item item = adapter.removeItemAt(position);  // Also removes item from closet
                 if (item == null)
                     return;  // Position not a closet item
-                Database.removeItemFromCloset(LoginActivity.username, item);
+                Database.removeItemFromCloset(LoginActivity.username, AccountActivity.profileName, item);
 
                 showSnackbar("Item was removed from the closet.", "UNDO", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         Log.d("onClickTest", "What is happening?");
                         adapter.addItemAt(position, item);
-                        Database.addItemToCloset(LoginActivity.username, item);
+                        Database.addItemToCloset(LoginActivity.username, AccountActivity.profileName, item);
                     }
                 });
             }

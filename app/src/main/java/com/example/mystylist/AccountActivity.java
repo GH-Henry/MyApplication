@@ -37,6 +37,9 @@ public class AccountActivity extends AppCompatActivity {
     TextView AccountName;
     Button editAccountButton, outfitsButton, closetButton, favoritesButton;
     public static List<String> OutfitArr = new ArrayList<>();
+
+    public static String profileName = "Temp Profile Name";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
