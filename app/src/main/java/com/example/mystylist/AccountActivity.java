@@ -35,7 +35,7 @@ import java.util.Set;
 
 public class AccountActivity extends AppCompatActivity {
     TextView AccountName;
-    Button editAccountButton, outfitsButton, closetButton, favoritesButton;
+    Button editAccountButton, outfitsButton, closetButton, favoritesButton, changeAccountButton;
     public static List<String> OutfitArr = new ArrayList<>();
 
     public static String profileName = "Temp Profile Name";
@@ -49,6 +49,8 @@ public class AccountActivity extends AppCompatActivity {
         outfitsButton = findViewById(R.id.outfitsButton);
         closetButton = findViewById(R.id.closetButton);
         favoritesButton = findViewById(R.id.favoritesButton);
+        changeAccountButton = findViewById(R.id.change_account_button);
+
         showAllUserData();
         AccountName.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -151,6 +153,15 @@ public class AccountActivity extends AppCompatActivity {
                 // Added for presentation
                 Intent intent = new Intent(AccountActivity.this, ClosetActivity.class);
                 startActivity(intent);
+            }
+        });
+
+
+
+        changeAccountButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
             }
         });
     }

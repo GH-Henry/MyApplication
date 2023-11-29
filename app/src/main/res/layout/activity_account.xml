@@ -7,7 +7,21 @@ android:layout_width="match_parent"
 android:layout_height="match_parent"
 tools:context=".AccountActivity">
 
-<TextView
+    <Button
+        android:id="@+id/change_account_button"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="24dp"
+        android:backgroundTint="@color/black"
+        android:text="Change Account"
+        android:textSize="14sp"
+        app:cornerRadius="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+        app:layout_constraintVertical_bias="0.8" />
+
+    <TextView
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:id="@+id/AccountName"
@@ -69,18 +83,20 @@ tools:context=".AccountActivity">
         android:backgroundTint="@color/black"
         app:cornerRadius = "20dp"/>
 </LinearLayout>
-<Button
-    android:layout_width="0dp"
-    android:layout_height="60dp"
-    android:id="@+id/editButton"
-    android:gravity="center"
-    android:text="Edit Account"
-    android:textSize="18sp"
-    android:backgroundTint="@color/white"
-    android:textColor="@color/black"
-    app:cornerRadius = "20dp"
-    app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintEnd_toEndOf="@id/linearLayout"
-    app:layout_constraintStart_toStartOf="@id/linearLayout"
-    app:layout_constraintTop_toBottomOf="@id/linearLayout"/>
+
+    <Button
+        android:id="@+id/editButton"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:backgroundTint="@color/white"
+        android:gravity="center"
+        android:text="Edit Account"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        app:cornerRadius="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/change_account_button"
+        app:layout_constraintEnd_toEndOf="@id/linearLayout"
+        app:layout_constraintStart_toStartOf="@id/linearLayout"
+        app:layout_constraintTop_toBottomOf="@id/linearLayout"
+        app:rippleColor="@color/black" />
 </androidx.constraintlayout.widget.ConstraintLayout>
