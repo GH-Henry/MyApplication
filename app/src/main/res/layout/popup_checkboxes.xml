@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/white_background">
+
+
+    <CheckBox
+        android:id="@+id/checkboxCasual"
+        android:layout_width="104dp"
+        android:layout_height="48dp"
+        android:layout_marginEnd="104dp"
+        android:layout_marginBottom="12dp"
+        android:text="Casual"
+        app:layout_constraintBottom_toTopOf="@+id/checkboxSmartCasual"
+        app:layout_constraintEnd_toStartOf="@+id/checkboxSpring" />
+
+    <CheckBox
+        android:id="@+id/checkboxSmartCasual"
+        android:layout_width="107dp"
+        android:layout_height="48dp"
+        android:layout_marginEnd="100dp"
+        android:layout_marginBottom="8dp"
+        android:text="Smart Casual"
+        app:layout_constraintBottom_toTopOf="@+id/checkboxBusinessCasual"
+        app:layout_constraintEnd_toStartOf="@+id/checkboxSummer" />
+
+    <CheckBox
+        android:id="@+id/checkboxBusinessCasual"
+        android:layout_width="109dp"
+        android:layout_height="48dp"
+        android:layout_marginEnd="100dp"
+        android:layout_marginBottom="16dp"
+        android:text="Business Casual"
+        app:layout_constraintBottom_toTopOf="@+id/checkboxBusinessProfessional"
+        app:layout_constraintEnd_toStartOf="@+id/checkboxFall" />
+
+    <CheckBox
+        android:id="@+id/checkboxBusinessProfessional"
+        android:layout_width="115dp"
+        android:layout_height="48dp"
+        android:layout_marginEnd="96dp"
+        android:layout_marginBottom="12dp"
+        android:text="Business Professional"
+        app:layout_constraintBottom_toTopOf="@+id/checkboxSemiFormal"
+        app:layout_constraintEnd_toStartOf="@+id/checkboxWinter" />
+
+    <CheckBox
+        android:id="@+id/checkboxSemiFormal"
+        android:layout_width="115dp"
+        android:layout_height="48dp"
+        android:layout_marginEnd="100dp"
+        android:layout_marginBottom="12dp"
+        android:text="Semi-Formal"
+        app:layout_constraintBottom_toTopOf="@+id/checkboxFormal"
+        app:layout_constraintEnd_toStartOf="@+id/checkboxFair" />
+
+    <CheckBox
+        android:id="@+id/checkboxFormal"
+        android:layout_width="111dp"
+        android:layout_height="48dp"
+        android:layout_marginEnd="100dp"
+        android:layout_marginBottom="12dp"
+        android:text="Formal"
+        app:layout_constraintBottom_toTopOf="@+id/checkboxNeutral"
+        app:layout_constraintEnd_toStartOf="@+id/checkboxCold" />
+
+    <CheckBox
+        android:id="@+id/checkboxNeutral"
+        android:layout_width="114dp"
+        android:layout_height="48dp"
+        android:layout_marginEnd="96dp"
+        android:layout_marginBottom="8dp"
+        android:text="Neutral"
+        app:layout_constraintBottom_toTopOf="@+id/checkboxMasculine"
+        app:layout_constraintEnd_toStartOf="@+id/checkboxHot" />
+
+    <CheckBox
+        android:id="@+id/checkboxMasculine"
+        android:layout_width="114dp"
+        android:layout_height="48dp"
+        android:layout_marginEnd="96dp"
+        android:layout_marginBottom="8dp"
+        android:text="Masculine"
+        app:layout_constraintBottom_toTopOf="@+id/checkboxFeminine"
+        app:layout_constraintEnd_toStartOf="@+id/checkboxRainy" />
+
+    <CheckBox
+        android:id="@+id/checkboxFeminine"
+        android:layout_width="114dp"
+        android:layout_height="48dp"
+        android:layout_marginEnd="96dp"
+        android:layout_marginBottom="24dp"
+        android:text="Feminine"
+        app:layout_constraintBottom_toTopOf="@+id/btnApplySelections2"
+        app:layout_constraintEnd_toStartOf="@+id/checkboxRainy" />
+
+    <CheckBox
+        android:id="@+id/checkboxSpring"
+        android:layout_width="114dp"
+        android:layout_height="48dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
+        android:text="Spring"
+        app:layout_constraintBottom_toTopOf="@+id/checkboxSummer"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <CheckBox
+        android:id="@+id/checkboxSummer"
+        android:layout_width="114dp"
+        android:layout_height="48dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="12dp"
+        android:text="Summer"
+        app:layout_constraintBottom_toTopOf="@+id/checkboxFall"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <CheckBox
+        android:id="@+id/checkboxFall"
+        android:layout_width="114dp"
+        android:layout_height="48dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="4dp"
+        android:text="Fall"
+        app:layout_constraintBottom_toTopOf="@+id/checkboxWinter"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <CheckBox
+        android:id="@+id/checkboxWinter"
+        android:layout_width="114dp"
+        android:layout_height="48dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="12dp"
+        android:text="Winter"
+        app:layout_constraintBottom_toTopOf="@+id/checkboxFair"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <CheckBox
+        android:id="@+id/checkboxFair"
+        android:layout_width="114dp"
+        android:layout_height="48dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginBottom="12dp"
+        android:text="Fair"
+        app:layout_constraintBottom_toTopOf="@+id/checkboxCold"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <CheckBox
+        android:id="@+id/checkboxCold"
+        android:layout_width="114dp"
+        android:layout_height="48dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginBottom="4dp"
+        android:text="Cold"
+        app:layout_constraintBottom_toTopOf="@+id/checkboxHot"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <CheckBox
+        android:id="@+id/checkboxHot"
+        android:layout_width="114dp"
+        android:layout_height="48dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginBottom="20dp"
+        android:text="Hot"
+        app:layout_constraintBottom_toTopOf="@+id/checkboxRainy"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <CheckBox
+        android:id="@+id/checkboxRainy"
+        android:layout_width="114dp"
+        android:layout_height="48dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginBottom="80dp"
+        android:text="Rainy"
+        app:layout_constraintBottom_toTopOf="@+id/btnApplySelections2"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <Button
+        android:id="@+id/btnApplySelections2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Apply Selections"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

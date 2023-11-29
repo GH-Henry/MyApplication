@@ -26,12 +26,26 @@
     </string-array>
 
     <string-array name="occasions_array">
-        <item>Semi-Casual</item>
+        <item>Business Casual</item>
+        <item>Smart Casual</item>
         <item>Casual</item>
         <item>Formal</item>
-        <item>Party</item>
-        <item>Sportswear</item>
+        <item>Semi-formal</item>
+        <item>Business Professional</item>
         <!-- Add more occasion types as needed -->
+    </string-array>
+
+    <string-array name="gender_array">
+        <item>Neutral</item>
+        <item>Masculine</item>
+        <item>Feminine</item>
+    </string-array>
+
+    <string-array name="weather_array">
+        <item>Fair</item>
+        <item>Hot</item>
+        <item>Cold</item>
+        <item>Rainy</item>
     </string-array>
 
     <string name="title_activity_scrolling">ScrollingActivity</string>
