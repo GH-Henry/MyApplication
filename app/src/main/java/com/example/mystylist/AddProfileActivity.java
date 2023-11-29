@@ -28,8 +28,9 @@ public class AddProfileActivity extends AppCompatActivity {
         acceptAddProfileButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(AddProfileActivity.this, SelectProfileActivity.class);
-                startActivity(intent);
+                String name = profileName.getText().toString();
+                Database.addProfile(LoginActivity.username, name);
+                finish();
             }
         });
         cancelAddProfileButton.setOnClickListener(new View.OnClickListener() {

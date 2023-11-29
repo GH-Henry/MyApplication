@@ -48,6 +48,20 @@ public class Database {
     private static final String OUTFIT_TAGS_KEY = "tags";
 
 
+    public static void addProfile(@NonNull String username, @NonNull String profileName) {
+        DatabaseReference profilesReference = FirebaseDatabase.getInstance().getReference()
+                .child(USERS_KEY)
+                .child(username)
+                .child(USER_PROFILES_KEY);
+        Map<String, Object> map = new HashMap<String, Object>() { {
+            put(profileName, 0);
+        } };
+
+        profilesReference.updateChildren(map);
+        Log.d("Database", "Added profile to user: " + profileName + " ---> "  + username);
+    }
+
+
     /**
      * Requests items from the closet of the given user from the database.
      * @param username the username of the user who's items to get.
