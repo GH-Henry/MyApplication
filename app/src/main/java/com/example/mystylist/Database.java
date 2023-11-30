@@ -730,114 +730,131 @@ public class Database {
                         ETag.STYLE_CASUAL,
                 }));
         tempOutfits.add(new Outfit(
-                "Something Different",
-                "WRITE ME", // TODO
+                "Early Morning Run",
+                "Jogging Outfit",
                 new Item[] {
-                        // TODO
-                        new Item(EItemType.T_SHIRT, EColor.BLACK),
-                        new Item(EItemType.SHORTS, EColor.BEIGE),
+                        new Item(EItemType.T_SHIRT, EColor.GREY),
+                        new Item(EItemType.SHORTS, EColor.WHITE),
+                        new Item(EItemType.SNEAKERS, EColor.GREY),
                 },
                 new ETag[] {
-                        // TODO
+                        ETag.GENDER_NEUTRAL,
+                        ETag.SEASON_SPRING, ETag.SEASON_SUMMER, ETag.SEASON_FALL,
+                        ETag.WEATHER_FAIR, ETag.WEATHER_HOT,
+                        ETag.STYLE_CASUAL,
                 }));
         tempOutfits.add(new Outfit(
                 "Lounging at Home",
-                "WRITE ME", // TODO
+                "Chilling At Home Outfit",
                 new Item[] {
-                        // TODO
                         new Item(EItemType.T_SHIRT, EColor.BLACK),
                         new Item(EItemType.SHORTS, EColor.BEIGE),
                 },
                 new ETag[] {
-                        // TODO
+                        ETag.GENDER_NEUTRAL,
+                        ETag.SEASON_SUMMER, ETag.SEASON_FALL, ETag.SEASON_SPRING,
+                        ETag.WEATHER_FAIR, ETag.WEATHER_HOT,
+                        ETag.STYLE_CASUAL,
                 }));
         tempOutfits.add(new Outfit(
                 "Fancy Dinner",
-                "WRITE ME", // TODO
+                "Date Night Dinner",
                 new Item[] {
-                        // TODO
                         new Item(EItemType.BLOUSE, EColor.WHITE),
-                        new Item(EItemType.SHORTS, EColor.BEIGE),
-                        new Item(EItemType.SHORTS, EColor.DARK_BLUE),
+                        new Item(EItemType.PANTS, EColor.BEIGE),
+                        new Item(EItemType.HIGH_HEELS, EColor.BLACK),
                 },
                 new ETag[] {
-                        // TODO
+                        ETag.GENDER_FEMININE,
+                        ETag.SEASON_SUMMER, ETag.SEASON_FALL, ETag.SEASON_SPRING,
+                        ETag.WEATHER_FAIR, ETag.WEATHER_HOT,
+                        ETag.STYLE_SEMI_FORMAL,
                 }));
         tempOutfits.add(new Outfit(
                 "Family Party",
-                "WRITE ME", // TODO
+                "Outfit for Family Birthday Party",
                 new Item[] {
-                        // TODO
                         new Item(EItemType.BLOUSE, EColor.WHITE),
                         new Item(EItemType.SHORTS, EColor.BEIGE),
                 },
                 new ETag[] {
-                        // TODO
+                        ETag.GENDER_FEMININE,
+                        ETag.SEASON_SUMMER, ETag.SEASON_FALL, ETag.SEASON_SPRING,
+                        ETag.WEATHER_FAIR, ETag.WEATHER_HOT,
+                        ETag.STYLE_SMART_CASUAL,
                 }));
         tempOutfits.add(new Outfit(
                 "Catch His Eye",
-                "WRITE ME", // TODO
+                "Revealing Outfit on a Night out", //
                 new Item[] {
-                        // TODO
                         new Item(EItemType.DRESS, EColor.BEIGE),
                         new Item(EItemType.SHORTS, EColor.BEIGE),
                 },
                 new ETag[] {
-                        // TODO
+                        ETag.GENDER_FEMININE,
+                        ETag.SEASON_SUMMER, ETag.SEASON_FALL, ETag.SEASON_SPRING,
+                        ETag.WEATHER_FAIR, ETag.WEATHER_HOT,
+                        ETag.STYLE_SEMI_FORMAL,
                 }));
         tempOutfits.add(new Outfit(
                 "Sandy Outing",
-                "WRITE ME", // TODO
+                "Outfit for aBeach Date",
                 new Item[] {
-                        // TODO
                         new Item(EItemType.DRESS, EColor.BEIGE),
-                        new Item(EItemType.SHORTS, EColor.BEIGE),
-                        new Item(EItemType.SHORTS, EColor.BEIGE),
+                        new Item(EItemType.SANDALS, EColor.BEIGE),
                 },
                 new ETag[] {
-                        // TODO
+                        ETag.GENDER_FEMININE,
+                        ETag.SEASON_SUMMER, ETag.SEASON_FALL, ETag.SEASON_SPRING,
+                        ETag.WEATHER_FAIR, ETag.WEATHER_HOT,
+                        ETag.STYLE_SMART_CASUAL,
                 }));
         tempOutfits.add(new Outfit(
                 "Irish Fem Fatale",
-                "WRITE ME", // TODO
+                "Saint Paddy's Party",
                 new Item[] {
-                        // TODO
-                        new Item(EItemType.HEELS, EColor.GREEN),
+                        new Item(EItemType.SNEAKERS, EColor.GREEN),
                         new Item(EItemType.SHORTS, EColor.BEIGE),
-                        new Item(EItemType.SHORTS, EColor.BEIGE),
-                        new Item(EItemType.SHORTS, EColor.BEIGE),
+                        new Item(EItemType.T_SHIRT, EColor.GREEN),
                 },
                 new ETag[] {
-                        // TODO
+                        ETag.GENDER_NEUTRAL,
+                        ETag.SEASON_SPRING,
+                        ETag.WEATHER_FAIR, ETag.WEATHER_HOT,
+                        ETag.STYLE_CASUAL,
                 }));
         tempOutfits.add(new Outfit(
                 "Business Day",
-                "WRITE ME", // TODO
+                "Typical in the Office Workday",
                 new Item[] {
-                        // TODO
                         new Item(EItemType.LONG_SLEEVE_SHIRT, EColor.GREY),
                         new Item(EItemType.SHORTS, EColor.BEIGE),
                         new Item(EItemType.LOAFERS, EColor.DARK_BLUE),
                 },
                 new ETag[] {
-                        // TODO
+                        ETag.GENDER_MASCULINE,
+                        ETag.SEASON_SUMMER, ETag.SEASON_FALL, ETag.SEASON_SPRING,
+                        ETag.WEATHER_FAIR, ETag.WEATHER_HOT,
+                        ETag.STYLE_SMART_CASUAL,
                 }));
         tempOutfits.add(new Outfit(
                 "Flowery Day",
-                "WRITE ME", // TODO
+                "Flower Picking during Hot Summer Day",
                 new Item[] {
-                        // TODO
                         new Item(EItemType.T_SHIRT, EColor.PINK),
                         new Item(EItemType.JEANS, EColor.DARK_BLUE),
                         new Item(EItemType.SNEAKERS, EColor.GREY),
                 },
                 new ETag[] {
-                        // TODO
+                        ETag.GENDER_FEMININE,
+                        ETag.SEASON_SUMMER, ETag.SEASON_FALL,
+                        ETag.WEATHER_FAIR, ETag.WEATHER_HOT,
+                        ETag.STYLE_CASUAL,
                 }));
 
         tempOutfits.add(new Outfit(
                 "Cold Day Outside",
-                "WRITE ME", // TODO
+                "Running Errands during a Cold Day",
                 new Item[] {
                         new Item(EItemType.SWEATER, EColor.BLACK),
                         new Item(EItemType.JEANS, EColor.DARK_BLUE),
@@ -852,7 +869,7 @@ public class Database {
                 }));
         tempOutfits.add(new Outfit(
                 "Cold Day in the Forrest",
-                "WRITE ME", // TODO
+                " Outfit for Holiday Camping Trip",
                 new Item[] {
                         new Item(EItemType.SWEATER, EColor.BLACK),
                         new Item(EItemType.JEANS, EColor.DARK_BLUE),
@@ -864,7 +881,595 @@ public class Database {
                         ETag.WEATHER_FAIR, ETag.WEATHER_COLD,
                         ETag.STYLE_SMART_CASUAL,
                 }));
-        // TODO: Still need 38 more to meet requirements
+
+        tempOutfits.add(new Outfit(
+                "Mens Casual Interview Outfit",
+                "Business Outfit For Interview",
+                new Item[] {
+                        new Item(EItemType.SUIT_JACKET, EColor.GREY),
+                        new Item(EItemType.PANTS, EColor.GREY),
+                        new Item(EItemType.LONG_SLEEVE_SHIRT, EColor.DARK_BLUE),
+                        new Item(EItemType.LONG_SOCKS, EColor.BLACK),
+                        new Item(EItemType.DRESS_SHOES, EColor.BLACK),
+                },
+                new ETag[] {
+                        ETag.GENDER_MASCULINE,
+                        ETag.SEASON_WINTER, ETag.SEASON_FALL, ETag.SEASON_SPRING, ETag.SEASON_SUMMER,
+                        ETag.WEATHER_FAIR, ETag.WEATHER_COLD, ETag.WEATHER_HOT,
+                        ETag.STYLE_BUSINESS_PROFESSIONAL,
+                }));
+
+        tempOutfits.add(new Outfit(
+                "Mens Casual Meeting Outfit",
+                "Business Outfit For Meeting",
+                new Item[] {
+                        new Item(EItemType.SUIT_JACKET, EColor.BEIGE),
+                        new Item(EItemType.PANTS, EColor.BLACK),
+                        new Item(EItemType.LONG_SLEEVE_SHIRT, EColor.WHITE),
+                        new Item(EItemType.LONG_SOCKS, EColor.BLACK),
+                        new Item(EItemType.DRESS_SHOES, EColor.BROWN),
+                },
+                new ETag[] {
+                        ETag.GENDER_MASCULINE,
+                        ETag.SEASON_WINTER, ETag.SEASON_FALL, ETag.SEASON_SPRING, ETag.SEASON_SUMMER,
+                        ETag.WEATHER_FAIR, ETag.WEATHER_COLD, ETag.WEATHER_HOT,
+                        ETag.STYLE_FORMAL,
+                }));
+
+        tempOutfits.add(new Outfit(
+                "Mens Daily Casual Business Outfit",
+                " Comfortable Business Casual Outfit For Daily Use",
+                new Item[] {
+                        new Item(EItemType.SUIT_JACKET, EColor.LIGHT_BLUE),
+                        new Item(EItemType.PANTS, EColor.DARK_BLUE),
+                        new Item(EItemType.LONG_SLEEVE_SHIRT, EColor.WHITE),
+                        new Item(EItemType.SHORT_SOCKS, EColor.WHITE),
+                        new Item(EItemType.SNEAKERS, EColor.WHITE),
+                },
+                new ETag[] {
+                        ETag.GENDER_MASCULINE,
+                        ETag.SEASON_WINTER, ETag.SEASON_FALL, ETag.SEASON_SPRING, ETag.SEASON_SUMMER,
+                        ETag.WEATHER_FAIR, ETag.WEATHER_COLD, ETag.WEATHER_HOT,
+                        ETag.STYLE_BUSINESS_CASUAL,
+                }));
+
+        tempOutfits.add(new Outfit(
+                "Mens Casual Business Dinner Outfit",
+                "Casual Business Outfit For Dinner",
+                new Item[] {
+                        new Item(EItemType.JEANS, EColor.DARK_BLUE),
+                        new Item(EItemType.LONG_SLEEVE_SHIRT, EColor.BEIGE),
+                        new Item(EItemType.SHORT_SOCKS, EColor.WHITE),
+                        new Item(EItemType.LOAFERS, EColor.BROWN),
+                },
+                new ETag[] {
+                        ETag.GENDER_MASCULINE,
+                        ETag.SEASON_FALL, ETag.SEASON_SPRING, ETag.SEASON_SUMMER,
+                        ETag.WEATHER_FAIR, ETag.WEATHER_HOT,
+                        ETag.STYLE_BUSINESS_CASUAL,
+                }));
+
+        tempOutfits.add(new Outfit(
+                "Women's Casual Business Outfit",
+                "Casual Business Outfit For Daily Use",
+                new Item[] {
+                        new Item(EItemType.T_SHIRT, EColor.BROWN),
+                        new Item(EItemType.PANTS, EColor.BEIGE),
+                        new Item(EItemType.HIGH_HEELS, EColor.BROWN),
+                },
+                new ETag[] {
+                        ETag.GENDER_FEMININE,
+                        ETag.SEASON_FALL, ETag.SEASON_SPRING, ETag.SEASON_SUMMER,
+                        ETag.WEATHER_FAIR, ETag.WEATHER_HOT,
+                        ETag.STYLE_BUSINESS_CASUAL,
+                }));
+
+        tempOutfits.add(new Outfit(
+                "Women's Business Meeting Outfit",
+                "Business Outfit For Dinner",
+                new Item[] {
+                        new Item(EItemType.COAT, EColor.BEIGE),
+                        new Item(EItemType.T_SHIRT, EColor.WHITE),
+                        new Item(EItemType.PANTS, EColor.WHITE),
+                        new Item(EItemType.HIGH_HEELS, EColor.BLACK),
+                },
+                new ETag[] {
+                        ETag.GENDER_FEMININE,
+                        ETag.SEASON_FALL, ETag.SEASON_SPRING, ETag.SEASON_SUMMER, ETag.SEASON_WINTER,
+                        ETag.WEATHER_FAIR, ETag.WEATHER_HOT, ETag.WEATHER_COLD,
+                        ETag.STYLE_BUSINESS_PROFESSIONAL,
+                }));
+
+        tempOutfits.add(new Outfit(
+                "Women's Gym Outfit For Summer",
+                "Matching Gym Set For Hot Weather",
+                new Item[] {
+                        new Item(EItemType.SPORTS_BRA, EColor.WHITE),
+                        new Item(EItemType.LEGGINGS, EColor.WHITE),
+                        new Item(EItemType.SHORT_SOCKS, EColor.WHITE),
+                        new Item(EItemType.SNEAKERS, EColor.WHITE),
+                },
+                new ETag[] {
+                        ETag.GENDER_FEMININE,
+                        ETag.SEASON_FALL, ETag.SEASON_SPRING, ETag.SEASON_SUMMER,
+                        ETag.WEATHER_FAIR, ETag.WEATHER_HOT,
+                        ETag.STYLE_CASUAL,
+                }));
+
+        tempOutfits.add(new Outfit(
+                "Women's Gym Outfit with Sweater",
+                "Gym Outfit for Colder Seasons",
+                new Item[] {
+                        new Item(EItemType.HOODIE, EColor.BLACK),
+                        new Item(EItemType.SPORTS_BRA, EColor.BLACK),
+                        new Item(EItemType.LEGGINGS, EColor.BLACK),
+                        new Item(EItemType.LONG_SOCKS, EColor.WHITE),
+                        new Item(EItemType.SNEAKERS, EColor.WHITE),
+                },
+                new ETag[] {
+                        ETag.GENDER_FEMININE,
+                        ETag.SEASON_FALL, ETag.SEASON_WINTER,
+                        ETag.WEATHER_FAIR, ETag.WEATHER_COLD,
+                        ETag.STYLE_CASUAL,
+                }));
+
+        tempOutfits.add(new Outfit(
+                " Hoodie Mens Gym Outfit ",
+                "Gym Outfit for Colder Weather ",
+                new Item[] {
+                        new Item(EItemType.HOODIE, EColor.BLACK),
+                        new Item(EItemType.T_SHIRT, EColor.DARK_BLUE),
+                        new Item(EItemType.PANTS, EColor.BLACK),
+                        new Item(EItemType.LONG_SOCKS, EColor.WHITE),
+                        new Item(EItemType.SNEAKERS, EColor.DARK_BLUE),
+                },
+                new ETag[] {
+                        ETag.GENDER_MASCULINE,
+                        ETag.SEASON_FALL, ETag.SEASON_WINTER,
+                        ETag.WEATHER_FAIR, ETag.WEATHER_COLD,
+                        ETag.STYLE_CASUAL,
+                }));
+
+        tempOutfits.add(new Outfit(
+                "Mens Summer Gym Outfit",
+                "Gym Outfit for Hotter Seasons",
+                new Item[] {
+                        new Item(EItemType.T_SHIRT, EColor.WHITE),
+                        new Item(EItemType.SHORTS, EColor.GREY),
+                        new Item(EItemType.SHORT_SOCKS, EColor.WHITE),
+                        new Item(EItemType.SNEAKERS, EColor.BLACK),
+                },
+                new ETag[] {
+                        ETag.GENDER_MASCULINE,
+                        ETag.SEASON_FALL, ETag.SEASON_SPRING, ETag.SEASON_SUMMER,
+                        ETag.WEATHER_FAIR, ETag.WEATHER_HOT,
+                        ETag.STYLE_CASUAL,
+                }));
+
+        tempOutfits.add(new Outfit(
+                "Mens Wedding Outfit",
+                "Men Black Suit for Wedding",
+                new Item[] {
+                        new Item(EItemType.SUIT_JACKET, EColor.BLACK),
+                        new Item(EItemType.LONG_SLEEVE_SHIRT, EColor.WHITE),
+                        new Item(EItemType.PANTS, EColor.BLACK),
+                        new Item(EItemType.LONG_SOCKS, EColor.BLACK),
+                        new Item(EItemType.DRESS_SHOES, EColor.BLACK),
+                },
+                new ETag[] {
+                        ETag.GENDER_MASCULINE,
+                        ETag.SEASON_FALL, ETag.SEASON_SPRING, ETag.SEASON_SUMMER, ETag.SEASON_WINTER,
+                        ETag.WEATHER_FAIR, ETag.WEATHER_HOT, ETag.WEATHER_COLD,
+                        ETag.STYLE_FORMAL,
+                }));
+
+        tempOutfits.add(new Outfit(
+                "Mens Groomsmen Outfit",
+                "Groomsmen Outfit for Bestfriends Wedding",
+                new Item[] {
+                        new Item(EItemType.SUIT_JACKET, EColor.BEIGE),
+                        new Item(EItemType.LONG_SLEEVE_SHIRT, EColor.WHITE),
+                        new Item(EItemType.PANTS, EColor.BEIGE),
+                        new Item(EItemType.LONG_SOCKS, EColor.BLACK),
+                        new Item(EItemType.DRESS_SHOES, EColor.BROWN),
+                },
+                new ETag[] {
+                        ETag.GENDER_MASCULINE,
+                        ETag.SEASON_FALL, ETag.SEASON_SPRING, ETag.SEASON_SUMMER, ETag.SEASON_WINTER,
+                        ETag.WEATHER_FAIR, ETag.WEATHER_HOT, ETag.WEATHER_COLD,
+                        ETag.STYLE_FORMAL,
+                }));
+
+        tempOutfits.add(new Outfit(
+                "Brides Ceremony Dress",
+                "Brides Wedding Dress",
+                new Item[] {
+                        new Item(EItemType.DRESS, EColor.WHITE),
+                        new Item(EItemType.HEELS, EColor.WHITE),
+                },
+                new ETag[] {
+                        ETag.GENDER_FEMININE,
+                        ETag.SEASON_FALL, ETag.SEASON_SPRING, ETag.SEASON_SUMMER,
+                        ETag.WEATHER_FAIR, ETag.WEATHER_HOT,
+                        ETag.STYLE_FORMAL,
+                }));
+
+        tempOutfits.add(new Outfit(
+                "Maid of Honor Dress",
+                "Red Dress for the Maid of Honor",
+                new Item[] {
+                        new Item(EItemType.DRESS, EColor.RED),
+                        new Item(EItemType.HEELS, EColor.BLACK),
+                },
+                new ETag[] {
+                        ETag.GENDER_FEMININE,
+                        ETag.SEASON_FALL, ETag.SEASON_SPRING, ETag.SEASON_SUMMER,
+                        ETag.WEATHER_FAIR, ETag.WEATHER_HOT,
+                        ETag.STYLE_FORMAL,
+                }));
+
+        tempOutfits.add(new Outfit(
+                "Everyday Work Outfit",
+                "Above casual outfit for everyday use to work",
+                new Item[] {
+                        new Item(EItemType.LONG_SLEEVE_SHIRT, EColor.BEIGE),
+                        new Item(EItemType.PANTS, EColor.BLACK),
+                        new Item(EItemType.DRESS_SHOES, EColor.BROWN),
+                        new Item(EItemType.SHORT_SOCKS, EColor.BLACK),
+                },
+                new ETag[] {
+                        ETag.GENDER_MASCULINE,
+                        ETag.SEASON_FALL, ETag.SEASON_SPRING, ETag.SEASON_SUMMER,
+                        ETag.WEATHER_FAIR, ETag.WEATHER_HOT,
+                        ETag.STYLE_SMART_CASUAL,
+                }));
+
+        tempOutfits.add(new Outfit(
+                "Club Outfit",
+                "Outfit for late night clubbing",
+                new Item[] {
+                        new Item(EItemType.BUTTON_DOWN_SHIRT, EColor.BLACK),
+                        new Item(EItemType.JEANS, EColor.DARK_BLUE),
+                        new Item(EItemType.SNEAKERS, EColor.WHITE),
+                        new Item(EItemType.SHORT_SOCKS, EColor.WHITE),
+                },
+                new ETag[] {
+                        ETag.GENDER_MASCULINE,
+                        ETag.SEASON_FALL, ETag.SEASON_SPRING, ETag.SEASON_SUMMER,
+                        ETag.WEATHER_FAIR, ETag.WEATHER_HOT,
+                        ETag.STYLE_SMART_CASUAL,
+                }));
+
+        tempOutfits.add(new Outfit(
+                "Picnic Outfit",
+                "Hot Summer Day Outfit for Picnic",
+                new Item[] {
+                        new Item(EItemType.SUNDRESS, EColor.YELLOW),
+                        new Item(EItemType.SANDALS, EColor.BROWN),
+                },
+                new ETag[] {
+                        ETag.GENDER_FEMININE,
+                        ETag.SEASON_FALL, ETag.SEASON_SPRING, ETag.SEASON_SUMMER,
+                        ETag.WEATHER_FAIR, ETag.WEATHER_HOT,
+                        ETag.STYLE_CASUAL,
+                }));
+        tempOutfits.add(new Outfit(
+                "Relaxed Casual Meeting Outfit",
+                "Comfortable, relaxed casual outfit for meetings",
+                new Item[] {
+                        new Item(EItemType.LONG_SLEEVE_SHIRT, EColor.BEIGE),
+                        new Item(EItemType.PANTS, EColor.WHITE),
+                        new Item(EItemType.HIGH_HEELS, EColor.WHITE),
+                },
+                new ETag[] {
+                        ETag.GENDER_FEMININE,
+                        ETag.SEASON_FALL, ETag.SEASON_SPRING, ETag.SEASON_SUMMER,
+                        ETag.WEATHER_FAIR, ETag.WEATHER_HOT,
+                        ETag.STYLE_SMART_CASUAL,
+                }));
+
+        tempOutfits.add(new Outfit(
+                "Outfit For Shopping",
+                "Above average shopping outfit for women",
+                new Item[] {
+                        new Item(EItemType.COAT, EColor.BEIGE),
+                        new Item(EItemType.T_SHIRT, EColor.WHITE),
+                        new Item(EItemType.JEANS, EColor.LIGHT_BLUE),
+                        new Item(EItemType.SHORT_SOCKS, EColor.WHITE),
+                        new Item(EItemType.SNEAKERS, EColor.BLACK),
+                },
+                new ETag[] {
+                        ETag.GENDER_FEMININE,
+                        ETag.SEASON_FALL, ETag.SEASON_SPRING, ETag.SEASON_WINTER,
+                        ETag.WEATHER_FAIR, ETag.WEATHER_COLD,
+                        ETag.STYLE_SMART_CASUAL,
+                }));
+
+        tempOutfits.add(new Outfit(
+                "Interview Outfit for Women",
+                "Professional Business Outfit for Ladies ",
+                new Item[] {
+                        new Item(EItemType.SUIT_JACKET, EColor.GREY),
+                        new Item(EItemType.T_SHIRT, EColor.WHITE),
+                        new Item(EItemType.PANTS, EColor.GREY),
+                        new Item(EItemType.HIGH_HEELS, EColor.BLACK),
+                },
+                new ETag[] {
+                        ETag.GENDER_FEMININE,
+                        ETag.SEASON_FALL, ETag.SEASON_SPRING, ETag.SEASON_WINTER, ETag.SEASON_SUMMER,
+                        ETag.WEATHER_FAIR, ETag.WEATHER_COLD, ETag.WEATHER_HOT,
+                        ETag.STYLE_BUSINESS_PROFESSIONAL, ETag.STYLE_FORMAL,
+                }));
+
+        tempOutfits.add(new Outfit(
+                "Women's Professional Outfit",
+                "Real Estate Outfit",
+                new Item[] {
+                        new Item(EItemType.LONG_SLEEVE_SHIRT, EColor.WHITE),
+                        new Item(EItemType.LONG_SKIRT, EColor.BLACK),
+                        new Item(EItemType.HIGH_HEELS, EColor.BLACK),
+                },
+                new ETag[] {
+                        ETag.GENDER_FEMININE,
+                        ETag.SEASON_FALL, ETag.SEASON_SPRING, ETag.SEASON_WINTER, ETag.SEASON_SUMMER,
+                        ETag.WEATHER_FAIR, ETag.WEATHER_COLD, ETag.WEATHER_HOT,
+                        ETag.STYLE_BUSINESS_PROFESSIONAL, ETag.STYLE_FORMAL,
+                }));
+
+        tempOutfits.add(new Outfit(
+                "Sunday Church Outfit",
+                "Women's Church Outfit",
+                new Item[] {
+                        new Item(EItemType.BLOUSE, EColor.WHITE),
+                        new Item(EItemType.LONG_SKIRT, EColor.GREY),
+                        new Item(EItemType.HEELS, EColor.WHITE),
+                },
+                new ETag[] {
+                        ETag.GENDER_FEMININE,
+                        ETag.SEASON_FALL, ETag.SEASON_SPRING, ETag.SEASON_SUMMER,
+                        ETag.WEATHER_FAIR, ETag.WEATHER_HOT,
+                        ETag.STYLE_SEMI_FORMAL,
+                }));
+
+        tempOutfits.add(new Outfit(
+                "Weekend Brunch Outfit",
+                " Long Dress for Brunch",
+                new Item[] {
+                        new Item(EItemType.DRESS, EColor.BEIGE),
+                        new Item(EItemType.SANDALS, EColor.WHITE),
+                },
+                new ETag[] {
+                        ETag.GENDER_FEMININE,
+                        ETag.SEASON_FALL, ETag.SEASON_SPRING, ETag.SEASON_SUMMER,
+                        ETag.WEATHER_FAIR,  ETag.WEATHER_HOT,
+                        ETag.STYLE_SEMI_FORMAL,
+                }));
+
+        tempOutfits.add(new Outfit(
+                "Chilly Sunday Church Outfit",
+                "Women's Church Outfit for the Winter Season",
+                new Item[] {
+                        new Item(EItemType.COAT, EColor.GREY),
+                        new Item(EItemType.BLOUSE, EColor.WHITE),
+                        new Item(EItemType.PANTS, EColor.GREY),
+                        new Item(EItemType.HEELS, EColor.WHITE),
+                },
+                new ETag[] {
+                        ETag.GENDER_FEMININE,
+                        ETag.SEASON_FALL, ETag.SEASON_WINTER,
+                        ETag.WEATHER_COLD,
+                        ETag.STYLE_SEMI_FORMAL,
+                }));
+
+        tempOutfits.add(new Outfit(
+                "Nightly Pajamas",
+                "Comfortable pajamas for sleep",
+                new Item[] {
+                        new Item(EItemType.T_SHIRT, EColor.WHITE),
+                        new Item(EItemType.SHORTS, EColor.BLACK),
+                },
+                new ETag[] {
+                        ETag.GENDER_NEUTRAL,
+                        ETag.SEASON_FALL, ETag.SEASON_SUMMER, ETag.SEASON_FALL,
+                        ETag.WEATHER_FAIR, ETag.WEATHER_HOT,
+                        ETag.STYLE_CASUAL,
+                }));
+
+        tempOutfits.add(new Outfit(
+                "Christmas Pajamas",
+                "Sleep Pajamas for Christmas Season",
+                new Item[] {
+                        new Item(EItemType.HOODIE, EColor.RED),
+                        new Item(EItemType.T_SHIRT, EColor.WHITE),
+                        new Item(EItemType.LEGGINGS, EColor.BLACK),
+                },
+                new ETag[] {
+                        ETag.GENDER_FEMININE,
+                        ETag.SEASON_WINTER,
+                        ETag.WEATHER_COLD,
+                        ETag.STYLE_CASUAL,
+                }));
+
+        tempOutfits.add(new Outfit(
+                "Beach Kind of Day",
+                "Outfit for hot summer beach day",
+                new Item[] {
+                        new Item(EItemType.SHORTS, EColor.RED),
+                        new Item(EItemType.SANDALS, EColor.BLACK),
+                },
+                new ETag[] {
+                        ETag.GENDER_MASCULINE,
+                        ETag.SEASON_SUMMER, ETag.SEASON_SPRING,
+                        ETag.WEATHER_HOT,
+                        ETag.STYLE_CASUAL,
+                }));
+
+        tempOutfits.add(new Outfit(
+                "Beach Day Jog",
+                "Comfortable running outfit for outdoos jog",
+                new Item[] {
+                        new Item(EItemType.SPORTS_BRA, EColor.DARK_BLUE),
+                        new Item(EItemType.LEGGINGS, EColor.DARK_BLUE),
+                        new Item(EItemType.SNEAKERS, EColor.BLACK),
+                },
+                new ETag[] {
+                        ETag.GENDER_FEMININE,
+                        ETag.SEASON_SUMMER, ETag.SEASON_SPRING, ETag.SEASON_FALL,
+                        ETag.WEATHER_HOT, ETag.WEATHER_FAIR,
+                        ETag.STYLE_CASUAL,
+                }));
+
+        tempOutfits.add(new Outfit(
+                "Boys Night Out",
+                "Semi-Formal Outfit to wear for a boys night out",
+                new Item[] {
+                        new Item(EItemType.POLO, EColor.RED),
+                        new Item(EItemType.JEANS, EColor.DARK_BLUE),
+                        new Item(EItemType.SNEAKERS, EColor.RED),
+                },
+                new ETag[] {
+                        ETag.GENDER_MASCULINE,
+                        ETag.SEASON_SUMMER, ETag.SEASON_SPRING, ETag.SEASON_FALL,
+                        ETag.WEATHER_HOT, ETag.WEATHER_FAIR,
+                        ETag.STYLE_SEMI_FORMAL,
+                }));
+
+        tempOutfits.add(new Outfit(
+                "Beach Vacation Outfit",
+                "Casual Beach Vacation Outfit",
+                new Item[] {
+                        new Item(EItemType.SLEEVELESS_SHIRT, EColor.GREEN),
+                        new Item(EItemType.SHORTS, EColor.BLACK),
+                        new Item(EItemType.SANDALS, EColor.BLACK),
+                },
+                new ETag[] {
+                        ETag.GENDER_MASCULINE,
+                        ETag.SEASON_SUMMER, ETag.SEASON_SPRING, ETag.SEASON_FALL,
+                        ETag.WEATHER_HOT, ETag.WEATHER_FAIR,
+                        ETag.STYLE_CASUAL,
+                }));
+
+        tempOutfits.add(new Outfit(
+                "Independence Day Outfit",
+                "July 4th Celebration Outfit",
+                new Item[] {
+                        new Item(EItemType.T_SHIRT, EColor.DARK_BLUE),
+                        new Item(EItemType.SHORTS, EColor.WHITE),
+                        new Item(EItemType.SNEAKERS, EColor.RED),
+                },
+                new ETag[] {
+                        ETag.GENDER_MASCULINE,
+                        ETag.SEASON_SUMMER,
+                        ETag.WEATHER_HOT,
+                        ETag.STYLE_CASUAL,
+                }));
+
+        tempOutfits.add(new Outfit(
+                "Big Bear Ski Trip ",
+                "Outfit for Freezing Ski Trip",
+                new Item[] {
+                        new Item(EItemType.WINDBREAKER, EColor.BLACK),
+                        new Item(EItemType.LONG_SLEEVE_SHIRT, EColor.BLACK),
+                        new Item(EItemType.PANTS, EColor.WHITE),
+                        new Item(EItemType.SHORT_SOCKS, EColor.WHITE),
+                        new Item(EItemType.SNEAKERS, EColor.BLACK),
+                },
+                new ETag[] {
+                        ETag.GENDER_NEUTRAL,
+                        ETag.SEASON_WINTER,
+                        ETag.WEATHER_COLD,
+                        ETag.STYLE_CASUAL,
+                }));
+
+        tempOutfits.add(new Outfit(
+                "First Day of School",
+                "Outfit for School Uniform",
+                new Item[] {
+                        new Item(EItemType.T_SHIRT, EColor.DARK_BLUE),
+                        new Item(EItemType.PANTS, EColor.BLACK),
+                        new Item(EItemType.SHORT_SOCKS, EColor.WHITE),
+                        new Item(EItemType.SNEAKERS, EColor.WHITE),
+                },
+                new ETag[] {
+                        ETag.GENDER_NEUTRAL,
+                        ETag.SEASON_SUMMER,
+                        ETag.WEATHER_HOT,
+                        ETag.STYLE_SEMI_FORMAL,
+                }));
+
+        tempOutfits.add(new Outfit(
+                "Thanksgiving Dinner",
+                "Family Dinner for Outfits",
+                new Item[] {
+                        new Item(EItemType.COAT, EColor.BROWN),
+                        new Item(EItemType.LONG_SLEEVE_SHIRT, EColor.BLACK),
+                        new Item(EItemType.JEANS, EColor.BLACK),
+                        new Item(EItemType.HEELS, EColor.BROWN),
+                },
+                new ETag[] {
+                        ETag.GENDER_FEMININE,
+                        ETag.SEASON_FALL,
+                        ETag.WEATHER_COLD, ETag.WEATHER_FAIR,
+                        ETag.STYLE_SEMI_FORMAL,
+                }));
+
+        tempOutfits.add(new Outfit(
+                "Winter Wedding",
+                "Attending a Wedding During Winter",
+                new Item[] {
+                        new Item(EItemType.DRESS, EColor.LIGHT_BLUE),
+                        new Item(EItemType.HEELS, EColor.LIGHT_BLUE),
+                },
+                new ETag[] {
+                        ETag.GENDER_FEMININE,
+                        ETag.SEASON_WINTER,
+                        ETag.WEATHER_COLD,
+                        ETag.STYLE_FORMAL,
+                }));
+
+        tempOutfits.add(new Outfit(
+                "Family Holiday Photoshoot",
+                "Festive Holiday Outfits for Photoshoot",
+                new Item[] {
+                        new Item(EItemType.SWEATER, EColor.RED),
+                        new Item(EItemType.T_SHIRT, EColor.BLACK),
+                        new Item(EItemType.PANTS, EColor.BLACK),
+                        new Item(EItemType.DRESS_SHOES, EColor.BLACK),
+                },
+                new ETag[] {
+                        ETag.GENDER_MASCULINE,
+                        ETag.SEASON_WINTER,
+                        ETag.WEATHER_COLD,
+                        ETag.STYLE_SMART_CASUAL,
+                }));
+        tempOutfits.add(new Outfit(
+                "Cancun Vacation",
+                "Outfit for beach vibes",
+                new Item[] {
+                        new Item(EItemType.SUNDRESS, EColor.PURPLE),
+                        new Item(EItemType.SANDALS, EColor.BLACK),
+                },
+                new ETag[] {
+                        ETag.GENDER_FEMININE,
+                        ETag.SEASON_SUMMER, ETag.SEASON_SPRING, ETag.SEASON_FALL,
+                        ETag.WEATHER_HOT, ETag.WEATHER_FAIR,
+                        ETag.STYLE_CASUAL,
+                }));
+
+        tempOutfits.add(new Outfit(
+                "Honeymoon Outfits",
+                "Hawaii Honeymoon Outfit ",
+                new Item[] {
+                        new Item(EItemType.BUTTON_DOWN_SHIRT, EColor.LIGHT_BLUE),
+                        new Item(EItemType.SHORTS, EColor.BEIGE),
+                        new Item(EItemType.SANDALS, EColor.BEIGE),
+                },
+                new ETag[] {
+                        ETag.GENDER_MASCULINE,
+                        ETag.SEASON_SUMMER, ETag.SEASON_SPRING, ETag.SEASON_FALL,
+                        ETag.WEATHER_HOT, ETag.WEATHER_FAIR,
+                        ETag.STYLE_SMART_CASUAL,
+                }));
 
 
         for (Outfit outfit : tempOutfits) {
