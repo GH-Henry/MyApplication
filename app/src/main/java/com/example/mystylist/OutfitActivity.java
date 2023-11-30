@@ -659,12 +659,16 @@ public class OutfitActivity extends AppCompatActivity {
         trans.commit();
     }
 
-    @Override
-    public void finish() {
-        super.finish();
+    public static void clearFilters() {
         givenOutfits = null;
         filterItems = null;
         filterTags = null;
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        clearFilters();
     }
 
 

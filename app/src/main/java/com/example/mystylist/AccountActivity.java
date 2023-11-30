@@ -5,27 +5,29 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.example.mystylist.closet_activity.ClosetActivity;
+import com.example.mystylist.enums.EColor;
+import com.example.mystylist.enums.EItemType;
+import com.example.mystylist.structures.Item;
 import com.example.mystylist.structures.Profile;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Function;
@@ -33,6 +35,7 @@ import java.util.function.Function;
 public class AccountActivity extends AppCompatActivity {
     TextView AccountName;
     Button editAccountButton, outfitsButton, closetButton, favoritesButton, changeAccountButton;
+    private LinearLayout layout;
     public static List<String> OutfitArr = new ArrayList<>();
 
     public static String profileName = null;
@@ -41,6 +44,7 @@ public class AccountActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account);
+        layout = findViewById(R.id.linearLayout);
         AccountName = findViewById(R.id.AccountName);
         editAccountButton = findViewById(R.id.editButton);
         outfitsButton = findViewById(R.id.outfitsButton);
@@ -72,78 +76,7 @@ public class AccountActivity extends AppCompatActivity {
         outfitsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // TODO
-                // Create and inflate the custom layout for the dialog
-                View dialogView = getLayoutInflater().inflate(R.layout.popup_dropdowns, null);
-
-                // Initialize the Spinners and the Button
-                Spinner spinnerSeasons = dialogView.findViewById(R.id.spinnerSeasons);
-                Spinner spinnerOccasion = dialogView.findViewById(R.id.spinnerOccasion);
-                Button btnApplySelections = dialogView.findViewById(R.id.btnApplySelections);
-
-                // Create ArrayAdapter for the first Spinner (Seasons)
-                ArrayAdapter<CharSequence> seasonsAdapter = ArrayAdapter.createFromResource(
-                        AccountActivity.this,
-                        R.array.seasons_array,  // Create a string array resource with seasons
-                        android.R.layout.simple_spinner_item
-                );
-                seasonsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                spinnerSeasons.setAdapter(seasonsAdapter);
-
-                // Create ArrayAdapter for the second Spinner (Occasions)
-                ArrayAdapter<CharSequence> occasionsAdapter = ArrayAdapter.createFromResource(
-                        AccountActivity.this,
-                        R.array.occasions_array,  // Create a string array resource with occasions
-                        android.R.layout.simple_spinner_item
-                );
-                occasionsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                spinnerOccasion.setAdapter(occasionsAdapter);
-
-                // Create the AlertDialog
-                AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(AccountActivity.this);
-                dialogBuilder.setView(dialogView);
-                final AlertDialog dialog = dialogBuilder.create();
-
-                // Set a click listener for the "Apply Selections" button
-                btnApplySelections.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        // Handle the selected values from the Spinners
-                        String selectedSeason = spinnerSeasons.getSelectedItem().toString().trim();
-                        String selectedGender = "Male";
-                        String selectedOccasion = spinnerOccasion.getSelectedItem().toString();
-
-                        Set<String> uniqueOutfitArr = new HashSet<>(); // Use a Set to store unique items
-
-                        // TODO: replace what was here previously
-
-                        // Convert the Set to a List to maintain order
-                        OutfitArr = new ArrayList<>(uniqueOutfitArr);
-
-                        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(AccountActivity.this);
-                        View dialogView = getLayoutInflater().inflate(R.layout.item_outfit, null);
-                        LinearLayout outfitContainer = dialogView.findViewById(R.id.outfitContainer); // The container in the popup layout
-
-                        for (String outfitItem : OutfitArr) {
-                            // Create a white box (you can customize this as needed)
-                            TextView outfitTextView = new TextView(AccountActivity.this);
-                            outfitTextView.setText(outfitItem);
-                            outfitTextView.setBackgroundColor(Color.WHITE);
-
-                            // Add the white box to the outfit container
-                            outfitContainer.addView(outfitTextView);
-                        }
-
-                        dialogBuilder.setView(dialogView);
-
-                        // Create and show the dialog
-                        final AlertDialog outfitDialog = dialogBuilder.create();
-                        outfitDialog.show();
-                    }
-                });
-
-                // Show the dialog
-                dialog.show();
+                showOutfitPopup();
             }
         });
 
@@ -179,6 +112,63 @@ public class AccountActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         updateProfileData();
+    }
+
+    public void showOutfitPopup() {
+        LayoutInflater inflater = LayoutInflater.from(this);
+        View popupView = inflater.inflate(R.layout.popup_outfit_description, null);
+        int width = ConstraintLayout.LayoutParams.MATCH_PARENT;
+        int height = ConstraintLayout.LayoutParams.WRAP_CONTENT;
+        PopupWindow popupWindow = new PopupWindow(popupView, width, height, true);
+
+        Spinner type_spinner = popupView.findViewById(R.id.type_spinner);
+        Spinner color_spinner = popupView.findViewById(R.id.color_spinner);
+        Button button_cancel = popupView.findViewById(R.id.button_cancel);
+        Button button_accept = popupView.findViewById(R.id.button_accept);
+        Button button_search_all = popupView.findViewById(R.id.button_search_all);
+
+        ArrayAdapter<EItemType> item_adapter = new ArrayAdapter<>(this, R.layout.spinner_row_clothing_type, EItemType.values());
+        type_spinner.setAdapter(item_adapter);
+
+        ArrayAdapter<EColor> color_adapter = new ArrayAdapter<>(this, R.layout.spinner_row_clothing_color, EColor.values());
+        color_spinner.setAdapter(color_adapter);
+
+        button_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popupWindow.dismiss();
+            }
+        });
+
+        button_accept.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Get values from spinners
+                EItemType item_type = EItemType.values()[type_spinner.getSelectedItemPosition()];
+                EColor color = EColor.values()[color_spinner.getSelectedItemPosition()];
+
+                // Create item from values
+                Item item = new Item(item_type, color);
+
+                Intent intent = new Intent(AccountActivity.this, OutfitActivity.class);
+                OutfitActivity.clearFilters();
+                OutfitActivity.filterItems = new LinkedList<Item>() { { add(item); } };
+                startActivity(intent);
+                popupWindow.dismiss();
+            }
+        });
+
+        button_search_all.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(AccountActivity.this, OutfitActivity.class);
+                OutfitActivity.clearFilters();
+                startActivity(intent);
+                popupWindow.dismiss();
+            }
+        });
+
+        popupWindow.showAtLocation(layout, Gravity.CENTER, 0, 0);
     }
 
     public void updateProfileData() {
