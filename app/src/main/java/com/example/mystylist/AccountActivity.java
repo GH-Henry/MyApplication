@@ -35,7 +35,7 @@ import java.util.function.Function;
 public class AccountActivity extends AppCompatActivity {
     TextView AccountName;
     Button editAccountButton, outfitsButton, closetButton, favoritesButton, changeAccountButton;
-    private LinearLayout layout;
+    private ConstraintLayout layout;
     public static List<String> OutfitArr = new ArrayList<>();
 
     public static String profileName = null;
@@ -44,7 +44,7 @@ public class AccountActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account);
-        layout = findViewById(R.id.linearLayout);
+        layout = findViewById(R.id.constraint_layout);
         AccountName = findViewById(R.id.AccountName);
         editAccountButton = findViewById(R.id.editButton);
         outfitsButton = findViewById(R.id.outfitsButton);
@@ -98,7 +98,13 @@ public class AccountActivity extends AppCompatActivity {
             }
         });
 
-
+        favoritesButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(AccountActivity.this, FavoritesActivity.class);
+                startActivity(intent);
+            }
+        });
 
         changeAccountButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -168,7 +174,7 @@ public class AccountActivity extends AppCompatActivity {
             }
         });
 
-        popupWindow.showAtLocation(layout, Gravity.CENTER, 0, 0);
+        popupWindow.showAtLocation(layout, Gravity.CENTER, 0, -100);
     }
 
     public void updateProfileData() {

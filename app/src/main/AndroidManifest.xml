@@ -34,6 +34,9 @@
             android:name=".OutfitActivity"
             android:exported="true">
         </activity>
+        <activity
+            android:name=".FavoritesActivity">
+        </activity>
     </application>
 
 </manifest>

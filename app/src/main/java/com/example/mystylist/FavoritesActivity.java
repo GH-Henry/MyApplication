@@ -1,33 +1,34 @@
 package com.example.mystylist;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.recyclerview.widget.RecyclerView;
-
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.View;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.ImageButton;
 import android.widget.PopupWindow;
 
-import com.example.mystylist.structures.Item;
-import com.example.mystylist.structures.Outfit;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.mystylist.enums.ETag;
+import com.example.mystylist.structures.Outfit;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Function;
 
-public class OutfitActivity extends AppCompatActivity implements IOutfitRecyclerHome {
+public class FavoritesActivity extends AppCompatActivity implements IOutfitRecyclerHome {
 
     public ConstraintLayout layout;
     ImageButton backButton;
@@ -64,32 +65,28 @@ public class OutfitActivity extends AppCompatActivity implements IOutfitRecycler
     private RecyclerView recyclerView;
     private OutfitItemAdapter adapter;
 
-    private List<Outfit> favoritedOutfits;
+    private ArrayList<Outfit> favoritedOutfits;
 
-    private ArrayList<Outfit> outfits;
+
     public static List<ETag> selectedTags = new LinkedList<ETag>();
-
-    public static List<Outfit> givenOutfits = null;
-    public static List<Item> filterItems = null;
-    public static Long filterTags = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_outfits);
+        layout = findViewById(R.id.constraint_layout);
 
         backButton = findViewById(R.id.back_button);
         filterButton = findViewById(R.id.filter_button);
 
         recyclerView = findViewById(R.id.list_of_filtered);
-        outfits = new ArrayList<>();
-        adapter = new OutfitItemAdapter(outfits, false);
+        favoritedOutfits = new ArrayList<>();
+        adapter = new OutfitItemAdapter(favoritedOutfits, true);
 
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setHasFixedSize(false);
 
-        favoritedOutfits = new LinkedList<>();
         selectedTags = new LinkedList<>();
 
         backButton.setOnClickListener(new View.OnClickListener() {
@@ -105,32 +102,7 @@ public class OutfitActivity extends AppCompatActivity implements IOutfitRecycler
             }
         });
 
-        // Decide how to load outfits
-        if (givenOutfits != null) {
-            // Use the outfit(s) given to you.
-            outfits = new ArrayList<>(givenOutfits);
-        }
-        else if (filterItems != null) {
-            // Use the outfits from the database that match the items
-            Database.getOutfitsMatching(filterItems, new receiveOutfitCallback());
-        }
-        else if (filterTags != null) {
-            // Use the outfits from the database that match the filter
-            Database.getOutfitsMatching(filterTags, new receiveOutfitCallback());
-        }
-        else {
-            // Use every outfit from the database
-            Database.getOutfits(new receiveOutfitCallback());
-        }
-
-        Database.getFavoritedOutfits(LoginActivity.activeAccount.getUsername(), AccountActivity.profileName, new Function<Outfit, Void>() {
-            @Override
-            public Void apply(Outfit outfit) {
-                favoritedOutfits.add(outfit);
-                updateFavorites();
-                return null;
-            }
-        });
+        Database.getFavoritedOutfits(LoginActivity.activeAccount.getUsername(), AccountActivity.profileName, new receiveOutfitCallback());
     }
 
     public void showFilterPopup() {
@@ -430,11 +402,20 @@ public class OutfitActivity extends AppCompatActivity implements IOutfitRecycler
         btnApplySelections.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int size = outfits.size();
-                outfits.clear();
+                int size = favoritedOutfits.size();
+                favoritedOutfits.clear();
                 adapter.notifyItemRangeRemoved(0, size);
-                filterTags = ETag.tagsToMask(selectedTags);
-                Database.getOutfitsMatching(filterTags, new receiveOutfitCallback());
+                long filterTags = ETag.tagsToMask(selectedTags);
+                Database.getFavoritedOutfits(LoginActivity.activeAccount.getUsername(), AccountActivity.profileName, new Function<Outfit, Void>() {
+                    @Override
+                    public Void apply(Outfit outfit) {
+                        if (outfit.tagsSatisfyFilter(filterTags)) {
+                            favoritedOutfits.add(0, outfit);
+                            adapter.notifyItemInserted(0);
+                        }
+                        return null;
+                    }
+                });
                 popupWindow.dismiss();
             }
         });
@@ -446,9 +427,9 @@ public class OutfitActivity extends AppCompatActivity implements IOutfitRecycler
     private class receiveOutfitCallback implements Function<Outfit, Void> {
         @Override
         public Void apply(Outfit outfit) {
-            OutfitActivity context = OutfitActivity.this;
+            FavoritesActivity context = FavoritesActivity.this;
 
-            outfits.add(0, outfit);
+            favoritedOutfits.add(0, outfit);
             context.adapter.notifyItemInserted(0);
             Log.d("OutfitActivity", "Added outfit to list: " + outfit.toString());
 
@@ -456,32 +437,27 @@ public class OutfitActivity extends AppCompatActivity implements IOutfitRecycler
         }
     }
 
-    private void updateFavorites() {
-        for (int i = 0; i < outfits.size(); i++) {
-            OutfitItemAdapter.ViewHolder holder = (OutfitItemAdapter.ViewHolder) recyclerView.findViewHolderForAdapterPosition(i);
-            if (holder == null)
-                continue;
-            CheckBox checkbox = holder.getFavoriteCheckbox();
-            if (favoritedOutfits.contains(outfits.get(i))) {
-                checkbox.setChecked(true);
-            }
-            else {
-                checkbox.setChecked(false);
-            }
-        }
-    }
-
     public void favoriteOutfit(Outfit outfit) {
         if (!favoritedOutfits.contains(outfit)) {
-            favoritedOutfits.add(outfit);
+            favoritedOutfits.add(0, outfit);
+            adapter.notifyItemInserted(0);
             Database.addFavoritedOutfit(LoginActivity.activeAccount.getUsername(), AccountActivity.profileName, outfit);
         }
     }
 
     public void unfavoriteOutfit(Outfit outfit) {
         if (favoritedOutfits.contains(outfit)) {
+            int index = favoritedOutfits.indexOf(outfit);
             favoritedOutfits.remove(outfit);
+            adapter.notifyItemRemoved(index);
             Database.removeFavoritedOutfit(LoginActivity.activeAccount.getUsername(), AccountActivity.profileName, outfit);
+
+            showSnackbar("Unfavorited outfit.", "UNDO", new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    favoriteOutfit(outfit);
+                }
+            });
         }
     }
 
@@ -501,17 +477,25 @@ public class OutfitActivity extends AppCompatActivity implements IOutfitRecycler
         trans.commit();
     }
 
-    public static void clearFilters() {
-        givenOutfits = null;
-        filterItems = null;
-        filterTags = null;
-    }
-
     @Override
     public void finish() {
         super.finish();
-        clearFilters();
     }
 
+    private void showSnackbar(String text) {
+        showSnackbar(text, Snackbar.LENGTH_LONG);
+    }
+    private void showSnackbar(String text, int duration) {
+        Snackbar.make(layout, text, duration).show();
+    }
+    private void showSnackbar(String text, String actionText, View.OnClickListener listener) {
+        showSnackbar(text, actionText, listener, Snackbar.LENGTH_LONG);
+    }
+    private void showSnackbar(String text, String actionText, View.OnClickListener action, int duration) {
+        Snackbar snackbar = Snackbar.make(layout, text, duration);
+        snackbar.setAction(actionText, action);
+        snackbar.setActionTextColor(Color.YELLOW);
+        snackbar.show();
+    }
 
 }

@@ -429,6 +429,9 @@ public class Database {
     }
 
 
+    public static void removeFavoritedOutfit(@NonNull String username, @NonNull String profileName, @NonNull Outfit outfit) {
+        removeFavoritedOutfit(username, profileName, outfit, null);
+    }
     /**
      * Removes the given outfit from the favorites of the user with the given username.
      * @param username the username of the user to remove outfit from.
