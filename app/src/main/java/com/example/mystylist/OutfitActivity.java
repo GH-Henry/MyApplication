@@ -2,24 +2,19 @@ package com.example.mystylist;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.AlertDialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.view.LayoutInflater;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.CheckBox;
-import android.widget.Spinner;
 import android.widget.CompoundButton;
 import android.widget.PopupWindow;
 
@@ -365,15 +360,15 @@ public class OutfitActivity extends AppCompatActivity {
         }
         else if (filterItems != null) {
             // Use the outfits from the database that match the items
-            Database.requestOutfitsMatching(filterItems, new receiveOutfitCallback());
+            Database.getOutfitsMatching(filterItems, new receiveOutfitCallback());
         }
         else if (filterTags != null) {
             // Use the outfits from the database that match the filter
-            Database.requestOutfitsMatching(filterTags, new receiveOutfitCallback());
+            Database.getOutfitsMatching(filterTags, new receiveOutfitCallback());
         }
         else {
             // Use every outfit from the database
-            Database.requestOutfits(new receiveOutfitCallback());
+            Database.getOutfits(new receiveOutfitCallback());
         }
 
         recyclerView = findViewById(R.id.list_of_filtered);
@@ -627,7 +622,7 @@ public class OutfitActivity extends AppCompatActivity {
                 int size = outfits.size();
                 outfits.clear();
                 adapter.notifyItemRangeRemoved(0, size);
-                Database.requestOutfitsMatching(filterTags, new receiveOutfitCallback());
+                Database.getOutfitsMatching(filterTags, new receiveOutfitCallback());
             }
         });
 

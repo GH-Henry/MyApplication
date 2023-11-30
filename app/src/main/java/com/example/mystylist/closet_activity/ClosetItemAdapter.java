@@ -3,7 +3,6 @@ package com.example.mystylist.closet_activity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
@@ -94,7 +93,7 @@ public class ClosetItemAdapter extends RecyclerView.Adapter<ClosetItemAdapter.Vi
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         ViewHolder view_holder;
         if (viewType == AddViewHolder.VIEW_TYPE)
-            view_holder = new AddViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_row_add_closet, parent, false));
+            view_holder = new AddViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_row_add, parent, false));
         else if (viewType == ItemViewHolder.VIEW_TYPE)
             view_holder = new ItemViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_row_item_closet, parent, false));
         else
@@ -160,7 +159,7 @@ public class ClosetItemAdapter extends RecyclerView.Adapter<ClosetItemAdapter.Vi
     public Item getItemAt(int position) {
         int index = positionToIndex(position);
         if (index >= 0 && index < closet.getItemCount())
-            return closet.getItemAt(position - 1);
+            return closet.getItemAt(index);
         else
             return null;
     }

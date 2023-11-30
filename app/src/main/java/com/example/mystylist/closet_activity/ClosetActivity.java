@@ -29,10 +29,8 @@ import com.example.mystylist.OutfitActivity;
 import com.example.mystylist.R;
 import com.example.mystylist.enums.EColor;
 import com.example.mystylist.enums.EItemType;
-import com.example.mystylist.enums.ETag;
 import com.example.mystylist.structures.Closet;
 import com.example.mystylist.structures.Item;
-import com.example.mystylist.structures.Outfit;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
@@ -59,7 +57,7 @@ public class ClosetActivity extends AppCompatActivity {
         layout = findViewById(R.id.constraintLayout);
 
         closet = new Closet(null);
-        Database.requestItemsFromCloset(LoginActivity.username, AccountActivity.profileName, new Function<Item, Void>() {
+        Database.getItemsFromCloset(LoginActivity.activeAccount.getUsername(), AccountActivity.profileName, new Function<Item, Void>() {
             @Override
             public Void apply(Item item) {
                 ClosetActivity context = ClosetActivity.this;
@@ -156,7 +154,7 @@ public class ClosetActivity extends AppCompatActivity {
                     // Notify adapter of added item
                     adapter.notifyItemInserted(1);
                     // Add item to database
-                    Database.addItemToCloset(LoginActivity.username, AccountActivity.profileName, item);
+                    Database.addItemToCloset(LoginActivity.activeAccount.getUsername(), AccountActivity.profileName, item);
                     // Close popup
                     popupWindow.dismiss();
                 }
@@ -183,7 +181,7 @@ public class ClosetActivity extends AppCompatActivity {
                 List<Item> items = new ArrayList<>(closet.getItems());
                 closet.clearItems();
                 adapter.notifyItemRangeRemoved(1, items.size()); // Update the adapter
-                Database.removeAllItemsFromCloset(LoginActivity.username, AccountActivity.profileName);
+                Database.removeAllItemsFromCloset(LoginActivity.activeAccount.getUsername(), AccountActivity.profileName);
 
                 // Undo
                 showSnackbar("Closet has been cleared.", "UNDO", new View.OnClickListener() {
@@ -195,7 +193,7 @@ public class ClosetActivity extends AppCompatActivity {
                         // Update the adapter
                         adapter.notifyItemRangeInserted(1, items.size());
                         // Add items back to database
-                        Database.addItemsToCloset(LoginActivity.username, AccountActivity.profileName, closet.getItems());
+                        Database.addItemsToCloset(LoginActivity.activeAccount.getUsername(), AccountActivity.profileName, closet.getItems());
                     }
                 });
             }
@@ -216,14 +214,14 @@ public class ClosetActivity extends AppCompatActivity {
                 final Item item = adapter.removeItemAt(position);  // Also removes item from closet
                 if (item == null)
                     return;  // Position not a closet item
-                Database.removeItemFromCloset(LoginActivity.username, AccountActivity.profileName, item);
+                Database.removeItemFromCloset(LoginActivity.activeAccount.getUsername(), AccountActivity.profileName, item);
 
                 showSnackbar("Item was removed from the closet.", "UNDO", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         Log.d("onClickTest", "What is happening?");
                         adapter.addItemAt(position, item);
-                        Database.addItemToCloset(LoginActivity.username, AccountActivity.profileName, item);
+                        Database.addItemToCloset(LoginActivity.activeAccount.getUsername(), AccountActivity.profileName, item);
                     }
                 });
             }

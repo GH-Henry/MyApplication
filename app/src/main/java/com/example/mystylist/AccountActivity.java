@@ -16,11 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.mystylist.closet_activity.ClosetActivity;
-import com.example.mystylist.structures.ItemInfo;
-import com.example.mystylist.enums.EColor;
-import com.example.mystylist.enums.EItemType;
-import com.example.mystylist.structures.Closet;
-import com.example.mystylist.structures.Item;
+import com.example.mystylist.structures.Profile;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -32,13 +28,14 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Function;
 
 public class AccountActivity extends AppCompatActivity {
     TextView AccountName;
     Button editAccountButton, outfitsButton, closetButton, favoritesButton, changeAccountButton;
     public static List<String> OutfitArr = new ArrayList<>();
 
-    public static String profileName = "Temp Profile Name";
+    public static String profileName = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +48,19 @@ public class AccountActivity extends AppCompatActivity {
         favoritesButton = findViewById(R.id.favoritesButton);
         changeAccountButton = findViewById(R.id.change_account_button);
 
-        showAllUserData();
+        Log.d("AccountActivity", "Account: " + LoginActivity.activeAccount.toString());
+
+        Database.getProfiles(LoginActivity.activeAccount.getUsername(), new Function<Profile, Void>() {
+            @Override
+            public Void apply(Profile profile) {
+                if (profileName == null) {
+                    selectProfile(profile);
+                    updateProfileData();
+                }
+                return null;
+            }
+        });
+
         AccountName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -63,6 +72,7 @@ public class AccountActivity extends AppCompatActivity {
         outfitsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // TODO
                 // Create and inflate the custom layout for the dialog
                 View dialogView = getLayoutInflater().inflate(R.layout.popup_dropdowns, null);
 
@@ -142,7 +152,6 @@ public class AccountActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(AccountActivity.this, EditAccountActivity.class);
-                passUserData();
                 startActivity(intent);
             }
         });
@@ -166,36 +175,18 @@ public class AccountActivity extends AppCompatActivity {
         });
     }
 
-    public void showAllUserData() {
-        Intent intent = getIntent();
-        String nameUser = intent.getStringExtra("name");
-        AccountName.setText(nameUser);
+    @Override
+    protected void onResume() {
+        super.onResume();
+        updateProfileData();
     }
 
-    public void passUserData() {
-        String userUsername = AccountName.getText().toString().trim();
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("users");
-        Query checkUserDatabase = reference.orderByChild("username").equalTo(userUsername);
-        checkUserDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.exists()) {
-                    String nameFromDB = snapshot.child(userUsername).child("name").getValue(String.class);
-                    String emailFromDB = snapshot.child(userUsername).child("email").getValue(String.class);
-                    String usernameFromDB = snapshot.child(userUsername).child("username").getValue(String.class);
-                    String passwordFromDB = snapshot.child(userUsername).child("password").getValue(String.class);
-                    Intent intent = new Intent(AccountActivity.this, EditAccountActivity.class);
-                    intent.putExtra("name", nameFromDB);
-                    intent.putExtra("email", emailFromDB);
-                    intent.putExtra("username", usernameFromDB);
-                    intent.putExtra("password", passwordFromDB);
-                    startActivity(intent);
-                }
-            }
+    public void updateProfileData() {
+        AccountName.setText(profileName);
+    }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-            }
-        });
+    public static void selectProfile(Profile profile) {
+        profileName = profile.getName();
+        Log.d("AccountActivity", "Activity selected: " + profile.getName());
     }
 }
