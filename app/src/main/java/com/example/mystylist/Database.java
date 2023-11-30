@@ -137,6 +137,11 @@ public class Database {
         });
     }
 
+    public static void removeProfile(@NonNull String username, @NonNull String profileName) {
+        DatabaseReference profileReference = getProfileReference(username, profileName);
+        profileReference.removeValue();
+    }
+
 
     /**
      * Requests items from the closet of the given user from the database.
