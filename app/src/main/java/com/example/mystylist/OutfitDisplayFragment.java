@@ -50,7 +50,7 @@ public class OutfitDisplayFragment extends Fragment {
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                OutfitActivity activity = (OutfitActivity) getActivity();
+                IOutfitRecyclerHome activity = (IOutfitRecyclerHome) getActivity();
                 assert activity != null;
                 activity.stopDisplayOutfitFragment(frag);
             }

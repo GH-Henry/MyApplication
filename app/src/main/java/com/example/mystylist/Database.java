@@ -7,12 +7,15 @@ import androidx.annotation.NonNull;
 import com.example.mystylist.enums.EColor;
 import com.example.mystylist.enums.EItemType;
 import com.example.mystylist.enums.ETag;
+import com.example.mystylist.structures.Account;
 import com.example.mystylist.structures.Item;
 import com.example.mystylist.structures.Outfit;
+import com.example.mystylist.structures.Profile;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -32,6 +35,7 @@ public class Database {
     private static final String USER_PERSONAL_NAME_KEY = "name";
 
     private static final String USER_PROFILES_KEY = "profiles";
+    private static final String PROFILE_NAME_KEY = "name";
 
     private static final String PROFILE_CLOSET_KEY = "closet";
     private static final String ITEM_TYPE_KEY = "type";
@@ -48,13 +52,104 @@ public class Database {
     private static final String OUTFIT_TAGS_KEY = "tags";
 
 
+
+    public static void addAccount(@NonNull Account account) {
+        DatabaseReference userReference = FirebaseDatabase.getInstance().getReference()
+                .child(USERS_KEY)
+                .child(account.getUsername());
+
+        userReference.updateChildren(getAccountAttributeMap(account));
+        Log.d("Database", "Added user to database: " + account.getUsername());
+    }
+
+    public static void getAccount(@NonNull String username, @NonNull String password, @NonNull Function<Account, Void> getAccountCallback) {
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference(USERS_KEY);
+        Query checkUserDatabase = reference.orderByChild(USER_USERNAME_KEY).equalTo(username);
+        checkUserDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()){
+                    Account account = parseAccount(snapshot.child(username));
+                    if (account != null) {
+                        if (account.getPassword().equals(password)) {
+                            getAccountCallback.apply(account);
+                        } else {
+                            Log.d("Database", "Failed to load account (invalid password): " + username);
+                            getAccountCallback.apply(null);
+                        }
+                    }
+                    else {
+                        Log.d("Database", "Failed to load account: " + username);
+                    }
+                } else {
+                    Log.d("Database", "Failed to load account (user not found): " + username);
+                    getAccountCallback.apply(null);
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
+    }
+
+
+    public static void addProfile(@NonNull String username, @NonNull Profile profile) {
+        DatabaseReference profileReference = getProfileReference(username, profile.getName());
+        Map<String, Object> map = new HashMap<String, Object>() { {
+            put(PROFILE_NAME_KEY, profile.getName());
+        } };
+
+        profileReference.updateChildren(map);
+        Log.d("Database", "Added profile to user: " + profile.getName() + " ---> "  + username);
+    }
+
+    public static void getProfiles(@NonNull String username, @NonNull Function<Profile, Void> getProfileCallback) {
+        DatabaseReference profilesRef = FirebaseDatabase.getInstance().getReference()
+                .child(USERS_KEY)
+                .child(username)
+                .child(USER_PROFILES_KEY);
+        profilesRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    for (DataSnapshot profileSnapshot : snapshot.getChildren()) {
+                        String name = profileSnapshot.child(PROFILE_NAME_KEY).getValue(String.class);
+                        if (name != null) {
+                            Log.d("Database", "Loaded profile: " + name);
+                            getProfileCallback.apply(new Profile(name));
+                        }
+                        else {
+                            Log.d("Database", "Failed to load profile: " + profileSnapshot.toString());
+                        }
+                    }
+                } else {
+                    // Handle the case when there is no data (snapshot doesn't exist)
+                    // For example, you can display a message to the user.
+                    Log.d("Database", "No data found in Firebase");
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                // Handle any errors if necessary
+                Log.e("Database", "Firebase data loading error: " + error.getMessage());
+            }
+        });
+    }
+
+    public static void removeProfile(@NonNull String username, @NonNull String profileName) {
+        DatabaseReference profileReference = getProfileReference(username, profileName);
+        profileReference.removeValue();
+    }
+
+
     /**
      * Requests items from the closet of the given user from the database.
      * @param username the username of the user who's items to get.
      * @param profileName the profile to get from.
      * @param getItemCallback receives the items from the database asynchronously. Called once for each item received from the database.
      */
-    public static void requestItemsFromCloset(@NonNull String username, @NonNull String profileName, @NonNull Function<Item, Void> getItemCallback) {
+    public static void getItemsFromCloset(@NonNull String username, @NonNull String profileName, @NonNull Function<Item, Void> getItemCallback) {
         DatabaseReference closetItemsRef = getProfileReference(username, profileName).child(PROFILE_CLOSET_KEY);
         closetItemsRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -256,7 +351,7 @@ public class Database {
      * @param profileName the profile to get from.
      * @param getOutfitCallback receives the outfits from the database asynchronously. Called once for each item received from the database.
      */
-    public static void requestFavoritedOutfits(@NonNull String username, @NonNull String profileName, @NonNull Function<Outfit, Void> getOutfitCallback) {
+    public static void getFavoritedOutfits(@NonNull String username, @NonNull String profileName, @NonNull Function<Outfit, Void> getOutfitCallback) {
         DatabaseReference favoritedOutfitsRef = getProfileReference(username, profileName).child(PROFILE_FAVORITES_KEY);
         favoritedOutfitsRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -266,7 +361,7 @@ public class Database {
                     for (DataSnapshot favoriteSnapshot : snapshot.getChildren()) {
                         String outfitKey = favoriteSnapshot.child(FAVORITE_OUTFIT_REF_KEY).getValue(String.class);
                         if (outfitKey != null) {
-                            requestOutfitFromKey(outfitKey, getOutfitCallback);
+                            getOutfitFromKey(outfitKey, getOutfitCallback);
                         }
                         else {
                             Log.d("Database", "Failed to load favorite: " + favoriteSnapshot.toString());
@@ -306,7 +401,7 @@ public class Database {
      * @param onFavoriteCallback called after the outfit has been added to favorites.
      */
     public static void addFavoritedOutfit(@NonNull String username, @NonNull String profileName, @NonNull Outfit outfit, Function<Outfit, Void> onFavoriteCallback) {
-        requestOutfitSnapshotMatching(outfit, new Function<DataSnapshot, Void>() {
+        getOutfitSnapshotMatching(outfit, new Function<DataSnapshot, Void>() {
             @Override
             public Void apply(DataSnapshot dataSnapshot) {
                 if (dataSnapshot != null) {
@@ -334,6 +429,9 @@ public class Database {
     }
 
 
+    public static void removeFavoritedOutfit(@NonNull String username, @NonNull String profileName, @NonNull Outfit outfit) {
+        removeFavoritedOutfit(username, profileName, outfit, null);
+    }
     /**
      * Removes the given outfit from the favorites of the user with the given username.
      * @param username the username of the user to remove outfit from.
@@ -342,7 +440,7 @@ public class Database {
      * @param onDeleteCallback called after the outfit has been removed from the user.
      */
     public static void removeFavoritedOutfit(@NonNull String username, @NonNull String profileName, @NonNull Outfit outfit, Function<Outfit, Void> onDeleteCallback) {
-        requestOutfitSnapshotMatching(outfit, new Function<DataSnapshot, Void>() {
+        getOutfitSnapshotMatching(outfit, new Function<DataSnapshot, Void>() {
             @Override
             public Void apply(DataSnapshot dataSnapshot) {
                 if (dataSnapshot != null) {
@@ -395,7 +493,7 @@ public class Database {
      * Requests outfits from the database.
      * @param getOutfitCallback receives the outfits from the database asynchronously. Called once for each outfit received from the database.
      */
-    public static void requestOutfits(@NonNull Function<Outfit, Void> getOutfitCallback) {
+    public static void getOutfits(@NonNull Function<Outfit, Void> getOutfitCallback) {
         DatabaseReference outfitsRef = FirebaseDatabase.getInstance().getReference().child(OUTFITS_KEY);
         outfitsRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -431,7 +529,7 @@ public class Database {
      * @param items the items to match for.
      * @param getOutfitCallback receives the outfits from the database asynchronously. Called once for each outfit received.
      */
-    public static void requestOutfitsMatching(@NonNull List<Item> items, @NonNull Function<Outfit, Void> getOutfitCallback) {
+    public static void getOutfitsMatching(@NonNull List<Item> items, @NonNull Function<Outfit, Void> getOutfitCallback) {
         DatabaseReference outfitsRef = FirebaseDatabase.getInstance().getReference().child(OUTFITS_KEY);
         outfitsRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -472,7 +570,7 @@ public class Database {
      * @param tagMask the tag mask to match against.
      * @param getOutfitCallback receives the outfits from the database asynchronously. Called once for each outfit received.
      */
-    public static void requestOutfitsMatching(long tagMask, @NonNull Function<Outfit, Void> getOutfitCallback) {
+    public static void getOutfitsMatching(long tagMask, @NonNull Function<Outfit, Void> getOutfitCallback) {
         DatabaseReference outfitsRef = FirebaseDatabase.getInstance().getReference().child(OUTFITS_KEY);
         outfitsRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -513,7 +611,7 @@ public class Database {
      * @param key the key of the outfit to retrieve.
      * @param getOutfitCallback receives outfit from the database asynchronously. Called once when outfit found. Argument will be the outfit. If outfit is not found, argument will be null.
      */
-    public static void requestOutfitFromKey(String key, @NonNull Function<Outfit, Void> getOutfitCallback) {
+    public static void getOutfitFromKey(String key, @NonNull Function<Outfit, Void> getOutfitCallback) {
         DatabaseReference outfitRef = FirebaseDatabase.getInstance().getReference().child(OUTFITS_KEY).child(key);
         outfitRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -548,7 +646,7 @@ public class Database {
      * @param outfit the outfit to match with.
      * @param getDataSnapshotCallback receives the outfit snapshot that matches the outfit asynchronously. If outfit not found, argument is null.
      */
-    private static void requestOutfitSnapshotMatching(@NonNull Outfit outfit, @NonNull Function<DataSnapshot, Void> getDataSnapshotCallback) {
+    private static void getOutfitSnapshotMatching(@NonNull Outfit outfit, @NonNull Function<DataSnapshot, Void> getDataSnapshotCallback) {
         DatabaseReference outfitsRef = FirebaseDatabase.getInstance().getReference().child(OUTFITS_KEY);
         outfitsRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -599,6 +697,34 @@ public class Database {
         assert outfitId != null;
         outfitsRef.child(outfitId).updateChildren(getOutfitAttributeMap(outfit));
         Log.d("Database", "Added outfit to database: " + outfit.toString());
+    }
+
+
+    private static Account parseAccount(@NonNull DataSnapshot accountSnapshot) {
+        Account account = null;
+
+        String username = accountSnapshot.child(USER_USERNAME_KEY).getValue(String.class);
+        String password = accountSnapshot.child(USER_PASSWORD_KEY).getValue(String.class);
+        String email = accountSnapshot.child(USER_EMAIL_KEY).getValue(String.class);
+        String name = accountSnapshot.child(USER_PERSONAL_NAME_KEY).getValue(String.class);
+
+        if (username != null &&
+                password != null &&
+                email != null &&
+                name != null) {
+            account = new Account(username, password, email, name);
+        }
+
+        return account;
+    }
+
+    private static Map<String, Object> getAccountAttributeMap(@NonNull Account account) {
+        return new HashMap<String, Object>() { {
+            put(USER_USERNAME_KEY, account.getUsername());
+            put(USER_PASSWORD_KEY, account.getPassword());
+            put(USER_EMAIL_KEY, account.getEmail());
+            put(USER_PERSONAL_NAME_KEY, account.getName());
+        } };
     }
 
 

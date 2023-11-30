@@ -1,4 +1,4 @@
-package com.example.mystylist.closet_activity;
+package com.example.mystylist;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -8,7 +8,6 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
-import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -16,7 +15,7 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
-abstract public class ClosetSwipeToDeleteCallback extends ItemTouchHelper.Callback {
+abstract public class ProfileSwipeToDeleteCallback extends ItemTouchHelper.Callback {
     public static final float DEFAULT_SWIPE_THRESHOLD = 0.7f;
 
     public Context context;
@@ -29,10 +28,10 @@ abstract public class ClosetSwipeToDeleteCallback extends ItemTouchHelper.Callba
 
     public float swipeThreshold;
 
-    ClosetSwipeToDeleteCallback(Context context) {
+    ProfileSwipeToDeleteCallback(Context context) {
         this(context, DEFAULT_SWIPE_THRESHOLD);
     }
-    protected ClosetSwipeToDeleteCallback(Context context, float swipeThreshold) {
+    protected ProfileSwipeToDeleteCallback(Context context, float swipeThreshold) {
         this.context = context;
         this.clearPaint = new Paint();
         this.clearPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
@@ -46,8 +45,8 @@ abstract public class ClosetSwipeToDeleteCallback extends ItemTouchHelper.Callba
 
     @Override
     public int getMovementFlags(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder) {
-        ClosetItemAdapter.ViewHolder viewHolder1 = (ClosetItemAdapter.ViewHolder) viewHolder;
-        if (viewHolder1.view_type == ClosetItemAdapter.ItemViewHolder.VIEW_TYPE)
+        ProfileAdapter.ViewHolder viewHolder1 = (ProfileAdapter.ViewHolder) viewHolder;
+        if (viewHolder1.view_type == ProfileAdapter.ProfileViewHolder.VIEW_TYPE)
             return makeMovementFlags(0, ItemTouchHelper.LEFT);
         else
             return makeMovementFlags(0, 0);

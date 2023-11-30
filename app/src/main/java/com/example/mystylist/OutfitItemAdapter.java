@@ -3,7 +3,6 @@ package com.example.mystylist;
 import android.app.Activity;
 import android.content.Context;
 import android.content.ContextWrapper;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,19 +10,12 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.mystylist.R;
-import com.example.mystylist.closet_activity.ClosetActivity;
 import com.example.mystylist.structures.Outfit;
-import com.example.mystylist.structures.Item;
-import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 
@@ -32,6 +24,7 @@ public class OutfitItemAdapter extends RecyclerView.Adapter<OutfitItemAdapter.Vi
 
     // Data list
     private final ArrayList<Outfit> filteredOutfits;
+    private boolean defaultCheckboxState = false;
 
     // ViewHolder class
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -40,6 +33,7 @@ public class OutfitItemAdapter extends RecyclerView.Adapter<OutfitItemAdapter.Vi
         private TextView outfit_text;
         private TextView color_text;
         private Button see_details_button;
+        private CheckBox favorite_checkbox;
 
         // ViewHolder constructor
         public ViewHolder(View view) {
@@ -48,6 +42,7 @@ public class OutfitItemAdapter extends RecyclerView.Adapter<OutfitItemAdapter.Vi
             outfit_text = view.findViewById(R.id.outfit_text);
             color_text = view.findViewById(R.id.color_text);
             see_details_button = view.findViewById(R.id.see_details_button);
+            favorite_checkbox = view.findViewById(R.id.favorite_checkbox);
         }
 
         // Getters
@@ -57,11 +52,13 @@ public class OutfitItemAdapter extends RecyclerView.Adapter<OutfitItemAdapter.Vi
         public Button getSeeDetailsButton() {
             return see_details_button;
         }
+        public CheckBox getFavoriteCheckbox() { return favorite_checkbox; }
     }
 
     // Adapter constructor
-    public OutfitItemAdapter(ArrayList<Outfit> filteredOutfits) {
+    public OutfitItemAdapter(ArrayList<Outfit> filteredOutfits, boolean defaultCheckboxState) {
         this.filteredOutfits = filteredOutfits;
+        this.defaultCheckboxState = defaultCheckboxState;
     }
 
     // Item type
@@ -85,6 +82,7 @@ public class OutfitItemAdapter extends RecyclerView.Adapter<OutfitItemAdapter.Vi
         TextView outfitText = holder.getOutfitText();
         TextView colorText = holder.getColorText();
         Button seeDetailsButton = holder.getSeeDetailsButton();
+        CheckBox favoritedCheckbox = holder.getFavoriteCheckbox();
 
         outfitText.setText(outfit.getOutfitName());
 
@@ -94,10 +92,23 @@ public class OutfitItemAdapter extends RecyclerView.Adapter<OutfitItemAdapter.Vi
             @Override
             public void onClick(View v) {
                 Log.d("debug", "success");
-                ((OutfitActivity) unwrap(v.getContext())).startDisplayOutfitFragment(outfit);
+                ((IOutfitRecyclerHome) unwrap(v.getContext())).startDisplayOutfitFragment(outfit);
             }
         });
 
+        favoritedCheckbox.setChecked(defaultCheckboxState);
+        favoritedCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                IOutfitRecyclerHome context = (IOutfitRecyclerHome) buttonView.getContext();
+                if (isChecked) {
+                    context.favoriteOutfit(outfit);
+                }
+                else {
+                    context.unfavoriteOutfit(outfit);
+                }
+            }
+        });
 
     }
 
