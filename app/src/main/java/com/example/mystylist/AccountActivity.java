@@ -185,4 +185,10 @@ public class AccountActivity extends AppCompatActivity {
         profileName = profile.getName();
         Log.d("AccountActivity", "Activity selected: " + profile.getName());
     }
+
+    @Override
+    public void finish() {
+        super.finish();
+        profileName = null;
+    }
 }
